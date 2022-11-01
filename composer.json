@@ -1,0 +1,32 @@
+{
+  "name": "viduc/cag",
+  "description": "Clean Architecture Generator - outil de génération de structure pour la mise en place d'une architecture proproe",
+  "version": "0.0.1",
+  "type": "library",
+  "homepage": "https://viduc.github.com",
+  "time": "2022-11-01",
+  "authors": [
+    {
+      "name": "Tristan Fleury",
+      "email": "viduc@mail.fr",
+      "homepage": "https://viduc.github.com",
+      "role": "Developper - Créateur"
+    }
+  ],
+  "license": "GPL-3.0-or-later",
+  "autoload": {
+    "psr-4": {
+      "Cag\\": [
+        "src/"
+      ]
+    }
+  },
+  "scripts": {
+    "test": "kahlan --reporter=verbose"
+  },
+  "require-dev": {
+    "kahlan/kahlan": "5.*",
+    "kahlan/extra-matcher": "1.*",
+    "phpunit/phpunit": "9.*"
+  }
+}
