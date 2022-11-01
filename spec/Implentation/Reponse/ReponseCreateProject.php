@@ -8,9 +8,10 @@ declare(strict_types=1);
  * Licence: GPL v3 https://opensource.org/licenses/gpl-3.0.html
  */
 
-namespace Implentation\Reponse;
+namespace Spec\Implentation\Reponse;
 
 use Cag\Model\ErreurModel;
+use Cag\Model\StructureModel;
 use Cag\Reponse\ReponseInterface;
 
 class ReponseCreateProject implements ReponseInterface
@@ -33,5 +34,10 @@ class ReponseCreateProject implements ReponseInterface
         $this->erreur = $this->erreur ?? new ErreurModel();
 
         return $this->erreur;
+    }
+
+    public function getStructureModel(): StructureModel
+    {
+        return new StructureModel();
     }
 }

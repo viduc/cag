@@ -9,25 +9,39 @@ declare(strict_types=1);
  */
 
 use Cag\Controller\CreateProject;
+use Cag\Model\StructureModel;
 use Cag\Presenter\PresenterInterface;
-use Implentation\Presenter\PresenterCreateProject;
-use Implentation\Requete\RequeteCreateProject;
+
+use Spec\Implentation\Presenter\PresenterCreateProject;
+use Spec\Implentation\Requete\RequeteCreateProject;
 
 describe('CreateProject', function () {
     describe('->execute', function () {
         beforeEach(function () {
+            $this->createProject = new CreateProject();
+        });
+        it('devrait retourner un Presenter',
+            function () {
+                $execute = $this->createProject->execute(
+                    new RequeteCreateProject(),
+                    new PresenterCreateProject()
+                );
+                expect($execute)->toBeAnInstanceOf(
+                    PresenterInterface::class
+                );
+            }
+        );
 
-        });
-        it('devrait retourner un Presenter contenant une Reponse',
-        function () {
-            $createProject = new CreateProject();
-            $execute = $createProject->execute(
-                new RequeteCreateProject(),
-                new PresenterCreateProject()
-            );
-            expect($execute)->toBeAnInstanceOf(
-                PresenterInterface::class
-            );
-        });
+        it('devrait retourner une Reponse contenant un StructureModel',
+            function () {
+                $execute = $this->createProject->execute(
+                    new RequeteCreateProject(),
+                    new PresenterCreateProject()
+                )->getReponse()->getStructureModel();
+                expect($execute)->toBeAnInstanceOf(
+                    StructureModel::class
+                );
+            }
+        );
     });
 });

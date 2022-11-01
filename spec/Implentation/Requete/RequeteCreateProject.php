@@ -8,7 +8,7 @@ declare(strict_types=1);
  * Licence: GPL v3 https://opensource.org/licenses/gpl-3.0.html
  */
 
-namespace Implentation\Requete;
+namespace Spec\Implentation\Requete;
 
 use Cag\Requete\RequeteInterface;
 
@@ -19,7 +19,7 @@ class RequeteCreateProject implements RequeteInterface
      */
     public function getAction(): string
     {
-        return 'test';
+        return 'create';
     }
 
     /**
