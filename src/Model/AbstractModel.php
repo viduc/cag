@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * CAG - Clean Architecture Generator
  *
@@ -7,9 +8,9 @@
  * Licence: GPL v3 https://opensource.org/licenses/gpl-3.0.html
  */
 
-namespace Cag\Entities;
+namespace Cag\Model;
 
-abstract class AbstractEntity
+abstract class AbstractModel
 {
     protected $id;
 
