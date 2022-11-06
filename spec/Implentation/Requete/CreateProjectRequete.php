@@ -12,8 +12,18 @@ namespace Spec\Implentation\Requete;
 
 use Cag\Requete\RequeteInterface;
 
-class RequeteCreateProject implements RequeteInterface
+class CreateProjectRequete implements RequeteInterface
 {
+    public string $action;
+
+    public array $params;
+
+    public function __construct(string $action = null, array $params = [])
+    {
+        $this->action = $action ?? 'create';
+        $this->params = $params;
+    }
+
     /**
      * @inheritDoc
      */
@@ -27,6 +37,10 @@ class RequeteCreateProject implements RequeteInterface
      */
     public function getParam(string $param): mixed
     {
-        return 'test';
+        if (array_key_exists($param, $this->params)) {
+            return $this->params[$param];
+        }
+
+        return null;
     }
 }

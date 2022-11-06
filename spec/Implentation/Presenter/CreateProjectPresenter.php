@@ -12,9 +12,8 @@ namespace Spec\Implentation\Presenter;
 
 use Cag\Presenter\PresenterInterface;
 use Cag\Reponse\ReponseInterface;
-use Spec\Implentation\Reponse\ReponseCreateProject;
 
-class PresenterCreateProject implements PresenterInterface
+class CreateProjectPresenter implements PresenterInterface
 {
     private ReponseInterface $reponse;
 
@@ -31,8 +30,6 @@ class PresenterCreateProject implements PresenterInterface
      */
     public function getReponse(): ReponseInterface
     {
-        $this->reponse = $this->reponse ?? new ReponseCreateProject();
-
         return $this->reponse;
     }
 }

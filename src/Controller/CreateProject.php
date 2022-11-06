@@ -10,15 +10,24 @@ declare(strict_types=1);
 
 namespace Cag\Controller;
 
+use Cag\Model\StructureModel;
 use Cag\Presenter\PresenterInterface;
+use Cag\Reponse\CreateProjectReponse;
 use Cag\Requete\RequeteInterface;
 
-class CreateProject implements UseCaseInterface
+class CreateProject extends UseCaseAbstract
 {
     public function execute(
         RequeteInterface $requete,
         PresenterInterface $presenter): PresenterInterface
     {
+        $reponse = new CreateProjectReponse();
+        $model = new StructureModel();
+
+        $model->setName($requete->getParam('name'));
+        $reponse->setStructureModel($model);
+
+        $presenter->presente($reponse);
         return $presenter;
     }
 }

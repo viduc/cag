@@ -23,4 +23,36 @@ class StructureModel extends AbstractModel
      * @var string
      */
     protected $srcName;
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSrcName(): string
+    {
+        return $this->srcName;
+    }
+
+    /**
+     * @param string $srcName
+     */
+    public function setSrcName(string $srcName): void
+    {
+        $this->srcName = $srcName;
+    }
 }
