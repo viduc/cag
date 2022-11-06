@@ -26,8 +26,8 @@ class FileService implements ServiceInterface
         FileValidatorAbstract::checkFile($name);
         if (false === file_put_contents($name, $contenu, LOCK_EX)) {
             throw new FileException(
-                "Une erreur indéterminée est survenue lors de la
-                création du fichier: ".$name,
+                "An undetermined error occurred during the
+                 file creation: ".$name,
                 103
             );
         }

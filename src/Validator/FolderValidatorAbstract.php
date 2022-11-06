@@ -35,13 +35,13 @@ class FolderValidatorAbstract implements ValidatorInterface
                 101
             );
         }
-/*
-        if ($exist && file_exists($name)) {
-            throw new FileException(
-                "The file already exists",
+
+        if ($exist && is_dir($name)) {
+            throw new FolderException(
+                "The folder already exists",
                 102
             );
-        }*/
+        }
     }
 
     /**

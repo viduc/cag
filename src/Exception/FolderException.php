@@ -13,6 +13,8 @@ namespace Cag\Exception;
 /**
  * 100 -> Name of folder must not be empty.
  * 101 -> The target folder is invalid.
+ * 102 -> The folder already exists.
+ * 103 -> An undetermined error occurred during the folder creation:.
  */
 class FolderException extends AbstractException
 {
