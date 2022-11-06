@@ -1,0 +1,103 @@
+<?php
+declare(strict_types=1);
+/**
+ * CAG - Clean Architecture Generator
+ *
+ * Tristan Fleury <http://viduc.github.com/>
+ *
+ * Licence: GPL v3 https://opensource.org/licenses/gpl-3.0.html
+ */
+
+namespace Cag\Service;
+
+use Cag\Exception\FileException;
+use Cag\Validator\FileValidatorAbstract;
+
+class FileService implements ServiceInterface
+{
+    /**
+     * @param string $name
+     * @param string $contenu
+     * @return void
+     * @throws FileException
+     */
+    public function create(string $name, string $contenu = ''): void
+    {
+        FileValidatorAbstract::checkFile($name);
+        if (false === file_put_contents($name, $contenu, LOCK_EX)) {
+            throw new FileException(
+                "Une erreur indéterminée est survenue lors de la
+                création du fichier: ".$name,
+                103
+            );
+        }
+    }
+
+    /**
+     * @param string $name
+     * @param string $contenu
+     * @param bool $append
+     * @return void
+     * @throws FileException
+     */
+    public function update(
+        string $name,
+        string $contenu = '',
+        bool $append = false
+    ): void {
+        FileValidatorAbstract::checkFile($name, false);
+        $append = $append ? FILE_APPEND : null;
+        if (false === file_put_contents(
+            $name,
+            $contenu,
+            LOCK_EX | $append)) {
+            throw new FileException(
+                "Une erreur indéterminée est survenue lors de la
+                création du fichier: ".$name,
+                103
+            );
+        }
+    }
+
+    /**
+     * @param string $name
+     * @param bool $exist
+     * @return void
+     * @throws FileException
+     */
+    private function checkFile(string $name, bool $exist = true): void
+    {
+        if ('' === $name) {
+            throw new FileException(
+                'Name of file must not be empty',
+                100
+            );
+        }
+
+        if (!$this->isFolderWritable($name)) {
+            throw new FileException(
+                "The target folder is invalid",
+                101
+            );
+        }
+
+        if ($exist && file_exists($name)) {
+            throw new FileException(
+                "The file already exists",
+                102
+            );
+        }
+    }
+
+    /**
+     * @param string $name
+     * @return bool
+     */
+    private function isFolderWritable(string $name): bool
+    {
+        $folder = dirname($name);
+
+        return is_writable($folder);
+    }
+
+}
