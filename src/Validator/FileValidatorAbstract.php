@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Cag\Validator;
 
 use Cag\Exception\FileException;
+use Cag\Exception\FolderException;
 
 class FileValidatorAbstract implements ValidatorInterface
 {
@@ -30,7 +31,7 @@ class FileValidatorAbstract implements ValidatorInterface
         }
 
         if (!FolderValidatorAbstract::isFolderWritable($name)) {
-            throw new FileException(
+            throw new FolderException(
                 "The target folder is invalid",
                 101
             );

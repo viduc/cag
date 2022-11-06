@@ -18,7 +18,7 @@ class FolderValidatorAbstract implements ValidatorInterface
      * @param string $name
      * @param bool $exist
      * @return void
-     * @throws FileException
+     * @throws FolderException
      */
     public static function checkFile(string $name, bool $exist = true): void
     {
@@ -29,13 +29,13 @@ class FolderValidatorAbstract implements ValidatorInterface
             );
         }
 
-        /*if (!FileValidatorAbstract::isFolderWritable($name)) {
-            throw new FileException(
+        if (!FolderValidatorAbstract::isFolderWritable($name)) {
+            throw new FolderException(
                 "The target folder is invalid",
                 101
             );
         }
-
+/*
         if ($exist && file_exists($name)) {
             throw new FileException(
                 "The file already exists",

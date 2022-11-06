@@ -9,6 +9,7 @@ declare(strict_types=1);
  */
 
 use Cag\Exception\FileException;
+use Cag\Exception\FolderException;
 use Cag\Service\FileService;
 
 describe('FileService', function () {
@@ -50,7 +51,7 @@ describe('FileService', function () {
                         DIRECTORY_SEPARATOR."ziap".DIRECTORY_SEPARATOR."test"
                     );
                 };
-                expect($closure)->toThrow(new FileException(
+                expect($closure)->toThrow(new FolderException(
                     "The target folder is invalid",
                     101
                 ));
@@ -59,7 +60,7 @@ describe('FileService', function () {
                         DIRECTORY_SEPARATOR."ziap".DIRECTORY_SEPARATOR."test"
                     );
                 };
-                expect($closure)->toThrow(new FileException(
+                expect($closure)->toThrow(new FolderException(
                     "The target folder is invalid",
                     101
                 ));
