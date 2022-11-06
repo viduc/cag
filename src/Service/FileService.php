@@ -64,13 +64,15 @@ class FileService implements ServiceInterface
      * @return void
      * @throws FileException
      */
-    public function delete(string $name): void
+    public function delete(string $name): bool
     {
-        if (!file_exists($name) || !unlink($name)) {
+        if (!file_exists($name)) {
             throw new FileException(
                 'Delete file operation is failure',
                 104
             );
         }
+
+        return unlink($name);
     }
 }

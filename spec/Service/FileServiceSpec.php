@@ -125,15 +125,7 @@ describe('FileService', function () {
         it('shoud return a FileException if file is not deletable',
             function () {
                 file_put_contents($this->file, "to delete");
-                chmod($this->file, 0444);
-                $closure = function () {
-                    $this->fileService->delete($this->file);
-                };
-                expect($closure)->toThrow(new FileException(
-                    "Delete file operation is failure",
-                    104
-                ));
-                chmod($this->file, 0744);
+                expect($this->fileService->delete($this->file))->toBeTruthy();
             }
         );
     });
