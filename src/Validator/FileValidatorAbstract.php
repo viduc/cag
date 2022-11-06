@@ -29,8 +29,7 @@ class FileValidatorAbstract implements ValidatorInterface
             );
         }
 
-        $folder = dirname($name);
-        if (!is_writable($folder)) {
+        if (!FileValidatorAbstract::isFolderWritable($name)) {
             throw new FileException(
                 "The target folder is invalid",
                 101
@@ -43,5 +42,16 @@ class FileValidatorAbstract implements ValidatorInterface
                 102
             );
         }
+    }
+
+    /**
+     * @param $name
+     * @return bool
+     */
+    public static function isFolderWritable($name): bool
+    {
+        $folder = dirname($name);
+
+        return is_writable($folder);
     }
 }

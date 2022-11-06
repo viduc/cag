@@ -28,7 +28,7 @@ describe('FileService', function () {
         }
     });
 
-    describe('->create and -> update', function () {
+    describe('create and update', function () {
         it('should return a FileException if name of file is empty',
             function () {
                 $closure = function () {$this->fileService->create('');};
@@ -67,7 +67,7 @@ describe('FileService', function () {
         );
     });
 
-    describe('->create', function () {
+    describe('create', function () {
         it('should return a FileException if file is present',
             function () {
                 touch($this->file);
@@ -88,7 +88,7 @@ describe('FileService', function () {
             }
         );
     });
-    describe('->update', function () {
+    describe('update', function () {
         it('The file with content "to modify" must content only "test"
             after update',
             function () {
@@ -105,6 +105,35 @@ describe('FileService', function () {
                 expect(file_get_contents($this->file))->toBe(
                     "to modify test"
                 );
+            }
+        );
+    });
+    describe('delete', function () {
+        it('shoud return a FileException if file is not present',
+            function () {
+                $closure = function () {
+                    $this->fileService->delete(
+                        DIRECTORY_SEPARATOR."ziap".DIRECTORY_SEPARATOR."test"
+                    );
+                };
+                expect($closure)->toThrow(new FileException(
+                    "Delete file operation is failure",
+                    104
+                ));
+            }
+        );
+        it('shoud return a FileException if file is not deletable',
+            function () {
+                file_put_contents($this->file, "to delete");
+                chmod($this->file, 0444);
+                $closure = function () {
+                    $this->fileService->delete($this->file);
+                };
+                expect($closure)->toThrow(new FileException(
+                    "Delete file operation is failure",
+                    104
+                ));
+                chmod($this->file, 0744);
             }
         );
     });

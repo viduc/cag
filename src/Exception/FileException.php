@@ -15,6 +15,7 @@ namespace Cag\Exception;
  * 101 -> The target folder is invalid.
  * 102 -> The file already exists.
  * 103 -> Une erreur indéterminée est survenue lors de la création du fichier: .
+ * 104 -> Delete file operation is failure.
  */
 class FileException extends AbstractException
 {

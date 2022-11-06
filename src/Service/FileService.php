@@ -61,43 +61,16 @@ class FileService implements ServiceInterface
 
     /**
      * @param string $name
-     * @param bool $exist
      * @return void
      * @throws FileException
      */
-    private function checkFile(string $name, bool $exist = true): void
+    public function delete(string $name): void
     {
-        if ('' === $name) {
+        if (!file_exists($name) || !unlink($name)) {
             throw new FileException(
-                'Name of file must not be empty',
-                100
-            );
-        }
-
-        if (!$this->isFolderWritable($name)) {
-            throw new FileException(
-                "The target folder is invalid",
-                101
-            );
-        }
-
-        if ($exist && file_exists($name)) {
-            throw new FileException(
-                "The file already exists",
-                102
+                'Delete file operation is failure',
+                104
             );
         }
     }
-
-    /**
-     * @param string $name
-     * @return bool
-     */
-    private function isFolderWritable(string $name): bool
-    {
-        $folder = dirname($name);
-
-        return is_writable($folder);
-    }
-
 }
