@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace Cag\Validator;
 
-use Cag\Exception\FileException;
+use Cag\Exception\FolderException;
 
-class FileValidatorAbstract implements ValidatorInterface
+class FolderValidatorAbstract implements ValidatorInterface
 {
     /**
      * @param string $name
@@ -23,13 +23,13 @@ class FileValidatorAbstract implements ValidatorInterface
     public static function checkFile(string $name, bool $exist = true): void
     {
         if ('' === $name) {
-            throw new FileException(
-                'Name of file must not be empty',
+            throw new FolderException(
+                'Name of folder must not be empty',
                 100
             );
         }
 
-        if (!FolderValidatorAbstract::isFolderWritable($name)) {
+        /*if (!FileValidatorAbstract::isFolderWritable($name)) {
             throw new FileException(
                 "The target folder is invalid",
                 101
@@ -41,6 +41,17 @@ class FileValidatorAbstract implements ValidatorInterface
                 "The file already exists",
                 102
             );
-        }
+        }*/
+    }
+
+    /**
+     * @param $name
+     * @return bool
+     */
+    public static function isFolderWritable($name): bool
+    {
+        $folder = dirname($name);
+
+        return is_writable($folder);
     }
 }
