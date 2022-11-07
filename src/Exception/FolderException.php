@@ -15,6 +15,7 @@ namespace Cag\Exception;
  * 101 -> The target folder is invalid.
  * 102 -> The folder already exists.
  * 103 -> An undetermined error occurred during the folder creation:.
+ * 104 -> An undetermined error occurred during the folder suppression:.
  */
 class FolderException extends AbstractException
 {

@@ -17,6 +17,7 @@ class FolderService implements ServiceInterface
 {
     /**
      * @param string $name
+     *
      * @return void
      * @throws FolderException
      */
@@ -27,6 +28,30 @@ class FolderService implements ServiceInterface
             throw new FolderException(
                 "An undetermined error occurred during the 
                 folder creation: ".$name,
+                103
+            );
+        }
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return void
+     * @throws FolderException
+     */
+    public function delete(string $name): void
+    {
+        FolderValidatorAbstract::checkFile($name, false);
+        if (!is_dir($name)) {
+            throw new FolderException(
+                "The target folder is invalid",
+                101
+            );
+        }
+        if (false === rmdir($name)) {
+            throw new FolderException(
+                "An undetermined error occurred during the 
+                folder suppression: ".$name,
                 103
             );
         }

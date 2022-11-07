@@ -13,7 +13,7 @@ use Cag\Exception\FolderException;
 use Cag\Service\FileService;
 
 describe('FileService', function () {
-    given('public', function (){
+    given('public', function () {
         return str_replace('Controller', 'public', __DIR__);
     });
     given('file', function () {
@@ -30,21 +30,27 @@ describe('FileService', function () {
     });
 
     describe('create and update', function () {
-        it('should return a FileException if name of file is empty',
+        it(
+            'should return a FileException if name of file is empty',
             function () {
-                $closure = function () {$this->fileService->create('');};
+                $closure = function () {
+                    $this->fileService->create('');
+                };
                 expect($closure)->toThrow(new FileException(
                     'Name of file must not be empty',
                     100
                 ));
-                $closure = function () {$this->fileService->update('');};
+                $closure = function () {
+                    $this->fileService->update('');
+                };
                 expect($closure)->toThrow(new FileException(
                     'Name of file must not be empty',
                     100
                 ));
             }
         );
-        it('should return a FileException if name of file is not valid',
+        it(
+            'should return a FileException if name of file is not valid',
             function () {
                 $closure = function () {
                     $this->fileService->create(
@@ -69,7 +75,8 @@ describe('FileService', function () {
     });
 
     describe('create', function () {
-        it('should return a FileException if file is present',
+        it(
+            'should return a FileException if file is present',
             function () {
                 touch($this->file);
                 $file = $this->file;
@@ -82,7 +89,8 @@ describe('FileService', function () {
                 ));
             }
         );
-        it('File with name send must be created',
+        it(
+            'File with name send must be created',
             function () {
                 $this->fileService->create($this->file);
                 expect(file_exists($this->file))->toBeTruthy();
@@ -90,7 +98,8 @@ describe('FileService', function () {
         );
     });
     describe('update', function () {
-        it('The file with content "to modify" must content only "test"
+        it(
+            'The file with content "to modify" must content only "test"
             after update',
             function () {
                 file_put_contents($this->file, "to modify");
@@ -98,7 +107,8 @@ describe('FileService', function () {
                 expect(file_get_contents($this->file))->toBe("test");
             }
         );
-        it('The file with content "to modify" must content 
+        it(
+            'The file with content "to modify" must content 
             "to modify test" after update',
             function () {
                 file_put_contents($this->file, "to modify");
@@ -110,7 +120,8 @@ describe('FileService', function () {
         );
     });
     describe('delete', function () {
-        it('shoud return a FileException if file is not present',
+        it(
+            'shoud return a FileException if file is not present',
             function () {
                 $closure = function () {
                     $this->fileService->delete(
@@ -123,7 +134,8 @@ describe('FileService', function () {
                 ));
             }
         );
-        it('shoud return a FileException if file is not deletable',
+        it(
+            'shoud return a FileException if file is not deletable',
             function () {
                 file_put_contents($this->file, "to delete");
                 expect($this->fileService->delete($this->file))->toBeTruthy();

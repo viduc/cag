@@ -12,7 +12,7 @@ use Cag\Exception\FolderException;
 use Cag\Service\FolderService;
 
 describe('FileService', function () {
-    given('public', function (){
+    given('public', function () {
         return str_replace('Controller', 'public', __DIR__);
     });
     given('folder', function () {
@@ -28,22 +28,42 @@ describe('FileService', function () {
         }
     });
 
-    describe('create', function () {
-        it('should return a FileException if name of file is empty',
+    describe('create and delete', function () {
+        it(
+            'should return a FileException if name of folder is empty',
             function () {
-                $closure = function () {$this->folderService->create('');};
+                $closure = function () {
+                    $this->folderService->create('');
+                };
+                expect($closure)->toThrow(new FolderException(
+                    'Name of folder must not be empty',
+                    100
+                ));
+                $closure = function () {
+                    $this->folderService->delete('');
+                };
                 expect($closure)->toThrow(new FolderException(
                     'Name of folder must not be empty',
                     100
                 ));
             }
         );
-        it('should return a FolderException if name of folder is not
+        it(
+            'should return a FolderException if name of folder is not
             valid',
             function () {
                 $closure = function () {
                     $this->folderService->create(
-                        DIRECTORY_SEPARATOR."ziap".DIRECTORY_SEPARATOR."test"
+                        DIRECTORY_SEPARATOR . "ziap" . DIRECTORY_SEPARATOR . "test"
+                    );
+                };
+                expect($closure)->toThrow(new FolderException(
+                    'The target folder is invalid',
+                    101
+                ));
+                $closure = function () {
+                    $this->folderService->delete(
+                        DIRECTORY_SEPARATOR . "ziap" . DIRECTORY_SEPARATOR . "test"
                     );
                 };
                 expect($closure)->toThrow(new FolderException(
@@ -52,7 +72,10 @@ describe('FileService', function () {
                 ));
             }
         );
-        it('should return a FolderException if folder already exist',
+    });
+    describe('create', function () {
+        it(
+            'should return a FolderException if folder already exist',
             function () {
                 mkdir($this->folder);
                 $closure = function () {
@@ -64,10 +87,35 @@ describe('FileService', function () {
                 ));
             }
         );
-        it('Folder "folderPresent" must be present',
+        it(
+            'Folder "folderPresent" must be present',
             function () {
                 $this->folderService->create($this->folder);
                 expect(is_dir($this->folder))->toBeTruthy();
+            }
+        );
+    });
+
+    describe('delete', function () {
+        it(
+            'should return a FileException if folder not exist',
+            function () {
+                $closure = function () {
+                    $this->folderService->delete($this->folder);
+                };
+                expect($closure)->toThrow(new FolderException(
+                    'The target folder is invalid',
+                    101
+                ));
+            }
+        );
+        it(
+            'The folder must be deleted',
+            function () {
+                mkdir($this->folder);
+                expect(is_dir($this->folder))->toBeTruthy();
+                $this->folderService->delete($this->folder);
+                expect(is_dir($this->folder))->toBeFalsy();
             }
         );
     });

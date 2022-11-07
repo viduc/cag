@@ -26,6 +26,9 @@
   "require-dev": {
     "kahlan/kahlan": "5.*",
     "kahlan/extra-matcher": "1.*",
-    "phpunit/phpunit": "9.*"
+    "phpunit/phpunit": "9.*",
+    "friendsofphp/php-cs-fixer": "^3.13",
+    "phpmd/phpmd": "^2.13",
+    "squizlabs/php_codesniffer": "^3.7"
   }
 }
