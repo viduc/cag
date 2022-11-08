@@ -10,27 +10,44 @@ declare(strict_types=1);
 
 namespace Cag\Factory;
 
+use Cag\Exceptions\StructureModelException;
+use Cag\Loggers\LoggerInterface;
+use Cag\Models\FolderModel;
 use Cag\Models\StructureModel;
+use Cag\Factory\StructureModelConst as Constantes;
 
-abstract class StructureModelFactory extends AbstractFactory
+class StructureModelFactory extends AbstractFactory
 {
-    const FOLDERS = [
-        'Adapters',
-        'Containers',
-        'Controllers',
-        'Exceptions',
-        'Factory',
-        'Models',
-        'Presenters',
-        'Responses',
-        'Repository',
-        'Requests',
-        'Services',
-        'Validators'
-    ];
+    /**
+     * @var LoggerInterface
+     */
+    private LoggerInterface $logger;
 
-    static public function getStandard(): StructureModel
+    public function __construct(LoggerInterface $logger)
     {
+        $this->logger = $logger;
+    }
 
+    /**
+     * @param string $name
+     *
+     * @return StructureModel
+     */
+    public function getStandard(string $name): StructureModel
+    {
+        $model = new StructureModel($name);
+        foreach (Constantes::FOLDERS as $folder) {
+            try {
+                $model->addFolder(new FolderModel($folder));
+            } catch (StructureModelException $exception) {
+                $this->logger->add(
+                    $exception->getMessage(),
+                    'info',
+                    $exception->getCode()
+                );
+            }
+        }
+
+        return $model;
     }
 }

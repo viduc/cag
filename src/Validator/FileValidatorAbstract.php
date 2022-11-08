@@ -18,8 +18,9 @@ class FileValidatorAbstract implements ValidatorInterface
     /**
      * @param string $name
      * @param bool $exist
+     *
      * @return void
-     * @throws FileException
+     * @throws FileException|FolderException
      */
     public static function checkFile(string $name, bool $exist = true): void
     {
