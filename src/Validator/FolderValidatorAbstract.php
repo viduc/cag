@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Cag\Validator;
 
-use Cag\Exception\FolderException;
+use Cag\Exceptions\FolderException;
 
 class FolderValidatorAbstract implements ValidatorInterface
 {

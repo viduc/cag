@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace Cag\Validator;
 
-use Cag\Exception\FileException;
-use Cag\Exception\FolderException;
+use Cag\Exceptions\FileException;
+use Cag\Exceptions\FolderException;
 
 class FileValidatorAbstract implements ValidatorInterface
 {
