@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 use Cag\Exception\FolderException;
 use Cag\Service\FolderService;
+use Kahlan\Plugin\Monkey;
+use Kahlan\Plugin\Stub;
 
 describe('FileService', function () {
     given('public', function () {
@@ -30,7 +32,8 @@ describe('FileService', function () {
 
     describe('create and delete', function () {
         it(
-            'should return a FileException if name of folder is empty',
+            'should return a FileException if name of folder is empty
+            and is not valid',
             function () {
                 $closure = function () {
                     $this->folderService->create('');
@@ -40,19 +43,6 @@ describe('FileService', function () {
                     100
                 ));
                 $closure = function () {
-                    $this->folderService->delete('');
-                };
-                expect($closure)->toThrow(new FolderException(
-                    'Name of folder must not be empty',
-                    100
-                ));
-            }
-        );
-        it(
-            'should return a FolderException if name of folder is not
-            valid',
-            function () {
-                $closure = function () {
                     $this->folderService->create(
                         DIRECTORY_SEPARATOR . "ziap" . DIRECTORY_SEPARATOR . "test"
                     );
@@ -60,6 +50,14 @@ describe('FileService', function () {
                 expect($closure)->toThrow(new FolderException(
                     'The target folder is invalid',
                     101
+                ));
+
+                $closure = function () {
+                    $this->folderService->delete('');
+                };
+                expect($closure)->toThrow(new FolderException(
+                    'Name of folder must not be empty',
+                    100
                 ));
                 $closure = function () {
                     $this->folderService->delete(
@@ -119,4 +117,25 @@ describe('FileService', function () {
             }
         );
     });
+
+    it(
+        'The returned path must end with cag',
+        function () {
+            allow($this->folderService)->toReceive('getFullPath')->andRun(
+                function () {
+                    return str_replace(
+                        'spec'.DIRECTORY_SEPARATOR.'Service',
+                        'vendor'.DIRECTORY_SEPARATOR.'viduc',
+                        __DIR__
+                    );
+                }
+            );
+            expect(
+                str_ends_with(
+                    $this->folderService->getProjectPath(),
+                    'cag/'
+                )
+            )->toBeTruthy();
+        }
+    );
 });

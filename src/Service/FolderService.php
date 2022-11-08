@@ -56,4 +56,22 @@ class FolderService implements ServiceInterface
             );
         }
     }
+
+    /**
+     * @return string
+     */
+    public function getProjectPath(): string
+    {
+        $explode = explode('vendor', $this->getFullPath());
+
+        return $explode[0];
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullPath(): string
+    {
+        return __DIR__;
+    }
 }

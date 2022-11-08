@@ -19,14 +19,12 @@ class CreateProject extends UseCaseAbstract
 {
     public function execute(
         RequeteInterface $requete,
-        PresenterInterface $presenter): PresenterInterface
+        PresenterInterface $presenter
+    ): PresenterInterface
     {
         $reponse = new CreateProjectReponse();
         $model = new StructureModel();
-
-        $model->setName($requete->getParam('name'));
         $reponse->setStructureModel($model);
-
         $presenter->presente($reponse);
         return $presenter;
     }

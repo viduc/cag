@@ -18,15 +18,5 @@ describe('CreateProject', function () {
         beforeEach(function () {
             $this->createProject = new CreateProject(new Container());
         });
-        it('devrait retourner une Reponse contenant un StructureModel
-            ayant comme attribut name "test"',
-            function () {
-                $execute = $this->createProject->execute(
-                    new CreateProjectRequete('action', ['name' => 'test']),
-                    new CreateProjectPresenter()
-                )->getReponse()->getStructureModel()->getName();
-                expect($execute)->toBe("test");
-            }
-        );
     });
 });

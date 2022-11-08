@@ -13,32 +13,10 @@ namespace Cag\Model;
 class StructureModel extends AbstractModel
 {
     /**
-     * Nom du projet
-     * @var string
-     */
-    protected $name;
-
-    /**
      * Nom du dossier srcS
      * @var string
      */
     protected $srcName;
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
 
     /**
      * @return string
