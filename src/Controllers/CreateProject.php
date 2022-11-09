@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Cag\Controllers;
 
+use Cag\Exceptions\AbstractException;
+use Cag\Models\ErreurModel;
 use Cag\Models\StructureModel;
 use Cag\Presenters\PresenterInterface;
 use Cag\Responses\CreateProjectResponse;
@@ -18,14 +20,21 @@ use Cag\Requests\RequestInterface;
 class CreateProject extends UseCaseAbstract
 {
     public function execute(
-        RequestInterface   $requete,
+        RequestInterface   $request,
         PresenterInterface $presenter
-    ): PresenterInterface
-    {
+    ): PresenterInterface {
         $reponse = new CreateProjectResponse();
-        $model = new StructureModel();
-        $reponse->setStructureModel($model);
+        try {
+            $model = new StructureModel($request->getParam('name'));
+            $reponse->setStructureModel($model);
+        } catch (AbstractException $e) {
+            $reponse->setErreur(new ErreurModel(
+                $e->getCode(),
+                $e->getMessage()
+            ));
+        }
         $presenter->presente($reponse);
+
         return $presenter;
     }
 }
