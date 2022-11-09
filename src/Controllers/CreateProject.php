@@ -10,22 +10,60 @@ declare(strict_types=1);
 
 namespace Cag\Controllers;
 
+use Cag\Containers\ContainerInterface;
 use Cag\Exceptions\AbstractException;
+use Cag\Exceptions\ContainerException;
+use Cag\Exceptions\NotFoundException;
+use Cag\Factory\StructureModelFactory;
 use Cag\Models\ErreurModel;
-use Cag\Models\StructureModel;
 use Cag\Presenters\PresenterInterface;
 use Cag\Responses\CreateProjectResponse;
 use Cag\Requests\RequestInterface;
+use Cag\Services\StructureService;
 
 class CreateProject extends UseCaseAbstract
 {
+    /**
+     * @var StructureService
+     */
+    private StructureService $structureService;
+
+    /**
+     * @var StructureModelFactory
+     */
+    private StructureModelFactory $factory;
+
+    /**
+     * @param ContainerInterface $container
+     *
+     * @throws ContainerException
+     * @throws NotFoundException
+     */
+    public function __construct(ContainerInterface $container)
+    {
+        parent::__construct($container);
+        $this->structureService = new StructureService();
+        $this->factory = new StructureModelFactory(
+            $this->container->get('logger')
+        );
+    }
+
+    /**
+     * @param RequestInterface   $request
+     * @param PresenterInterface $presenter
+     *
+     * @return PresenterInterface
+     */
     public function execute(
         RequestInterface   $request,
         PresenterInterface $presenter
     ): PresenterInterface {
         $reponse = new CreateProjectResponse();
         try {
-            $model = new StructureModel($request->getParam('name'));
+            $model = $this->factory->getStandard(
+                $request->getParam('name')
+            );
+            $this->structureService->create($model);
             $reponse->setStructureModel($model);
         } catch (AbstractException $e) {
             $reponse->setErreur(new ErreurModel(
