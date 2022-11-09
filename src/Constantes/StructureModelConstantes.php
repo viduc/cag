@@ -8,12 +8,13 @@ declare(strict_types=1);
  * Licence: GPL v3 https://opensource.org/licenses/gpl-3.0.html
  */
 
-namespace Cag\Factory;
+namespace Cag\Constantes;
 
-class StructureModelConst
+class StructureModelConstantes
 {
     const FOLDERS = [
         'Adapters',
+        'Constantes',
         'Containers',
         'Controllers',
         'Exceptions',

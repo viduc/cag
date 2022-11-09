@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace Cag\Factory;
 
+use Cag\Constantes\StructureModelConstantes as Constantes;
 use Cag\Exceptions\StructureModelException;
 use Cag\Loggers\LoggerInterface;
 use Cag\Models\FolderModel;
 use Cag\Models\StructureModel;
-use Cag\Factory\StructureModelConst as Constantes;
 
 class StructureModelFactory extends AbstractFactory
 {

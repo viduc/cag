@@ -8,9 +8,9 @@ declare(strict_types=1);
  * Licence: GPL v3 https://opensource.org/licenses/gpl-3.0.html
  */
 
+use Cag\Constantes\StructureModelConstantes as Constantes;
 use Cag\Factory\StructureModelFactory;
 use Spec\Implentation\Loggers\Logger;
-use Cag\Factory\StructureModelConst as Constantes;
 
 describe('StructureModelFactory', function () {
     beforeEach(function () {
