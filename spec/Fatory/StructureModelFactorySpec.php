@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 use Cag\Constantes\StructureModelConstantes as Constantes;
 use Cag\Factory\StructureModelFactory;
+use Cag\Models\FileModel;
+use Cag\Models\FolderModel;
 use Spec\Implentation\Loggers\Logger;
 
 describe('StructureModelFactory', function () {
@@ -21,12 +23,24 @@ describe('StructureModelFactory', function () {
 
     describe('getStandard', function () {
         it(
-            'should return a structureModel with all standard folders',
+            'should return a structureModel with all folder and files in 
+                constantes StructureModelConstantes',
             function () {
                 $model = $this->factory->getStandard('test');
-                foreach (Constantes::FOLDERS as $folder) {
-                    expect(false !== $model->hasFolderByName(
+                foreach (Constantes::FOLDERS as $folderName) {
+                    $folder = new FolderModel($folderName);
+                    expect(false !== $model->hasFolder(
                         $folder
+                    ))->toBeTruthy();
+                }
+                foreach (Constantes::FILES_IN_FOLDER as
+                     $fileName => $folderName
+                ) {
+                    $folder = new FolderModel($folderName);
+                    $file = new FileModel($fileName);
+                    $file->setParent($folder);
+                    expect(false !== $model->hasFile(
+                        $file
                     ))->toBeTruthy();
                 }
             }

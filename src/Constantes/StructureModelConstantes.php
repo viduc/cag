@@ -29,22 +29,6 @@ class StructureModelConstantes
         'Validators'
     ];
 
-    const FILES = [
-        'AdapterInterface',
-        'ContainerInterface',
-        'ExceptionAbstract',
-        'FactoryInterface',
-        'LoggerInterface',
-        'ModelAbstract',
-        'PresenterInterface',
-        'ResponseInterface',
-        'RepositoryInterface',
-        'RequestInterface',
-        'ServiceInterface',
-        'UseCaseAbstract',
-        'ValidatorInterface'
-    ];
-
     const FILES_IN_FOLDER = [
         'AdapterInterface' => 'Adapters',
         'ContainerInterface' => 'Containers',

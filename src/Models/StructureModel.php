@@ -26,6 +26,11 @@ class StructureModel extends ModelAbstract
     public array $folders = [];
 
     /**
+     * @var FileModel[]
+     */
+    public array $files = [];
+
+    /**
      * @param string $srcName
      */
     public function __construct(string $srcName)
@@ -66,14 +71,14 @@ class StructureModel extends ModelAbstract
     }
 
     /**
-     * @param string $name
+     * @param FolderModel $folder
      *
      * @return int|false
      */
-    public function hasFolderByName(string $name): int|false
+    public function hasFolder(FolderModel $folder): int|false
     {
-        foreach ($this->folders as $key => $folder) {
-            if ($name === $folder->name) {
+        foreach ($this->folders as $key => $value) {
+            if ($folder->isEqual($value)) {
                 return $key;
             }
         }
@@ -89,7 +94,7 @@ class StructureModel extends ModelAbstract
      */
     public function addFolder(FolderModel $folder): void
     {
-        if (false !== $this->hasFolderByName($folder->name)) {
+        if (false !== $this->hasFolder($folder)) {
             throw new StructureModelException(
                 'Folder '.$folder->name.' already exist in folder list',
                 100
@@ -100,25 +105,6 @@ class StructureModel extends ModelAbstract
     }
 
     /**
-     * @param string $name
-     *
-     * @return FolderModel
-     * @throws StructureModelException
-     */
-    public function getFolder(string $name): FolderModel
-    {
-        $folderId = $this->hasFolderByName($name);
-        if (false === $folderId) {
-            throw new StructureModelException(
-                'Folder '.$name.' not exist in folder list',
-                101
-            );
-        }
-
-        return $this->folders[$folderId];
-    }
-
-    /**
      * @param FolderModel $folder
      *
      * @return void
@@ -126,7 +112,7 @@ class StructureModel extends ModelAbstract
      */
     public function removeFolder(FolderModel $folder): void
     {
-        $folderId = $this->hasFolderByName($folder->name);
+        $folderId = $this->hasFolder($folder);
         if (false === $folderId) {
             throw new StructureModelException(
                 'Folder '.$folder->name.' not exist in folder list',
@@ -134,5 +120,73 @@ class StructureModel extends ModelAbstract
             );
         }
         unset($this->folders[$folderId]);
+    }
+
+    /**
+     * @return array
+     */
+    public function getFiles(): array
+    {
+        return $this->files;
+    }
+
+    /**
+     * @param array $files
+     */
+    public function setFiles(array $files): void
+    {
+        $this->files = $files;
+    }
+
+    /**
+     * @param FileModel $file
+     *
+     * @return int|false
+     */
+    public function hasFile(FileModel $file): int|false
+    {
+        foreach ($this->files as $key => $value) {
+            if ($file->isEqual($value)) {
+                return $key;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param FileModel $file
+     *
+     * @return void
+     * @throws StructureModelException
+     */
+    public function addFile(FileModel $file): void
+    {
+        if (false !== $this->hasFile($file)) {
+            throw new StructureModelException(
+                'File '.$file->name.' already exist in file list',
+                102
+            );
+        }
+
+        $this->files[] = $file;
+    }
+
+    /**
+     * @param FileModel $file
+     *
+     * @return void
+     * @throws StructureModelException
+     */
+    public function removeFile(FileModel $file): void
+    {
+        $fileId = $this->hasFile($file);
+        if (false === $fileId) {
+            throw new StructureModelException(
+                'File '.$file->name.' not exist in file list',
+                103
+            );
+        }
+        unset($this->files[$fileId]);
     }
 }
