@@ -30,18 +30,18 @@ class StructureModelConstantes
     ];
 
     const FILES_IN_FOLDER = [
-        'AdapterInterface' => 'Adapters',
-        'ContainerInterface' => 'Containers',
-        'ExceptionAbstract' => 'Exceptions',
-        'FactoryInterface' => 'Factory',
-        'LoggerInterface' => 'Loggers',
-        'ModelAbstract' => 'Models',
-        'PresenterInterface' => 'Presenters',
-        'ResponseInterface' => 'Responses',
-        'RepositoryInterface' => 'Repository',
-        'RequestInterface' => 'Requests',
-        'ServiceInterface' => 'Services',
-        'UseCaseAbstract' => 'UseCase',
-        'ValidatorInterface' => 'Validators'
+        'AdapterInterface.php' => 'Adapters',
+        'ContainerInterface.php' => 'Containers',
+        'ExceptionAbstract.php' => 'Exceptions',
+        'FactoryInterface.php' => 'Factory',
+        'LoggerInterface.php' => 'Loggers',
+        'ModelAbstract.php' => 'Models',
+        'PresenterInterface.php' => 'Presenters',
+        'ResponseInterface.php' => 'Responses',
+        'RepositoryInterface.php' => 'Repository',
+        'RequestInterface>.php' => 'Requests',
+        'ServiceInterface.php' => 'Services',
+        'UseCaseAbstract.php' => 'UseCase',
+        'ValidatorInterface.php' => 'Validators'
     ];
 }
