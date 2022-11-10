@@ -14,7 +14,7 @@ namespace Cag\Exceptions;
  * 100 -> 'Folder '.$folder->name.' already exist in folder list'.
  * 101 -> 'Folder '.$folder->name.' not exist in folder list'.
  */
-class StructureModelException extends AbstractException
+class StructureModelException extends ExceptionAbstract
 {
 
 }

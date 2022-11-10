@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Cag\Exceptions;
 
-class ContainerException extends AbstractException
+class ContainerException extends ExceptionAbstract
 {
 
 }

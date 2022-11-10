@@ -17,7 +17,7 @@ namespace Cag\Exceptions;
  * 103 -> An undetermined error occurred during the file creation: .
  * 104 -> Delete file operation is failure.
  */
-class FileException extends AbstractException
+class FileException extends ExceptionAbstract
 {
 
 }

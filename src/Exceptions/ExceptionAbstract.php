@@ -12,7 +12,7 @@ namespace Cag\Exceptions;
 
 use Exception;
 
-abstract class AbstractException extends Exception
+abstract class ExceptionAbstract extends Exception
 {
 
 }

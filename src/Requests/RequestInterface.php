@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Cag\Requests;
 
-use Cag\Exceptions\AbstractException;
+use Cag\Exceptions\ExceptionAbstract;
 
 interface RequestInterface
 {
@@ -21,8 +21,9 @@ interface RequestInterface
 
     /**
      * @param string $param
+     *
      * @return mixed
-     * @throws AbstractException
+     * @throws ExceptionAbstract
      */
     public function getParam(string $param): mixed;
 }

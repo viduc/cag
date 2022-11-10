@@ -17,7 +17,7 @@ namespace Cag\Exceptions;
  * 103 -> An undetermined error occurred during the folder creation:.
  * 104 -> An undetermined error occurred during the folder suppression:.
  */
-class FolderException extends AbstractException
+class FolderException extends ExceptionAbstract
 {
 
 }

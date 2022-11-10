@@ -12,7 +12,7 @@ namespace Cag\Models;
 
 use Cag\Exceptions\StructureModelException;
 
-class StructureModel extends AbstractModel
+class StructureModel extends ModelAbstract
 {
     /**
      * Nom du dossier src

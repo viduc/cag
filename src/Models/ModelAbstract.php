@@ -10,16 +10,27 @@ declare(strict_types=1);
 
 namespace Cag\Models;
 
-abstract class AbstractModel
+abstract class ModelAbstract
 {
-    protected $id;
+    /**
+     * @var mixed|null
+     */
+    protected mixed $id = null;
 
-    public function getId()
+    /**
+     * @return mixed
+     */
+    public function getId(): mixed
     {
         return $this->id;
     }
 
-    public function setId($id)
+    /**
+     * @param mixed $id
+     *
+     * @return $this
+     */
+    public function setId(mixed $id)
     {
         $this->id = $id;
 

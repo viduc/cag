@@ -8,10 +8,10 @@ declare(strict_types=1);
  * Licence: GPL v3 https://opensource.org/licenses/gpl-3.0.html
  */
 
-namespace Cag\Controllers;
+namespace Cag\UseCases;
 
 use Cag\Containers\ContainerInterface;
-use Cag\Exceptions\AbstractException;
+use Cag\Exceptions\ExceptionAbstract;
 use Cag\Exceptions\ContainerException;
 use Cag\Exceptions\NotFoundException;
 use Cag\Factory\StructureModelFactory;
@@ -21,7 +21,7 @@ use Cag\Responses\CreateProjectResponse;
 use Cag\Requests\RequestInterface;
 use Cag\Services\StructureService;
 
-class CreateProject extends UseCaseAbstract
+class CreateProjectUseCase extends UseCaseAbstract
 {
     /**
      * @var StructureService
@@ -65,7 +65,7 @@ class CreateProject extends UseCaseAbstract
             );
             $this->structureService->create($model);
             $reponse->setStructureModel($model);
-        } catch (AbstractException $e) {
+        } catch (ExceptionAbstract $e) {
             $reponse->setErreur(new ErreurModel(
                 $e->getCode(),
                 $e->getMessage()

@@ -16,7 +16,7 @@ use Cag\Loggers\LoggerInterface;
 use Cag\Models\FolderModel;
 use Cag\Models\StructureModel;
 
-class StructureModelFactory extends AbstractFactory
+class StructureModelFactory implements FactoryInterface
 {
     /**
      * @var LoggerInterface

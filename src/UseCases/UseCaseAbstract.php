@@ -8,10 +8,9 @@ declare(strict_types=1);
  * Licence: GPL v3 https://opensource.org/licenses/gpl-3.0.html
  */
 
-namespace Cag\Controllers;
+namespace Cag\UseCases;
 
 use Cag\Containers\ContainerInterface;
-use Cag\Factory\DependencyInjectionAbstract;
 use Cag\Presenters\PresenterInterface;
 use Cag\Requests\RequestInterface;
 

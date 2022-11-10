@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Cag\Models;
 
-class FolderModel extends AbstractModel
+class FolderModel extends ModelAbstract
 {
     /**
      * @param string $name
@@ -47,7 +47,7 @@ class FolderModel extends AbstractModel
     }
 
     /**
-     * @return \Cag\Models\FolderModel
+     * @return FolderModel
      */
     public function getParent(): FolderModel
     {
@@ -55,7 +55,7 @@ class FolderModel extends AbstractModel
     }
 
     /**
-     * @param \Cag\Models\FolderModel $parent
+     * @param FolderModel $parent
      */
     public function setParent(FolderModel $parent): void
     {

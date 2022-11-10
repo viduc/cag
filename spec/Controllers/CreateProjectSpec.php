@@ -8,7 +8,7 @@ declare(strict_types=1);
  * Licence: GPL v3 https://opensource.org/licenses/gpl-3.0.html
  */
 
-use Cag\Controllers\CreateProject;
+use Cag\UseCases\CreateProjectUseCase;
 use Cag\Exceptions\ContainerException;
 use Cag\Exceptions\NotFoundException;
 use Cag\Factory\StructureModelFactory;
@@ -20,7 +20,7 @@ use Spec\Implentation\Loggers\Logger;
 use Spec\Implentation\Presenters\CreateProjectPresenter;
 use Spec\Implentation\Requests\CreateProjectRequest;
 
-describe('CreateProject', function () {
+describe('CreateProjectUseCase', function () {
     beforeEach(/**
      * @throws ContainerException
      * @throws NotFoundException
@@ -28,7 +28,7 @@ describe('CreateProject', function () {
         allow(Container::class)->toReceive(
             'get'
         )->with('logger')->andReturn(new Logger());
-        $this->createProject = new CreateProject(new Container());
+        $this->createProject = new CreateProjectUseCase(new Container());
     });
     describe('execute', function () {
         it(

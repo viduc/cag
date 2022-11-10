@@ -21,7 +21,8 @@
     }
   },
   "scripts": {
-    "test": "kahlan --reporter=verbose --coverage=4"
+    "test": "kahlan --reporter=verbose",
+    "coverage": "kahlan --reporter=verbose --coverage=4"
   },
   "require-dev": {
     "kahlan/kahlan": "5.*",

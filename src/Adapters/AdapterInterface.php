@@ -8,9 +8,9 @@ declare(strict_types=1);
  * Licence: GPL v3 https://opensource.org/licenses/gpl-3.0.html
  */
 
-namespace Cag\Factory;
+namespace Cag\Adapters;
 
-abstract class AbstractFactory
+interface AdapterInterface
 {
 
 }
