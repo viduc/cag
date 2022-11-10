@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Cag\Services;
 
 use Cag\Exceptions\FileException;
+use Cag\Exceptions\FolderException;
 use Cag\Validator\FileValidatorAbstract;
 
 class FileService implements ServiceInterface
@@ -37,8 +38,9 @@ class FileService implements ServiceInterface
      * @param string $name
      * @param string $contenu
      * @param bool $append
+     *
      * @return void
-     * @throws FileException
+     * @throws FileException|FolderException
      */
     public function update(
         string $name,
@@ -50,7 +52,8 @@ class FileService implements ServiceInterface
         if (false === file_put_contents(
             $name,
             $contenu,
-            LOCK_EX | $append)) {
+            LOCK_EX | $append
+        )) {
             throw new FileException(
                 "Une erreur indéterminée est survenue lors de la
                 création du fichier: ".$name,
@@ -61,7 +64,8 @@ class FileService implements ServiceInterface
 
     /**
      * @param string $name
-     * @return void
+     *
+     * @return bool
      * @throws FileException
      */
     public function delete(string $name): bool
