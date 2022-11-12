@@ -12,7 +12,24 @@ namespace Cag\Models;
 
 class FileModel extends FileSystemModel
 {
+    const TYPE_INTERFACE = 'interface';
+    const TYPE_ABSTRACT = 'abstract';
+    const TYPE_CLASS = 'class';
+    const TYPE_LIST = [self::TYPE_INTERFACE, self::TYPE_ABSTRACT];
+
+    /**
+     * @var string
+     */
     public string $type = '';
+
+    /**
+     * @param string $name
+     */
+    public function __construct(string $name)
+    {
+        parent::__construct($name);
+        $this->determinedType();
+    }
 
     /**
      * @return string
@@ -39,6 +56,14 @@ class FileModel extends FileSystemModel
     }
 
     /**
+     * @return void
+     */
+    public function setTypeAbstract(): void
+    {
+        $this->setType(self::TYPE_ABSTRACT);
+    }
+
+    /**
      * @return bool
      */
     public function isClass(): bool
@@ -47,10 +72,40 @@ class FileModel extends FileSystemModel
     }
 
     /**
+     * @return void
+     */
+    public function setTypeCLass(): void
+    {
+        $this->setType(self::TYPE_CLASS);
+    }
+
+    /**
      * @return bool
      */
     public function isInterface(): bool
     {
         return 'interface' === strtolower($this->type);
+    }
+
+    /**
+     * @return void
+     */
+    public function setTypeInterface(): void
+    {
+        $this->setType(self::TYPE_INTERFACE);
+    }
+
+    /**
+     * @return void
+     */
+    private function determinedType(): void
+    {
+        foreach (self::TYPE_LIST as $type) {
+            if (str_contains(strtolower($this->getName()), $type)) {
+                $this->setType($type);
+            } else {
+                $this->setTypeCLass();
+            }
+        }
     }
 }

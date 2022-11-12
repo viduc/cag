@@ -42,6 +42,20 @@ describe('StructureModelFactory', function () {
                     expect(false !== $model->hasFile(
                         $file
                     ))->toBeTruthy();
+                    if (str_contains($fileName, 'Interface')) {
+                        expect(
+                            true == $model->getFiles()[
+                                $model->hasFile($file)
+                            ]->isInterface()
+                        );
+                    }
+                    if (str_contains($fileName, 'Abstract')) {
+                        expect(
+                            true == $model->getFiles()[
+                            $model->hasFile($file)
+                            ]->isAbstract()
+                        );
+                    }
                 }
             }
         );

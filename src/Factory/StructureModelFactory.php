@@ -53,16 +53,22 @@ class StructureModelFactory implements FactoryInterface
         foreach (Constantes::FILES_IN_FOLDER as
              $fileName => $folderName
         ) {
+            if (!isset($folders[$folderName])) {
+                $this->logger->add(
+                    'Le dossier '.$folderName.' pour le fichier'.
+                        $fileName." n'existe pas",
+                    'warning'
+                );
+                continue;
+            }
             try {
                 $file = new FileModel($fileName);
-                if (isset($folders[$folderName])) {
-                    $file->setParent($folders[$folderName]);
-                }
+                $file->setParent($folders[$folderName]);
                 $model->addFile($file);
             } catch (StructureModelException $exception) {
                 $this->logger->add(
                     $exception->getMessage(),
-                    'info',
+                    'warning',
                     $exception->getCode()
                 );
             }
