@@ -30,6 +30,11 @@ class FileModel extends FileSystemModel
     /**
      * @var string
      */
+    public string $nameSpaceBase;
+
+    /**
+     * @var string
+     */
     public string $content;
 
     /**
@@ -39,8 +44,10 @@ class FileModel extends FileSystemModel
     public function __construct(string $name, string $nameSpace = '')
     {
         parent::__construct($name);
-        $this->nameSpace = $nameSpace;
         $this->determinedType();
+        $this->nameSpace = $nameSpace;
+        $this->nameSpaceBase = $nameSpace;
+        $this->determinedNameSpace();
     }
 
     /**
@@ -57,6 +64,18 @@ class FileModel extends FileSystemModel
     public function setNameSpace(string $nameSpace): void
     {
         $this->nameSpace = $nameSpace;
+        $this->nameSpaceBase = $nameSpace;
+        $this->determinedNameSpace($nameSpace);
+    }
+
+    /**
+     * @param FolderModel $parent
+     */
+    public function setParent(FolderModel $parent): void
+    {
+        $this->parent = $parent;
+        $this->determinedNameSpace();
+        var_dump($this->nameSpace);
     }
 
     /**
@@ -89,6 +108,7 @@ class FileModel extends FileSystemModel
     public function setType(string $type): void
     {
         $this->type = $type;
+        //$this->determinedType();
     }
 
     /**
@@ -150,5 +170,29 @@ class FileModel extends FileSystemModel
                 $this->setType($type);
             }
         }
+    }
+
+    /**
+     * @return void
+     */
+    private function determinedNameSpace(): void
+    {
+        if (null !== $this->getParent()) {
+            $this->nameSpace = $this->nameSpaceBase.$this->getParentFolderName($this->getParent());
+        }
+    }
+
+    /**
+     * @param FolderModel $model
+     *
+     * @return string
+     */
+    private function getParentFolderName(FolderModel $model): string
+    {
+        if (null !== $model->getParent()) {
+            return "\\".$model->getName().$this->getParentFolderName($model->getParent());
+        }
+
+        return "\\".$model->getName();
     }
 }

@@ -9,6 +9,7 @@ declare(strict_types=1);
  */
 
 use Cag\Factory\FileModelFactory;
+use Cag\Models\FolderModel;
 
 describe('FileModelFactory', function () {
     beforeEach(function () {
@@ -27,6 +28,21 @@ describe('FileModelFactory', function () {
                     ->isAbstract())->toBeTruthy();
                 expect($this->factory->getStandard('test')
                     ->isClass())->toBeTruthy();
+            }
+        );
+        it(
+            'should return a FIleModel with nameSpace equal Cag\Test\Test',
+            function () {
+                $folder1 = new FolderModel('Test');
+                $folder2 = new FolderModel('Test');
+                $folder2->setParent($folder1);
+                expect(
+                    $this->factory->getStandard(
+                        'test',
+                        'Cag',
+                        $folder2
+                    )->getNameSpace()
+                )->toBe('Cag\Test\Test');
             }
         );
     });
