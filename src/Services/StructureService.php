@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Cag\Services;
 
+use Cag\Constantes\StructureModelConstantes;
+use Cag\Exceptions\FileException;
 use Cag\Exceptions\FolderException;
 use Cag\Models\StructureModel;
 
@@ -36,7 +38,7 @@ class StructureService implements ServiceInterface
      * @param StructureModel $model
      *
      * @return void
-     * @throws FolderException
+     * @throws FolderException|FileException
      */
     public function create(StructureModel $model): void
     {
@@ -50,11 +52,10 @@ class StructureService implements ServiceInterface
             );
         }
         foreach ($model->getFiles() as $file) {
-            $this->fileService->create(
-                $this->folderService->getProjectPath().
+            $path = $this->folderService->getProjectPath().
                 $model->getSrcName().DS.$file->getParent()->getName().
-                DS.$file->getName()
-            );
+                DS.$file->getName();
+            $this->fileService->create($path, $file->getContent());
         }
     }
 }

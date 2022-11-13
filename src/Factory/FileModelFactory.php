@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Cag\Factory;
 
+use Cag\Constantes\StructureModelConstantes;
 use Cag\Models\FileModel;
 use Cag\Models\FolderModel;
 
@@ -22,7 +23,7 @@ class FileModelFactory extends FactoryAbstract
      *
      * @return FileModel
      */
-    public function get(
+    public function getStandard(
         string $name,
         ?string $nameSpace = '',
         ?FolderModel $folder = null
@@ -31,6 +32,16 @@ class FileModelFactory extends FactoryAbstract
         if (null !== $folder) {
             $model->setParent($folder);
         }
+
+        $model->setContent(
+            sprintf(
+                StructureModelConstantes::FILES_CONTENT,
+                $model->getNameSpace(),
+                $model->getType(),
+                str_replace('.php', '', $model->getName())
+            )
+        );
+
         return $model;
     }
 }

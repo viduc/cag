@@ -28,6 +28,11 @@ class FileModel extends FileSystemModel
     public string $nameSpace;
 
     /**
+     * @var string
+     */
+    public string $content;
+
+    /**
      * @param string $name
      * @param string $nameSpace
      */
@@ -36,6 +41,38 @@ class FileModel extends FileSystemModel
         parent::__construct($name);
         $this->nameSpace = $nameSpace;
         $this->determinedType();
+    }
+
+    /**
+     * @return string
+     */
+    public function getNameSpace(): string
+    {
+        return $this->nameSpace;
+    }
+
+    /**
+     * @param string $nameSpace
+     */
+    public function setNameSpace(string $nameSpace): void
+    {
+        $this->nameSpace = $nameSpace;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent(): string
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param string $content
+     */
+    public function setContent(string $content): void
+    {
+        $this->content = $content;
     }
 
     /**
@@ -107,11 +144,10 @@ class FileModel extends FileSystemModel
      */
     private function determinedType(): void
     {
+        $this->setTypeCLass();
         foreach (self::TYPE_LIST as $type) {
             if (str_contains(strtolower($this->getName()), $type)) {
                 $this->setType($type);
-            } else {
-                $this->setTypeCLass();
             }
         }
     }

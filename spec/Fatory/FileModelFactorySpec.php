@@ -9,7 +9,6 @@ declare(strict_types=1);
  */
 
 use Cag\Factory\FileModelFactory;
-use Cag\Models\FileModel;
 
 describe('FileModelFactory', function () {
     beforeEach(function () {
@@ -20,10 +19,14 @@ describe('FileModelFactory', function () {
 
     describe('get', function () {
         it(
-            'should return a FileModel',
+            'should return a FileModel with type contain in file name',
             function () {
-                expect($this->factory->get('test'))
-                    ->toBeAnInstanceOf(FileModel::class);
+                expect($this->factory->getStandard('testInterface')
+                    ->isInterface())->toBeTruthy();
+                expect($this->factory->getStandard('testAbstract')
+                    ->isAbstract())->toBeTruthy();
+                expect($this->factory->getStandard('test')
+                    ->isClass())->toBeTruthy();
             }
         );
     });

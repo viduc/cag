@@ -54,7 +54,7 @@ class StructureModelFactory extends FactoryAbstract
                 continue;
             }
             try {
-                $file = $fileFactory->get(
+                $file = $fileFactory->getStandard(
                     $fileName,
                     $nameSpace,
                     $folders[$folderName]

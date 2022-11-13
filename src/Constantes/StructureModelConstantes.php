@@ -44,4 +44,7 @@ class StructureModelConstantes
         'UseCaseAbstract.php' => 'UseCase',
         'ValidatorInterface.php' => 'Validators'
     ];
+
+    const FILES_CONTENT = '<?php'.PHP_EOL.PHP_EOL.'namespace %s'.PHP_EOL.
+        PHP_EOL.'%s %s'.PHP_EOL.'{'.PHP_EOL.'}'.PHP_EOL;
 }

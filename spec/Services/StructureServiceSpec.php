@@ -70,7 +70,7 @@ describe('StructureService', function () {
             'Folder testFolder must contain all sub folder in constantes
             StructureModelConstantes',
             function () {
-                $factory = new StructureModelFactory(new Logger());
+                $factory = new StructureModelFactory();
                 $this->structureService->create(
                     $factory->getStandard('folderStructure2')
                 );
@@ -84,7 +84,7 @@ describe('StructureService', function () {
             'Folders in testFolder must contain all files in constantes
             StructureModelConstantes',
             function () {
-                $factory = new StructureModelFactory(new Logger());
+                $factory = new StructureModelFactory();
                 $this->structureService->create(
                     $factory->getStandard('folderStructure3')
                 );

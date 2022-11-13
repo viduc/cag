@@ -123,7 +123,7 @@ class StructureModel extends ModelAbstract
     }
 
     /**
-     * @return array
+     * @return FileModel[]
      */
     public function getFiles(): array
     {
@@ -131,7 +131,7 @@ class StructureModel extends ModelAbstract
     }
 
     /**
-     * @param array $files
+     * @param FileModel[] $files
      */
     public function setFiles(array $files): void
     {

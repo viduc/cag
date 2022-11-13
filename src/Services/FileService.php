@@ -19,8 +19,9 @@ class FileService implements ServiceInterface
     /**
      * @param string $name
      * @param string $contenu
+     *
      * @return void
-     * @throws FileException
+     * @throws FileException|FolderException
      */
     public function create(string $name, string $contenu = ''): void
     {
