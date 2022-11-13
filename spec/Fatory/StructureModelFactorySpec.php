@@ -16,7 +16,7 @@ use Spec\Implentation\Loggers\Logger;
 
 describe('StructureModelFactory', function () {
     beforeEach(function () {
-        $this->factory = new StructureModelFactory(new Logger());
+        $this->factory = new StructureModelFactory();
     });
     afterEach(function () {
     });

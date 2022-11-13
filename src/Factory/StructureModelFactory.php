@@ -12,23 +12,12 @@ namespace Cag\Factory;
 
 use Cag\Constantes\StructureModelConstantes as Constantes;
 use Cag\Exceptions\StructureModelException;
-use Cag\Loggers\LoggerInterface;
 use Cag\Models\FileModel;
 use Cag\Models\FolderModel;
 use Cag\Models\StructureModel;
 
-class StructureModelFactory implements FactoryInterface
+class StructureModelFactory extends FactoryAbstract
 {
-    /**
-     * @var LoggerInterface
-     */
-    private LoggerInterface $logger;
-
-    public function __construct(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-    }
-
     /**
      * @param string $name
      *
@@ -43,7 +32,7 @@ class StructureModelFactory implements FactoryInterface
                 $folders[$folder] = new FolderModel($folder);
                 $model->addFolder($folders[$folder]);
             } catch (StructureModelException $exception) {
-                $this->logger->add(
+                $this->addLog(
                     $exception->getMessage(),
                     'info',
                     $exception->getCode()
@@ -54,7 +43,7 @@ class StructureModelFactory implements FactoryInterface
              $fileName => $folderName
         ) {
             if (!isset($folders[$folderName])) {
-                $this->logger->add(
+                $this->addLog(
                     'Le dossier '.$folderName.' pour le fichier'.
                         $fileName." n'existe pas",
                     'warning'
@@ -66,7 +55,7 @@ class StructureModelFactory implements FactoryInterface
                 $file->setParent($folders[$folderName]);
                 $model->addFile($file);
             } catch (StructureModelException $exception) {
-                $this->logger->add(
+                $this->addLog(
                     $exception->getMessage(),
                     'warning',
                     $exception->getCode()

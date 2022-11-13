@@ -10,11 +10,13 @@ declare(strict_types=1);
 
 namespace Cag\Loggers;
 
+use Cag\Constantes\LogConstantes;
+
 interface LoggerInterface
 {
     public function add(
         string $message,
-        string $level = 'info',
+        string $level = LogConstantes::INFO,
         ?int $code = null
     );
 }

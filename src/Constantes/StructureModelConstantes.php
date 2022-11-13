@@ -33,7 +33,7 @@ class StructureModelConstantes
         'AdapterInterface.php' => 'Adapters',
         'ContainerInterface.php' => 'Containers',
         'ExceptionAbstract.php' => 'Exceptions',
-        'FactoryInterface.php' => 'Factory',
+        'FactoryAbstract.php' => 'Factory',
         'LoggerInterface.php' => 'Loggers',
         'ModelAbstract.php' => 'Models',
         'PresenterInterface.php' => 'Presenters',

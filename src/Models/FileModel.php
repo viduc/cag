@@ -23,11 +23,18 @@ class FileModel extends FileSystemModel
     public string $type = '';
 
     /**
-     * @param string $name
+     * @var string
      */
-    public function __construct(string $name)
+    public string $nameSpace;
+
+    /**
+     * @param string $name
+     * @param string $nameSpace
+     */
+    public function __construct(string $name, string $nameSpace = '')
     {
         parent::__construct($name);
+        $this->nameSpace = $nameSpace;
         $this->determinedType();
     }
 
