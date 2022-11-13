@@ -12,7 +12,6 @@ use Cag\Constantes\StructureModelConstantes as Constantes;
 use Cag\Factory\StructureModelFactory;
 use Cag\Models\FileModel;
 use Cag\Models\FolderModel;
-use Spec\Implentation\Loggers\Logger;
 
 describe('StructureModelFactory', function () {
     beforeEach(function () {
