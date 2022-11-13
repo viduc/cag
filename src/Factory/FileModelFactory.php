@@ -15,6 +15,13 @@ use Cag\Models\FolderModel;
 
 class FileModelFactory extends FactoryAbstract
 {
+    /**
+     * @param string           $name
+     * @param string|null      $nameSpace
+     * @param FolderModel|null $folder
+     *
+     * @return FileModel
+     */
     public function get(
         string $name,
         ?string $nameSpace = '',

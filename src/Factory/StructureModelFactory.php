@@ -12,21 +12,24 @@ namespace Cag\Factory;
 
 use Cag\Constantes\StructureModelConstantes as Constantes;
 use Cag\Exceptions\StructureModelException;
-use Cag\Models\FileModel;
 use Cag\Models\FolderModel;
 use Cag\Models\StructureModel;
 
 class StructureModelFactory extends FactoryAbstract
 {
     /**
-     * @param string $name
+     * @param string      $name
+     * @param string|null $nameSpace
      *
      * @return StructureModel
      */
-    public function getStandard(string $name): StructureModel
-    {
+    public function getStandard(
+        string $name,
+        ?string $nameSpace = ''
+    ): StructureModel {
         $model = new StructureModel($name);
         $folders = [];
+        $fileFactory = new FileModelFactory($this->logger);
         foreach (Constantes::FOLDERS as $folder) {
             try {
                 $folders[$folder] = new FolderModel($folder);
@@ -51,8 +54,11 @@ class StructureModelFactory extends FactoryAbstract
                 continue;
             }
             try {
-                $file = new FileModel($fileName);
-                $file->setParent($folders[$folderName]);
+                $file = $fileFactory->get(
+                    $fileName,
+                    $nameSpace,
+                    $folders[$folderName]
+                );
                 $model->addFile($file);
             } catch (StructureModelException $exception) {
                 $this->addLog(

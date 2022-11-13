@@ -18,7 +18,7 @@ abstract class FactoryAbstract
     /**
      * @var LoggerInterface|null
      */
-    private ?LoggerInterface $logger = null;
+    protected ?LoggerInterface $logger = null;
 
     public function __construct(?LoggerInterface $logger = null)
     {
