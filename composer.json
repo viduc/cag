@@ -21,7 +21,7 @@
   },
   "scripts": {
     "test": "kahlan --reporter=verbose",
-    "coverage": "kahlan --reporter=verbose --coverage=4"
+    "coverage": "kahlan --reporter=verbose --coverage=4 --clover=clover.xml"
   },
   "require-dev": {
     "kahlan/kahlan": "5.*",
