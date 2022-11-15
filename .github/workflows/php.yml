@@ -42,7 +42,7 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
     - name: Run test suite
-      run: mkdir -p build/logs && bin/kahlan --reporter=verbose --coverage=4 --clover=build/logs/clover.xml
+      run: mkdir -p build/logs && ./vendor/bin/kahlan --reporter=verbose --coverage=4 --clover=build/logs/clover.xml
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
