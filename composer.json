@@ -1,7 +1,6 @@
 {
   "name": "viduc/cag",
   "description": "Clean Architecture Generator - outil de génération de structure pour la mise en place d'une architecture proproe",
-  "version": "0.0.1",
   "type": "library",
   "homepage": "https://viduc.github.com",
   "time": "2022-11-01",
