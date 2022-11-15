@@ -13,7 +13,6 @@ use Cag\Models\StructureModel;
 use Cag\Services\FolderService;
 use Cag\Services\StructureService;
 use Cag\Constantes\StructureModelConstantes as Constantes;
-use Spec\Implentation\Loggers\Logger;
 
 const DS = DIRECTORY_SEPARATOR;
 

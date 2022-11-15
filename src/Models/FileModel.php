@@ -75,7 +75,6 @@ class FileModel extends FileSystemModel
     {
         $this->parent = $parent;
         $this->determinedNameSpace();
-        var_dump($this->nameSpace);
     }
 
     /**

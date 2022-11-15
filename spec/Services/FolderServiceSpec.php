@@ -11,9 +11,11 @@ declare(strict_types=1);
 use Cag\Exceptions\FolderException;
 use Cag\Services\FolderService;
 
+const DS = DIRECTORY_SEPARATOR;
+
 describe('FileService', function () {
     given('public', function () {
-        return str_replace('Controller', 'public', __DIR__);
+        return str_replace('Services', 'public', __DIR__);
     });
     given('folder', function () {
         return $this->public.DIRECTORY_SEPARATOR."folderPresent";
@@ -41,9 +43,7 @@ describe('FileService', function () {
                     100
                 ));
                 $closure = function () {
-                    $this->folderService->create(
-                        DIRECTORY_SEPARATOR . "ziap" . DIRECTORY_SEPARATOR . "test"
-                    );
+                    $this->folderService->create(DS . "ziap" . DS . "test");
                 };
                 expect($closure)->toThrow(new FolderException(
                     'The target folder is invalid',
@@ -58,9 +58,7 @@ describe('FileService', function () {
                     100
                 ));
                 $closure = function () {
-                    $this->folderService->delete(
-                        DIRECTORY_SEPARATOR . "ziap" . DIRECTORY_SEPARATOR . "test"
-                    );
+                    $this->folderService->delete(DS . "ziap" . DS . "test");
                 };
                 expect($closure)->toThrow(new FolderException(
                     'The target folder is invalid',
@@ -122,8 +120,8 @@ describe('FileService', function () {
             allow($this->folderService)->toReceive('getFullPath')->andRun(
                 function () {
                     return str_replace(
-                        'spec'.DIRECTORY_SEPARATOR.'Service',
-                        'vendor'.DIRECTORY_SEPARATOR.'viduc',
+                        'spec'.DS.'Service',
+                        'vendor'.DS.'viduc',
                         __DIR__
                     );
                 }
