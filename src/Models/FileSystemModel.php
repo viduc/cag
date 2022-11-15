@@ -69,15 +69,16 @@ class FileSystemModel extends ModelAbstract
      */
     public function isEqual(ModelAbstract $model): bool
     {
-        if ($this->getName() === $model->getName()) {
-            if (null === $this->getParent() && null === $model->getParent()) {
-                return true;
-            }
-            if (null !== $this->getParent() && null !== $model->getParent() &&
-                $this->getParent()->getName()
-                === $model->getParent()->getName()) {
-                return true;
-            }
+        if ($this->getName() !== $model->getName()) {
+            return false;
+        }
+        if (null === $this->getParent() && null === $model->getParent()) {
+            return true;
+        }
+        if (null !== $this->getParent() && null !== $model->getParent() &&
+            $this->getParent()->getName()
+            === $model->getParent()->getName()) {
+            return true;
         }
 
         return false;
