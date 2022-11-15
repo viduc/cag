@@ -15,7 +15,11 @@
   "license": "GPL-3.0-or-later",
   "autoload": {
     "psr-4": {
-      "Cag\\": ["src/"],
+      "Cag\\": ["src/"]
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
       "Spec\\": ["spec"]
     }
   },
