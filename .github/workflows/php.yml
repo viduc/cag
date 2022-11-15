@@ -43,7 +43,7 @@ jobs:
       run: composer install --prefer-dist --no-progress
 
     - name: Set rigth to public folder
-      run: chmod 777 ./spec/public
+      run: ls -al && chmod 777 ./spec/public
 
     - name: Run test suite
       run: mkdir -p build/logs && ./vendor/bin/kahlan --reporter=verbose --coverage=4 --clover=build/logs/clover.xml
