@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Cag\Factory;
 
+use Cag\Constantes\LogConstantes;
 use Cag\Constantes\StructureModelConstantes as Constantes;
 use Cag\Exceptions\StructureModelException;
 use Cag\Loggers\LoggerInterface;
@@ -65,7 +66,7 @@ class StructureModelFactory extends FactoryAbstract
             } catch (StructureModelException $exception) {
                 $this->addLog(
                     $exception->getMessage(),
-                    'info',
+                    LogConstantes::INFO,
                     $exception->getCode()
                 );
             }
@@ -80,28 +81,27 @@ class StructureModelFactory extends FactoryAbstract
      */
     private function addStandardFile(array $folders, string $nameSpace): void
     {
-        foreach (Constantes::FILES_IN_FOLDER as
-                 $fileName => $folderName
-        ) {
+        foreach (Constantes::FILES_IN_FOLDER as $fileName => $folderName) {
             if (!isset($folders[$folderName])) {
                 $this->addLog(
                     'Le dossier '.$folderName.' pour le fichier'.
                     $fileName." n'existe pas",
-                    'warning'
+                    LogConstantes::WARNING
                 );
                 continue;
             }
             try {
-                $file = $this->fileFactory->getStandard(
-                    $fileName,
-                    $nameSpace,
-                    $folders[$folderName]
+                $this->sturctureModel->addFile(
+                    $this->fileFactory->getStandard(
+                        $fileName,
+                        $nameSpace,
+                        $folders[$folderName]
+                    )
                 );
-                $this->sturctureModel->addFile($file);
             } catch (StructureModelException $exception) {
                 $this->addLog(
                     $exception->getMessage(),
-                    'warning',
+                    LogConstantes::WARNING,
                     $exception->getCode()
                 );
             }
