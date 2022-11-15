@@ -42,11 +42,11 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
 
-    - name: Set rigth to public folder
-      run: ls -al && chmod 777 ./spec/public
+    - name: Create folder
+      run: mkdir -p build/logs && mkdir -p spec/public
 
     - name: Run test suite
-      run: mkdir -p build/logs && ./vendor/bin/kahlan --reporter=verbose --coverage=4 --clover=build/logs/clover.xml
+      run: ./vendor/bin/kahlan --reporter=verbose --coverage=4 --clover=build/logs/clover.xml
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
