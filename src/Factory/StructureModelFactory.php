@@ -82,7 +82,7 @@ class StructureModelFactory extends FactoryAbstract
     private function addStandardFile(array $folders, string $nameSpace): void
     {
         foreach (Constantes::FILES_IN_FOLDER as $fileName => $folderName) {
-            if (!isset($folders[$folderName])) {
+            if (isset($folders[$folderName])) {
                 try {
                     $this->sturctureModel->addFile(
                         $this->fileFactory->getStandard(
