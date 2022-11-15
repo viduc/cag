@@ -9,7 +9,7 @@ AUTEUR
 
 STATUT
 ------
-[![Software License](https://img.shields.io/badge/license-GNU%20V3-blue.svg?style=flat-square)](gpl-3.0.md)
+[![Software License](https://img.shields.io/badge/license-GPL%20V3-blue.svg?style=flat-square)](gpl-3.0.md)
 [![Maintainability](https://api.codeclimate.com/v1/badges/b2d03518588df2109640/maintainability)](https://codeclimate.com/github/viduc/cag/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/b2d03518588df2109640/test_coverage)](https://codeclimate.com/github/viduc/cag/test_coverage)
 
