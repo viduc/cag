@@ -47,7 +47,8 @@ jobs:
 
     - name: Run test suite
       run: ./vendor/bin/kahlan --reporter=verbose --coverage=4 --clover=build/logs/clover.xml
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
 
-     
+    - name: Publish code coverage
+      uses: paambaati/codeclimate-action@v3.2.0
+      env:
+        CC_TEST_REPORTER_ID: 82e286a808716fef6218819da09cb6ab4c910bb7b1550bea1e748502c02504f1
