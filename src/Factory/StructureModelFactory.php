@@ -82,29 +82,28 @@ class StructureModelFactory extends FactoryAbstract
     private function addStandardFile(array $folders, string $nameSpace): void
     {
         foreach (Constantes::FILES_IN_FOLDER as $fileName => $folderName) {
-            if (isset($folders[$folderName])) {
-                try {
-                    $this->sturctureModel->addFile(
-                        $this->fileFactory->getStandard(
-                            $fileName,
-                            $nameSpace,
-                            $folders[$folderName]
-                        )
-                    );
-                } catch (StructureModelException $exception) {
-                    $this->addLog(
-                        $exception->getMessage(),
-                        LogConstantes::WARNING,
-                        $exception->getCode()
-                    );
-                }
+            if (!isset($folders[$folderName])) {
+                $this->addLog(
+                    'Le dossier '.$folderName.' pour le fichier'.
+                    $fileName." n'existe pas",
+                    LogConstantes::WARNING
+                );
                 continue;
             }
-            $this->addLog(
-                'Le dossier '.$folderName.' pour le fichier'.
-                $fileName." n'existe pas",
-                LogConstantes::WARNING
-            );
+            try {
+                $file = $this->fileFactory->getStandard(
+                    $fileName,
+                    $nameSpace,
+                    $folders[$folderName]
+                );
+                $this->sturctureModel->addFile($file);
+            } catch (StructureModelException $exception) {
+                $this->addLog(
+                    $exception->getMessage(),
+                    LogConstantes::WARNING,
+                    $exception->getCode()
+                );
+            }
         }
     }
 }
