@@ -90,12 +90,12 @@ class StructureModelFactory extends FactoryAbstract
                 );
                 continue;
             }
+            $file = $this->fileFactory->getStandard(
+                $fileName,
+                $nameSpace,
+                $folders[$folderName]
+            );
             try {
-                $file = $this->fileFactory->getStandard(
-                    $fileName,
-                    $nameSpace,
-                    $folders[$folderName]
-                );
                 $this->sturctureModel->addFile($file);
             } catch (StructureModelException $exception) {
                 $this->addLog(
