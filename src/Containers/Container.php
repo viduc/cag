@@ -27,6 +27,8 @@ class Container implements ContainerInterface
      */
     private ?ReflectionClass $reflection = null;
 
+    private array $params = [];
+
     public function __construct(ContainerInterface $external)
     {
         $this->extrenalContainer = $external;
@@ -45,7 +47,7 @@ class Container implements ContainerInterface
             }
 
             return $this->reflection->newInstanceArgs(
-                $this->instanciateDependencies()
+                $this->instantiateDependencies()
             );
         }
         throw new NotFoundException(
@@ -59,7 +61,7 @@ class Container implements ContainerInterface
      * @throws ReflectionException
      * @throws ContainerException
      */
-    private function instanciateDependencies(): array
+    private function instantiateDependencies(): array
     {
         $dependencies = [];
         if (null !== $this->reflection &&
@@ -69,13 +71,23 @@ class Container implements ContainerInterface
                  as $param
             ) {
                 $type = $param->getType();
-                if (!$type->isBuiltin()) {
-                    $dependencies[] = $this->get((string) $type);
-                }
+                $dependencies[] = !$type->isBuiltin() ?
+                    $this->get((string) $type):
+                    $this->getBuiltinParameter($param->getName());
             }
         }
 
         return $dependencies;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return mixed
+     */
+    private function getBuiltinParameter(string $name): mixed
+    {
+        return $this->params[$name] ?? null;
     }
 
     /**
@@ -92,5 +104,15 @@ class Container implements ContainerInterface
         } catch (ReflectionException $e) {
             return $this->extrenalContainer->has($id);
         }
+    }
+
+    /**
+     * @param array $params
+     *
+     * @return void
+     */
+    public function addParams(array $params): void
+    {
+        $this->params = array_merge($this->params, $params);
     }
 }
