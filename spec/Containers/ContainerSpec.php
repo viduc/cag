@@ -9,9 +9,12 @@ declare(strict_types=1);
  */
 
 use Cag\Containers\Container;
+use Cag\Exceptions\NotFoundException;
+use Cag\Loggers\LoggerInterface;
 use Cag\Services\ComposerService;
 use Cag\Services\FileService;
-use Spec\Implentation\Containers\Container as externalCntainer;
+use Cag\Services\ServiceInterface;
+use Spec\Implentation\Containers\Container as externalContainer;
 
 describe('Container', function () {
     given('public', function () {
@@ -21,7 +24,7 @@ describe('Container', function () {
         return $this->public.DIRECTORY_SEPARATOR."composer.json";
     });
     beforeEach(function () {
-        $this->container = new Container(new externalCntainer());
+        $this->container = new Container(new externalContainer());
         $content = json_encode(
             array("name" => 'viduc/cag'),
             JSON_UNESCAPED_SLASHES
@@ -49,6 +52,24 @@ describe('Container', function () {
                 $this->container->addParams(['composerFile' => $this->file]);
                 $class = $this->container->get(ComposerService::class);
                 expect($class)->toBeAnInstanceOf(ComposerService::class);
+            }
+        );
+        it(
+            'should return an instanced LoggerInterface class from
+                external container',
+            function () {
+                $class = $this->container->get(LoggerInterface::class);
+                expect($class)->toBeAnInstanceOf(LoggerInterface::class);
+            }
+        );
+        it(
+            'should return an NotFoundException cause container dont 
+            find implementation',
+            function () {
+                $closure = function () {
+                    $this->container->get(ServiceInterface::class);
+                };
+                expect($closure)->toThrow(new NotFoundException());
             }
         );
     });

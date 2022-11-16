@@ -11,7 +11,6 @@ declare(strict_types=1);
 use Cag\Exceptions\FileException;
 use Cag\Exceptions\FolderException;
 use Cag\Services\ComposerService;
-use Cag\Services\FileService;
 
 describe('ComposerService', function () {
     given('public', function () {
