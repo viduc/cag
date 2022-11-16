@@ -10,26 +10,13 @@ declare(strict_types=1);
 
 namespace Spec\Implentation\Containers;
 
-use Cag\Adapters\FileServiceInterface;
 use Cag\Containers\ContainerInterface;
-use Cag\Exceptions\ContainerException;
 use Cag\Exceptions\NotFoundException;
-use Spec\Implentation\Service\FileServiceImp;
 
 class Container implements ContainerInterface
 {
-    private FileServiceInterface $file;
-
-    public function get(string $id)
+    public function get(string $id): mixed
     {
-        if ($this->has($id)) {
-            if (null === $this->$id) {
-                $this->instancierService($id);
-            }
-
-            return $this->$id;
-        }
-
         throw new NotFoundException(
             "No entry found for ".$id." indenntifier"
         );
@@ -42,16 +29,5 @@ class Container implements ContainerInterface
 
     private function instancierService(string $service): void
     {
-        try {
-            switch (strtolower($service)) {
-                case 'file':
-                    $this->file = new FileServiceImp();
-                    break;
-            }
-        } catch (\Exception $exception) {
-            throw new ContainerException(
-                'Error when trying to load '.$service.' class'
-            );
-        }
     }
 }

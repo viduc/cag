@@ -28,7 +28,7 @@ describe('ComposerService', function () {
         $content = json_encode(
             array("name" => 'viduc/cag'),
             JSON_UNESCAPED_SLASHES
-        );var_dump(__DIR__);
+        );
         file_put_contents($this->file, $content);
         $this->composerService = new ComposerService($this->file);
     });

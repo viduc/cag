@@ -30,6 +30,7 @@ class StructureService implements ServiceInterface
 
     public function __construct()
     {
+        //TODO replace with container
         $this->folderService = new FolderService();
         $this->fileService = new FileService();
     }

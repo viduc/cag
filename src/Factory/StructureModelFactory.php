@@ -32,7 +32,7 @@ class StructureModelFactory extends FactoryAbstract
     public function __construct(?LoggerInterface $logger = null)
     {
         parent::__construct($logger);
-        $this->fileFactory = new FileModelFactory($logger);
+        $this->fileFactory = new FileModelFactory($logger);//TODO use container
     }
     /**
      * @param string      $name
