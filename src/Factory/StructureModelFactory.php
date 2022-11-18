@@ -12,6 +12,8 @@ namespace Cag\Factory;
 
 use Cag\Constantes\LogConstantes;
 use Cag\Constantes\StructureModelConstantes as Constantes;
+use Cag\Exceptions\ContainerException;
+use Cag\Exceptions\NotFoundException;
 use Cag\Exceptions\StructureModelException;
 use Cag\Models\FolderModel;
 use Cag\Models\StructureModel;
@@ -44,7 +46,7 @@ class StructureModelFactory extends FactoryAbstract
         string $name,
         ?string $nameSpace = ''
     ): StructureModel {
-        $this->sturctureModel = new StructureModel($name); //TODO mettre une factory ici
+        $this->sturctureModel = new StructureModel($name);
         $this->nameSpace = $nameSpace;
         $this->addStandardFolder();
         $this->addStandardFile();
@@ -53,15 +55,17 @@ class StructureModelFactory extends FactoryAbstract
     }
 
     /**
-     * @param array $folders
-     *
      * @return void
+     * @throws ContainerException
+     * @throws NotFoundException
      */
     private function addStandardFolder(): void
     {
         foreach (Constantes::FOLDERS as $folder) {
             try {
-                $this->folders[$folder] = new FolderModel($folder);
+                $this->folders[$folder] = $this->container()->get(
+                    FolderModelFactory::class
+                )->getStandard($folder);
                 $this->sturctureModel->addFolder($this->folders[$folder]);
             } catch (StructureModelException $exception) {
                 $this->addLog(
