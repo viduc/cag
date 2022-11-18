@@ -12,10 +12,7 @@ namespace Cag\Factory;
 
 use Cag\Constantes\LogConstantes;
 use Cag\Constantes\StructureModelConstantes as Constantes;
-use Cag\Exceptions\ContainerException;
-use Cag\Exceptions\NotFoundException;
 use Cag\Exceptions\StructureModelException;
-use Cag\Loggers\LoggerInterface;
 use Cag\Models\FolderModel;
 use Cag\Models\StructureModel;
 use Exception;
@@ -28,6 +25,16 @@ class StructureModelFactory extends FactoryAbstract
     private StructureModel $sturctureModel;
 
     /**
+     * @var string
+     */
+    private string $nameSpace = '';
+
+    /**
+     * @var FolderModel[]
+     */
+    private array $folders = [];
+
+    /**
      * @param string      $name
      * @param string|null $nameSpace
      *
@@ -37,10 +44,10 @@ class StructureModelFactory extends FactoryAbstract
         string $name,
         ?string $nameSpace = ''
     ): StructureModel {
-        $this->sturctureModel = new StructureModel($name);
-        $folders = [];
-        $this->addStandardFolder($folders);
-        $this->addStandardFile($folders, $nameSpace);
+        $this->sturctureModel = new StructureModel($name); //TODO mettre une factory ici
+        $this->nameSpace = $nameSpace;
+        $this->addStandardFolder();
+        $this->addStandardFile();
 
         return $this->sturctureModel;
     }
@@ -50,12 +57,12 @@ class StructureModelFactory extends FactoryAbstract
      *
      * @return void
      */
-    private function addStandardFolder(array &$folders): void
+    private function addStandardFolder(): void
     {
         foreach (Constantes::FOLDERS as $folder) {
             try {
-                $folders[$folder] = new FolderModel($folder);
-                $this->sturctureModel->addFolder($folders[$folder]);
+                $this->folders[$folder] = new FolderModel($folder);
+                $this->sturctureModel->addFolder($this->folders[$folder]);
             } catch (StructureModelException $exception) {
                 $this->addLog(
                     $exception->getMessage(),
@@ -67,15 +74,12 @@ class StructureModelFactory extends FactoryAbstract
     }
 
     /**
-     * @param array  $folders
-     * @param string $nameSpace
-     *
      * @return void
      */
-    private function addStandardFile(array $folders, string $nameSpace): void
+    private function addStandardFile(): void
     {
         foreach (Constantes::FILES_IN_FOLDER as $fileName => $folderName) {
-            if (!isset($folders[$folderName])) {
+            if (!isset($this->folders[$folderName])) {
                 $this->addLog(
                     'Le dossier '.$folderName.' pour le fichier'.
                     $fileName." n'existe pas",
@@ -83,22 +87,30 @@ class StructureModelFactory extends FactoryAbstract
                 );
                 continue;
             }
-            try {
-                $file = $this->container()->get(
+            $this->getStandardFile($fileName, $this->folders[$folderName]);
+        }
+    }
+
+    /**
+     * @param string      $fileName
+     * @param FolderModel $folder
+     *
+     * @return void
+     */
+    private function getStandardFile(string $fileName, FolderModel $folder): void
+    {
+        try {
+            $this->sturctureModel->addFile(
+                $this->container()->get(
                     FileModelFactory::class
-                )->getStandard(
-                    $fileName,
-                    $nameSpace,
-                    $folders[$folderName]
-                );
-                $this->sturctureModel->addFile($file);
-            } catch (Exception $exception) {
-                $this->addLog(
-                    $exception->getMessage(),
-                    LogConstantes::WARNING,
-                    $exception->getCode()
-                );
-            }
+                )->getStandard($fileName, $this->nameSpace, $folder)
+            );
+        } catch (Exception $exception) {
+            $this->addLog(
+                $exception->getMessage(),
+                LogConstantes::WARNING,
+                $exception->getCode()
+            );
         }
     }
 }
