@@ -39,7 +39,7 @@ describe('Container', function () {
 
     describe('get', function () {
         it(
-            'should return an instanced FileServiceclass',
+            'should return an instanced FileService class',
             function () {
                 $class = $this->container->get(FileService::class);
                 expect($class)->toBeAnInstanceOf(FileService::class);

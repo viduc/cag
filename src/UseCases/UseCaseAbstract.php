@@ -10,34 +10,12 @@ declare(strict_types=1);
 
 namespace Cag\UseCases;
 
-use Cag\Containers\ContainerInterface;
+use Cag\Containers\ContainerAbstract;
 use Cag\Presenters\PresenterInterface;
 use Cag\Requests\RequestInterface;
 
-abstract class UseCaseAbstract
+abstract class UseCaseAbstract extends ContainerAbstract
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected ContainerInterface $container;
-
-    /**
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
-
-    /**
-     * @param ContainerInterface $container
-     * @return void
-     */
-    public function setContainer(ContainerInterface $container): void
-    {
-        $this->container = $container;
-    }
-
     /**
      * @param RequestInterface   $requete
      * @param PresenterInterface $presenter

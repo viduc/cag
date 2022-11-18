@@ -12,7 +12,7 @@ namespace Cag\Services;
 
 use Cag\Exceptions\FileException;
 use Cag\Exceptions\FolderException;
-use Cag\Validator\FileValidatorAbstract;
+use Cag\Validator\FileValidator;
 
 class ComposerService implements ServiceInterface
 {
@@ -34,7 +34,7 @@ class ComposerService implements ServiceInterface
      */
     public function __construct(string $composerFile)
     {
-        FileValidatorAbstract::checkFile($composerFile, false);
+        FileValidator::checkFile($composerFile, false);
         $this->composerFile = $composerFile;
         $this->loadComposer();
     }

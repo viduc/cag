@@ -28,7 +28,7 @@ class Container implements ContainerInterface
             return new Logger();
         }
         throw new NotFoundException(
-            "No entry found for ".$id." indenntifier"
+            "No entry found for ".$id." indentifier"
         );
     }
 

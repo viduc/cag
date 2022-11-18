@@ -25,9 +25,6 @@ describe('CreateProjectUseCase', function () {
      * @throws ContainerException
      * @throws NotFoundException
      */ function () {
-        allow(Container::class)->toReceive(
-            'get'
-        )->with('logger')->andReturn(new Logger());
         $this->createProject = new CreateProjectUseCase(new Container());
     });
     describe('execute', function () {

@@ -10,11 +10,13 @@ declare(strict_types=1);
 
 namespace Cag\UseCases;
 
+use Cag\Containers\Container;
 use Cag\Containers\ContainerInterface;
 use Cag\Exceptions\ExceptionAbstract;
 use Cag\Exceptions\ContainerException;
 use Cag\Exceptions\NotFoundException;
 use Cag\Factory\StructureModelFactory;
+use Cag\Loggers\LoggerInterface;
 use Cag\Models\ErreurModel;
 use Cag\Presenters\PresenterInterface;
 use Cag\Responses\CreateProjectResponse;
@@ -41,11 +43,11 @@ class CreateProjectUseCase extends UseCaseAbstract
      */
     public function __construct(ContainerInterface $container)
     {
-        parent::__construct($container);
-        $this->structureService = new StructureService();
-        $this->factory = new StructureModelFactory(
-            $this->container->get('logger')
+        parent::__construct(new Container($container));
+        $this->structureService = $this->container()->get(
+            StructureService::class
         );
+        $this->factory = $this->container()->get(StructureModelFactory::class);
     }
 
     /**

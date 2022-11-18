@@ -11,9 +11,9 @@ declare(strict_types=1);
 namespace Cag\Services;
 
 use Cag\Exceptions\FolderException;
-use Cag\Validator\FolderValidatorAbstract;
+use Cag\Validator\FolderValidator;
 
-class FolderService implements ServiceInterface
+class FolderService extends ServiceAbstract
 {
     /**
      * @param string $name
@@ -23,7 +23,7 @@ class FolderService implements ServiceInterface
      */
     public function create(string $name): void
     {
-        FolderValidatorAbstract::checkFile($name);
+        FolderValidator::checkFile($name);
         if (false === mkdir($name)) {
             throw new FolderException(
                 "An undetermined error occurred during the 
@@ -41,7 +41,7 @@ class FolderService implements ServiceInterface
      */
     public function delete(string $name): void
     {
-        FolderValidatorAbstract::checkFile($name, false);
+        FolderValidator::checkFile($name, false);
         if (!is_dir($name)) {
             throw new FolderException(
                 "The target folder is invalid",

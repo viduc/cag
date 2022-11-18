@@ -17,10 +17,12 @@ use ReflectionException;
 
 class Container implements ContainerInterface
 {
+    const CONTAINER_NAME = 'ContainerInterface';
+
     /**
-     * @var ContainerInterface
+     * @var ?ContainerInterface
      */
-    private ContainerInterface $extrenalContainer;
+    private ?ContainerInterface $extrenalContainer;
 
     /**
      * @var ReflectionClass|null
@@ -29,7 +31,7 @@ class Container implements ContainerInterface
 
     private array $params = [];
 
-    public function __construct(ContainerInterface $external)
+    public function __construct(?ContainerInterface $external = null)
     {
         $this->extrenalContainer = $external;
     }
@@ -40,10 +42,14 @@ class Container implements ContainerInterface
      */
     public function get(string $id): mixed
     {
+        $id = str_replace('?', '', $id);
         if ($this->has($id)) {
             $this->reflection = new ReflectionClass($id);
             if ($this->reflection->isInterface()) {
-                return $this->extrenalContainer->get($id);
+                return str_contains(
+                    $this->reflection->getName(),
+                    self::CONTAINER_NAME
+                ) ? $this: $this->extrenalContainer->get($id);
             }
 
             return $this->reflection->newInstanceArgs(
@@ -98,11 +104,14 @@ class Container implements ContainerInterface
         try {
             $reflection = new ReflectionClass($id);
             if ($reflection->isInterface()) {
-                return $this->extrenalContainer->has($id);
+                return str_contains($id, self::CONTAINER_NAME)
+                    || (null !== $this->extrenalContainer
+                    && $this->extrenalContainer->has($id));
             }
             return $reflection->isInstantiable();
         } catch (ReflectionException $e) {
-            return $this->extrenalContainer->has($id);
+            return null !== $this->extrenalContainer
+                && $this->extrenalContainer->has($id);
         }
     }
 

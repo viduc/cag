@@ -13,7 +13,7 @@ namespace Cag\Responses;
 use Cag\Models\ErreurModel;
 use Cag\Models\StructureModel;
 
-class CreateProjectResponse implements ResponseInterface
+class CreateProjectResponse extends ResponseAbstract
 {
     private ErreurModel $erreur;
 

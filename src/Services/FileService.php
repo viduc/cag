@@ -12,9 +12,9 @@ namespace Cag\Services;
 
 use Cag\Exceptions\FileException;
 use Cag\Exceptions\FolderException;
-use Cag\Validator\FileValidatorAbstract;
+use Cag\Validator\FileValidator;
 
-class FileService implements ServiceInterface
+class FileService extends ServiceAbstract
 {
     /**
      * @param string $name
@@ -25,7 +25,7 @@ class FileService implements ServiceInterface
      */
     public function create(string $name, string $contenu = ''): void
     {
-        FileValidatorAbstract::checkFile($name);
+        FileValidator::checkFile($name);
         if (false === file_put_contents($name, $contenu, LOCK_EX)) {
             throw new FileException(
                 "An undetermined error occurred during the
@@ -48,7 +48,7 @@ class FileService implements ServiceInterface
         string $contenu = '',
         bool $append = false
     ): void {
-        FileValidatorAbstract::checkFile($name, false);
+        FileValidator::checkFile($name, false);
         $append = $append ? FILE_APPEND : null;
         if (false === file_put_contents(
             $name,

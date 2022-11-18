@@ -12,28 +12,21 @@ namespace Cag\Factory;
 
 use Cag\Constantes\LogConstantes;
 use Cag\Constantes\StructureModelConstantes as Constantes;
+use Cag\Exceptions\ContainerException;
+use Cag\Exceptions\NotFoundException;
 use Cag\Exceptions\StructureModelException;
 use Cag\Loggers\LoggerInterface;
 use Cag\Models\FolderModel;
 use Cag\Models\StructureModel;
+use Exception;
 
 class StructureModelFactory extends FactoryAbstract
 {
-    /**
-     * @var FileModelFactory
-     */
-    private FileModelFactory $fileFactory;
-
     /**
      * @var StructureModel
      */
     private StructureModel $sturctureModel;
 
-    public function __construct(?LoggerInterface $logger = null)
-    {
-        parent::__construct($logger);
-        $this->fileFactory = new FileModelFactory($logger);//TODO use container
-    }
     /**
      * @param string      $name
      * @param string|null $nameSpace
@@ -90,14 +83,16 @@ class StructureModelFactory extends FactoryAbstract
                 );
                 continue;
             }
-            $file = $this->fileFactory->getStandard(
-                $fileName,
-                $nameSpace,
-                $folders[$folderName]
-            );
             try {
+                $file = $this->container()->get(
+                    FileModelFactory::class
+                )->getStandard(
+                    $fileName,
+                    $nameSpace,
+                    $folders[$folderName]
+                );
                 $this->sturctureModel->addFile($file);
-            } catch (StructureModelException $exception) {
+            } catch (Exception $exception) {
                 $this->addLog(
                     $exception->getMessage(),
                     LogConstantes::WARNING,

@@ -10,21 +10,13 @@ declare(strict_types=1);
 
 namespace Cag\Factory;
 
-use Cag\Loggers\LoggerInterface;
+use Cag\Containers\ContainerAbstract;
 use Cag\Constantes\LogConstantes;
+use Cag\Exceptions\ContainerException;
+use Cag\Exceptions\NotFoundException;
 
-abstract class FactoryAbstract
+abstract class FactoryAbstract extends ContainerAbstract
 {
-    /**
-     * @var LoggerInterface|null
-     */
-    protected ?LoggerInterface $logger = null;
-
-    public function __construct(?LoggerInterface $logger = null)
-    {
-        $this->logger = $logger;
-    }
-
     /**
      * @param string $message
      * @param string $level
@@ -36,7 +28,12 @@ abstract class FactoryAbstract
         string $message,
         string $level = LogConstantes::INFO,
         int $code = 0
-    ) {
-        $this->logger?->add($message, $level, $code);
+    ): void {
+        try {
+            $this->container()->get('Logger')?->add($message, $level, $code);
+        } catch (NotFoundException|ContainerException) {
+            echo "No Logger found";
+        }
+
     }
 }
