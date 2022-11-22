@@ -8,9 +8,10 @@ declare(strict_types=1);
  * Licence: GPL v3 https://opensource.org/licenses/gpl-3.0.html
  */
 
-namespace Cag\Factory;
+namespace Cag\Factory\Model;
 
 use Cag\Constantes\StructureModelConstantes;
+use Cag\Factory\FactoryAbstract;
 use Cag\Models\FileModel;
 use Cag\Models\FolderModel;
 

@@ -9,7 +9,7 @@ declare(strict_types=1);
  */
 
 use Cag\Constantes\StructureModelConstantes as Constantes;
-use Cag\Factory\StructureModelFactory;
+use Cag\Factory\Model\StructureModelFactory;
 use Cag\Models\FileModel;
 use Cag\Models\FolderModel;
 

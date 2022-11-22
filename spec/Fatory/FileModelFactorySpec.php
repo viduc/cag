@@ -8,7 +8,7 @@ declare(strict_types=1);
  * Licence: GPL v3 https://opensource.org/licenses/gpl-3.0.html
  */
 
-use Cag\Factory\FileModelFactory;
+use Cag\Factory\Model\FileModelFactory;
 use Cag\Models\FolderModel;
 
 describe('FileModelFactory', function () {

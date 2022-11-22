@@ -8,14 +8,14 @@ declare(strict_types=1);
  * Licence: GPL v3 https://opensource.org/licenses/gpl-3.0.html
  */
 
-use Cag\Services\ComposerService;
-use Cag\UseCases\CreateProjectUseCase;
 use Cag\Exceptions\ContainerException;
 use Cag\Exceptions\NotFoundException;
-use Cag\Factory\StructureModelFactory;
+use Cag\Factory\Model\StructureModelFactory;
 use Cag\Models\StructureModel;
 use Cag\Presenters\PresenterInterface;
+use Cag\Services\ComposerService;
 use Cag\Services\StructureService;
+use Cag\UseCases\CreateProjectUseCase;
 use Spec\Implentation\Containers\Container;
 use Spec\Implentation\Presenters\CreateProjectPresenter;
 use Spec\Implentation\Requests\CreateProjectRequest;

@@ -8,11 +8,11 @@ declare(strict_types=1);
  * Licence: GPL v3 https://opensource.org/licenses/gpl-3.0.html
  */
 
-use Cag\Factory\StructureModelFactory;
+use Cag\Constantes\StructureModelConstantes as Constantes;
+use Cag\Factory\Model\StructureModelFactory;
 use Cag\Models\StructureModel;
 use Cag\Services\FolderService;
 use Cag\Services\StructureService;
-use Cag\Constantes\StructureModelConstantes as Constantes;
 
 const DS = DIRECTORY_SEPARATOR;
 

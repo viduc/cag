@@ -13,14 +13,14 @@ namespace Cag\UseCases;
 use Cag\Constantes\LogConstantes;
 use Cag\Containers\Container;
 use Cag\Containers\ContainerInterface;
-use Cag\Exceptions\ExceptionAbstract;
 use Cag\Exceptions\ContainerException;
+use Cag\Exceptions\ExceptionAbstract;
 use Cag\Exceptions\NotFoundException;
-use Cag\Factory\StructureModelFactory;
+use Cag\Factory\Model\StructureModelFactory;
+use Cag\Factory\Response\CreateProjectResponseFactory;
 use Cag\Loggers\LoggerInterface;
 use Cag\Models\ErreurModel;
 use Cag\Presenters\PresenterInterface;
-use Cag\Responses\CreateProjectResponse;
 use Cag\Requests\RequestInterface;
 use Cag\Services\ComposerService;
 use Cag\Services\StructureService;
@@ -38,9 +38,11 @@ class CreateProjectUseCase extends UseCaseAbstract
     private ComposerService $composerService;
 
     /**
-     * @var StructureModelFactory
+     * @var \Cag\Factory\Model\StructureModelFactory
      */
-    private StructureModelFactory $factory;
+    private StructureModelFactory $structureModelFactory;
+
+    private CreateProjectResponseFactory $createProjectResponseFactory;
 
     /**
      * @var RequestInterface
@@ -68,7 +70,12 @@ class CreateProjectUseCase extends UseCaseAbstract
         $this->composerService = $this->container()->get(
             ComposerService::class
         );
-        $this->factory = $this->container()->get(StructureModelFactory::class);
+        $this->structureModelFactory = $this->container()->get(
+            StructureModelFactory::class
+        );
+        $this->createProjectResponseFactory = $this->container()->get(
+            CreateProjectResponseFactory::class
+        );
         $this->logger = $this->container()->get(LoggerInterface::class);
     }
 
@@ -83,9 +90,9 @@ class CreateProjectUseCase extends UseCaseAbstract
         PresenterInterface $presenter
     ): PresenterInterface {
         $this->request = $request;
-        $reponse = new CreateProjectResponse();
+        $reponse = $this->createProjectResponseFactory->createResponse();
         try {
-            $model = $this->factory->getStandard(
+            $model = $this->structureModelFactory->getStandard(
                 $this->getParam('name')
             );
             $this->structureService->create($model);

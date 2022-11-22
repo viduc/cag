@@ -8,13 +8,14 @@ declare(strict_types=1);
  * Licence: GPL v3 https://opensource.org/licenses/gpl-3.0.html
  */
 
-namespace Cag\Factory;
+namespace Cag\Factory\Model;
 
 use Cag\Constantes\LogConstantes;
 use Cag\Constantes\StructureModelConstantes as Constantes;
 use Cag\Exceptions\ContainerException;
 use Cag\Exceptions\NotFoundException;
 use Cag\Exceptions\StructureModelException;
+use Cag\Factory\FactoryAbstract;
 use Cag\Models\FolderModel;
 use Cag\Models\StructureModel;
 use Exception;
