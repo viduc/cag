@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Cag\UseCases;
 
+use Cag\Constantes\LogConstantes;
 use Cag\Containers\Container;
 use Cag\Containers\ContainerInterface;
 use Cag\Exceptions\ExceptionAbstract;
@@ -21,6 +22,7 @@ use Cag\Models\ErreurModel;
 use Cag\Presenters\PresenterInterface;
 use Cag\Responses\CreateProjectResponse;
 use Cag\Requests\RequestInterface;
+use Cag\Services\ComposerService;
 use Cag\Services\StructureService;
 
 class CreateProjectUseCase extends UseCaseAbstract
@@ -31,9 +33,25 @@ class CreateProjectUseCase extends UseCaseAbstract
     private StructureService $structureService;
 
     /**
+     * @var ComposerService
+     */
+    private ComposerService $composerService;
+
+    /**
      * @var StructureModelFactory
      */
     private StructureModelFactory $factory;
+
+    /**
+     * @var RequestInterface
+     */
+    private RequestInterface $request;
+
+    /**
+     * @var LoggerInterface
+     */
+    private LoggerInterface $logger;
+
 
     /**
      * @param ContainerInterface $container
@@ -47,7 +65,11 @@ class CreateProjectUseCase extends UseCaseAbstract
         $this->structureService = $this->container()->get(
             StructureService::class
         );
+        $this->composerService = $this->container()->get(
+            ComposerService::class
+        );
         $this->factory = $this->container()->get(StructureModelFactory::class);
+        $this->logger = $this->container()->get(LoggerInterface::class);
     }
 
     /**
@@ -60,12 +82,19 @@ class CreateProjectUseCase extends UseCaseAbstract
         RequestInterface   $request,
         PresenterInterface $presenter
     ): PresenterInterface {
+        $this->request = $request;
         $reponse = new CreateProjectResponse();
         try {
             $model = $this->factory->getStandard(
-                $request->getParam('name')
+                $this->getParam('name')
             );
             $this->structureService->create($model);
+            if ($this->getParam('composer') === 'true') {
+                $this->composerService->addAutoload(
+                    $this->getParam('nameSpace').'\\',
+                    [$this->getParam('nameSpacePath')]
+                );
+            }
             $reponse->setStructureModel($model);
         } catch (ExceptionAbstract $e) {
             $reponse->setErreur(new ErreurModel(
@@ -76,5 +105,33 @@ class CreateProjectUseCase extends UseCaseAbstract
         $presenter->presente($reponse);
 
         return $presenter;
+    }
+
+    /**
+     * @param string $param
+     *
+     * @return string
+     */
+    private function getParam(string $param): string
+    {
+        try {
+            $value = $this->request->getParam($param) ?? '';
+        } catch (ExceptionAbstract $e) {
+            $this->logger->add(
+                "Param ".$param." not found in request",
+                LogConstantes::WARNING
+            );
+            $value = '';
+        }
+        if ('' === $value) {
+            if ($param === 'name') {
+                $value = 'project';
+            }
+            if ($param === 'composer') {
+                $value = 'true';
+            }
+        }
+
+        return $value;
     }
 }

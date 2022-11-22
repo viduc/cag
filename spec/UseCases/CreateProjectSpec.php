@@ -8,6 +8,7 @@ declare(strict_types=1);
  * Licence: GPL v3 https://opensource.org/licenses/gpl-3.0.html
  */
 
+use Cag\Services\ComposerService;
 use Cag\UseCases\CreateProjectUseCase;
 use Cag\Exceptions\ContainerException;
 use Cag\Exceptions\NotFoundException;
@@ -16,7 +17,6 @@ use Cag\Models\StructureModel;
 use Cag\Presenters\PresenterInterface;
 use Cag\Services\StructureService;
 use Spec\Implentation\Containers\Container;
-use Spec\Implentation\Loggers\Logger;
 use Spec\Implentation\Presenters\CreateProjectPresenter;
 use Spec\Implentation\Requests\CreateProjectRequest;
 
@@ -37,7 +37,9 @@ describe('CreateProjectUseCase', function () {
                 allow(StructureService::class)->toReceive(
                     'create'
                 )->andReturn(null);
-
+                allow(ComposerService::class)->toReceive(
+                    'addAutoload'
+                )->andReturn(null);
                 expect(
                     $this->createProject->execute(
                         new CreateProjectRequest(

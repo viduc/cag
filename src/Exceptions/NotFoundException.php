@@ -10,6 +10,9 @@ declare(strict_types=1);
 
 namespace Cag\Exceptions;
 
+/**
+ * 100 -> composer.json file not found
+ */
 class NotFoundException extends ExceptionAbstract
 {
 
