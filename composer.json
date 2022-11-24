@@ -15,7 +15,8 @@
   "license": "GPL-3.0-or-later",
   "autoload": {
     "psr-4": {
-      "Cag\\": ["src/"]
+      "Cag\\": ["src/"],
+      "App\\": ["app/"]
     }
   },
   "autoload-dev": {
@@ -26,6 +27,10 @@
   "scripts": {
     "test": "kahlan --reporter=verbose",
     "coverage": "kahlan --reporter=verbose --coverage=4 --clover=clover.xml"
+  },
+  "require": {
+    "minicli/minicli": "^3.2",
+    "minicli/command-help": "^0.1.0"
   },
   "require-dev": {
     "kahlan/kahlan": "5.*",
