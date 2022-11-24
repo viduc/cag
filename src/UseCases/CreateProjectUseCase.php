@@ -38,7 +38,7 @@ class CreateProjectUseCase extends UseCaseAbstract
     private ComposerService $composerService;
 
     /**
-     * @var \Cag\Factory\Model\StructureModelFactory
+     * @var StructureModelFactory
      */
     private StructureModelFactory $structureModelFactory;
 
@@ -93,7 +93,8 @@ class CreateProjectUseCase extends UseCaseAbstract
         $reponse = $this->createProjectResponseFactory->createResponse();
         try {
             $model = $this->structureModelFactory->getStandard(
-                $this->getParam('name')
+                $this->getParam('name'),
+                $this->getParam('nameSpacePath')
             );
             $this->structureService->create($model);
             if ($this->getParam('composer') === 'true') {
@@ -136,6 +137,9 @@ class CreateProjectUseCase extends UseCaseAbstract
             }
             if ($param === 'composer') {
                 $value = 'true';
+            }
+            if ($param === 'nameSpacePath') {
+                $value = '';
             }
         }
 

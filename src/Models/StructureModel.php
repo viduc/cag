@@ -26,16 +26,24 @@ class StructureModel extends ModelAbstract
     public array $folders = [];
 
     /**
+     * @var string
+     */
+    public string $path;
+
+    /**
      * @var FileModel[]
      */
     public array $files = [];
 
     /**
      * @param string $srcName
+     * @param string $path
      */
-    public function __construct(string $srcName)
+    public function __construct(string $srcName, string $path = 'src')
     {
         $this->srcName = $srcName;
+        $this->path = $path;
+        $this->formatPath();
     }
 
     /**
@@ -55,6 +63,22 @@ class StructureModel extends ModelAbstract
     }
 
     /**
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
+    /**
+     * @param string $path
+     */
+    public function setPath(string $path): void
+    {
+        $this->path = $path;
+    }
+
+    /**
      * @return array
      */
     public function getFolders(): array
@@ -68,6 +92,20 @@ class StructureModel extends ModelAbstract
     public function setFolders(array $folders): void
     {
         $this->folders = $folders;
+    }
+
+    /**
+     * @return void
+     */
+    private function formatPath(): void
+    {
+        $this->path = rtrim(
+            ltrim(
+                str_replace(['/', '\\'], DS, $this->path),
+                DS
+            ),
+            DS
+        );
     }
 
     /**

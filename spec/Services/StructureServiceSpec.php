@@ -9,6 +9,8 @@ declare(strict_types=1);
  */
 
 use Cag\Constantes\StructureModelConstantes as Constantes;
+use Cag\Exceptions\ContainerException;
+use Cag\Exceptions\NotFoundException;
 use Cag\Factory\Model\StructureModelFactory;
 use Cag\Models\StructureModel;
 use Cag\Services\FolderService;
@@ -16,8 +18,7 @@ use Cag\Services\StructureService;
 
 const DS = DIRECTORY_SEPARATOR;
 
-describe('StructureService', function () {
-
+describe('Test on StructureService Class', function () {
     given('public', function () {
         return str_replace('Services', 'public', __DIR__);
     });
@@ -55,12 +56,15 @@ describe('StructureService', function () {
         deleteFolderStructure($this->folder3);
     });
 
-    describe('create', function () {
+    describe('Test on method create', function () {
         it(
             'Folder testFolder must exist',
             function () {
                 $this->structureService->create(
-                    new StructureModel('folderStructure1')
+                    new StructureModel(
+                        'folderStructure1',
+                        'folderStructure1'
+                    )
                 );
                 expect(is_dir($this->folder1))->toBeTruthy();
             }
@@ -68,10 +72,17 @@ describe('StructureService', function () {
         it(
             'Folder testFolder must contain all sub folder in constantes
             StructureModelConstantes',
+            /**
+             * @throws ContainerException
+             * @throws NotFoundException
+             */
             function () {
                 $factory = new StructureModelFactory();
                 $this->structureService->create(
-                    $factory->getStandard('folderStructure2')
+                    $factory->getStandard(
+                        'folderStructure2',
+                        'folderStructure2'
+                    )
                 );
                 $folders = scandir($this->folder2);
                 foreach (Constantes::FOLDERS as $folder) {
@@ -82,10 +93,17 @@ describe('StructureService', function () {
         it(
             'Folders in testFolder must contain all files in constantes
             StructureModelConstantes',
+            /**
+             * @throws ContainerException
+             * @throws NotFoundException
+             */
             function () {
                 $factory = new StructureModelFactory();
                 $this->structureService->create(
-                    $factory->getStandard('folderStructure3')
+                    $factory->getStandard(
+                        'folderStructure3',
+                        'folderStructure3'
+                    )
                 );
                 foreach (Constantes::FILES_IN_FOLDER as $file => $folder) {
                     expect(

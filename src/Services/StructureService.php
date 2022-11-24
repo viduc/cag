@@ -10,51 +10,46 @@ declare(strict_types=1);
 
 namespace Cag\Services;
 
-use Cag\Constantes\StructureModelConstantes;
+use Cag\Exceptions\ContainerException;
 use Cag\Exceptions\FileException;
 use Cag\Exceptions\FolderException;
+use Cag\Exceptions\NotFoundException;
 use Cag\Models\StructureModel;
 
-class StructureService implements ServiceInterface
+class StructureService extends ServiceAbstract
 {
     const DS = DIRECTORY_SEPARATOR;
     /**
      * @var FolderService
      */
-    private FolderService $folderService;
-
+    protected FolderService $folderService;
     /**
      * @var FileService
      */
-    private FileService $fileService;
-
-    public function __construct()
-    {
-        //TODO replace with container
-        $this->folderService = new FolderService();
-        $this->fileService = new FileService();
-    }
+    protected FileService $fileService;
 
     /**
      * @param StructureModel $model
      *
      * @return void
-     * @throws FolderException|FileException
+     * @throws FolderException|FileException|NotFoundException|ContainerException
      */
     public function create(StructureModel $model): void
     {
+        $this->folderService = $this->container()->get(folderService::class);
+        $this->fileService = $this->container()->get(FileService::class);
         $this->folderService->create(
-            $this->folderService->getProjectPath().$model->getSrcName()
+            $this->folderService->getProjectPath().$model->getPath()
         );
         foreach ($model->getFolders() as $folder) {
-            $this->folderService->create(
+            $this->container()->get(folderService::class)->create(
                 $this->folderService->getProjectPath().
-                $model->getSrcName().DS.$folder->getName()
+                $model->getPath().DS.$folder->getName()
             );
         }
         foreach ($model->getFiles() as $file) {
             $path = $this->folderService->getProjectPath().
-                $model->getSrcName().DS.$file->getParent()->getName().
+                $model->getPath().DS.$file->getParent()->getName().
                 DS.$file->getName();
             $this->fileService->create($path, $file->getContent());
         }

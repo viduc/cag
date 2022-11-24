@@ -78,7 +78,7 @@ class ComposerService implements ServiceInterface
     {
         if (!isset($this->composer['autoload']['psr-4'][$key])) {
             $this->composer['autoload']['psr-4'][$key] = $value;
-        }var_dump($this->composer);
+        }
         $this->saveComposer();
     }
 
