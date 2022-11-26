@@ -18,11 +18,12 @@ use ReflectionException;
 class Container implements ContainerInterface
 {
     const CONTAINER_NAME = 'ContainerInterface';
+    const BASE_NAMESPACE = 'Cag';
 
     /**
      * @var ?ContainerInterface
      */
-    private ?ContainerInterface $extrenalContainer;
+    private ?ContainerInterface $externalContainer;
 
     /**
      * @var ReflectionClass|null
@@ -33,7 +34,7 @@ class Container implements ContainerInterface
 
     public function __construct(?ContainerInterface $external = null)
     {
-        $this->extrenalContainer = $external;
+        $this->externalContainer = $external;
     }
 
     /**
@@ -44,17 +45,17 @@ class Container implements ContainerInterface
     {
         $id = str_replace('?', '', $id);
         if ($this->has($id)) {
-            $this->reflection = new ReflectionClass($id);
             if ($this->reflection->isInterface()) {
                 return str_contains(
                     $this->reflection->getName(),
                     self::CONTAINER_NAME
-                ) ? $this: $this->extrenalContainer->get($id);
+                ) ? $this: $this->externalContainer->get($id);
             }
-
-            return $this->reflection->newInstanceArgs(
-                $this->instantiateDependencies()
-            );
+            if (str_contains($this->reflection->getNamespaceName(), 'Cag')) {
+                return $this->reflection->newInstanceArgs(
+                    $this->instantiateDependencies()
+                );
+            }
         }
         throw new NotFoundException(
             "No entry was found for ".$id." identifier"
@@ -102,16 +103,16 @@ class Container implements ContainerInterface
     public function has(string $id): bool
     {
         try {
-            $reflection = new ReflectionClass($id);
-            if ($reflection->isInterface()) {
+            $this->reflection = new ReflectionClass($id);
+            if ($this->reflection->isInterface()) {
                 return str_contains($id, self::CONTAINER_NAME)
-                    || (null !== $this->extrenalContainer
-                    && $this->extrenalContainer->has($id));
+                    || (null !== $this->externalContainer
+                    && $this->externalContainer->has($id));
             }
-            return $reflection->isInstantiable();
+            return $this->reflection->isInstantiable();
         } catch (ReflectionException $e) {
-            return null !== $this->extrenalContainer
-                && $this->extrenalContainer->has($id);
+            return null !== $this->externalContainer
+                && $this->externalContainer->has($id);
         }
     }
 

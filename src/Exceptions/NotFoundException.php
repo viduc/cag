@@ -12,6 +12,7 @@ namespace Cag\Exceptions;
 
 /**
  * 100 -> composer.json file not found
+ * 101 -> 'Param: '.$param.' not found'
  */
 class NotFoundException extends ExceptionAbstract
 {

@@ -26,13 +26,6 @@ $app = new App([
 ]);
 $input = new CommandCall($argv);
 
-/*$app->registerCommand(
-    'help',
-    function (CommandCall $input) use ($app) {
-        $app->getPrinter()->info("cag help");
-        var_dump($input);
-    }
-);*/
 try {
     $app->runCommand($input->getRawArgs());
 } catch (CommandNotFoundException $e) {

@@ -16,4 +16,5 @@ class LogConstantes
     const ERROR = 'error';
     const WARNING = 'warning';
     const REJECT = 'reject';
+    const SUCCES = 'succes';
 }

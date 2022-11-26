@@ -14,6 +14,8 @@ use Cag\Exceptions\StructureModelException;
 
 class StructureModel extends ModelAbstract
 {
+    const DS = DIRECTORY_SEPARATOR;
+
     /**
      * Nom du dossier src
      * @var string
@@ -101,10 +103,10 @@ class StructureModel extends ModelAbstract
     {
         $this->path = rtrim(
             ltrim(
-                str_replace(['/', '\\'], DS, $this->path),
-                DS
+                str_replace(['/', '\\'], self::DS, $this->path),
+                self::DS
             ),
-            DS
+            self::DS
         );
     }
 

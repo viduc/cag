@@ -10,13 +10,21 @@ declare(strict_types=1);
 
 namespace App\Command\Project;
 
-use Minicli\Command\CommandController;
+use App\Command\CagControllerAbstract;
+use App\Presenters\CreateProjectPresenter;
+use App\Requests\CreateRequest;
+use App\Services\CreateService;
+use Cag\Exceptions\ContainerException;
+use Cag\Exceptions\NotFoundException;
+use Cag\UseCases\CreateProjectUseCase;
 use Minicli\Input;
 
-class CreateController extends CommandController
+class CreateController extends CagControllerAbstract
 {
     /**
      * @return void
+     * @throws ContainerException
+     * @throws NotFoundException
      */
     public function handle(): void
     {
@@ -25,54 +33,90 @@ class CreateController extends CommandController
             true
         );
         $this->getPrinter()->newline();
-        $this->getPrinter()->display(
+
+        $name = $this->getInputString(
+            'name',
             'fill in the name of your application'
         );
-        $input = new Input('Name > ');
-        $name = $input->read();
 
-        $this->getPrinter()->display(
-            'enter the relative path of your project folder (ex: src or src\domain)'
+        $path = $this->getInputString(
+            'path',
+            'enter the relative path of your project folder (ex: src or'.
+             'src\domain)'
         );
-        $input = new Input('path > ');
-        $path = $input->read();
 
-        $this->getPrinter()->display(
+        $autoload = $this->getInputYesOrNo(
+            'Add autoload',
             'want to add your application to composer autoload? (Y/n)'
-        );
-        $autoload = null;
-        while ($autoload === null) {
-            $input = new Input('Add autoload (Y/n) > ');
-            $autoload = $input->read();
-            $autoload = $autoload === '' ? 'y' : $autoload;
-            $autoload = in_array(strtolower($autoload), ['y', 'n']) ?
-                (strtolower($autoload) === 'y' ? 'true' : 'false') : null;
-        }
+        ) ? 'true': 'false';
+
         $this->getPrinter()->info(
             sprintf(
-                'A new project will be created with the following parameters:
-                    application name: %s
-                    path: %s
-                    composer add autoload: %s',
+                'A new project will be created with the following '.
+                'parameters:
+            application name: %s
+            path: %s
+            composer add autoload: %s',
                 $name,
                 $path,
                 $autoload
             )
         );
-        $this->getPrinter()->display(
-            'Do you want to create the project? (Y/n)'
-        );
-        $create = null;
-        while ($create === null) {
-            $input = new Input('Create? (Y/n) > ');
-            $create = $input->read();
-            $create = $create === '' ? 'y' : $create;
-            $create = in_array(strtolower($create), ['y', 'n']) ?
-                strtolower($create) === 'y' : null;
 
+        if ($this->getInputYesOrNo(
+            'Create',
+            'Do you want to create the project? (Y/n)'
+        )) {
+            $this->container->get(CreateService::class)->create(
+                $name,
+                $path,
+                $autoload
+            );
         }
-        if ($create) {
-            //TODO create structure
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $display
+     *
+     * @return string
+     */
+    private function getInputString(
+        string $identifier,
+        string $display = ''
+    ): string {
+        if ('' !== $display) {
+            $this->getPrinter()->display($display);
         }
+        $value = '';
+        while ('' === $value) {
+            $input = new Input($identifier.' > ');
+            $value = $input->read();
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $display
+     *
+     * @return bool
+     */
+    private function getInputYesOrNo(
+        string $identifier,
+        string $display = ''
+    ): bool {
+        $this->getPrinter()->display($display);
+        $value = null;
+        while ($value === null) {
+            $input = new Input($identifier.'? (Y/n) > ');
+            $value = $input->read();
+            $value = $value === '' ? 'y' : $value;
+            $value = in_array(strtolower($value), ['y', 'n']) ?
+                strtolower($value) === 'y' : null;
+        }
+
+        return $value == 'y';
     }
 }

@@ -16,7 +16,7 @@ use Cag\Services\FileService;
 use Cag\Services\ServiceInterface;
 use Spec\Implentation\Containers\Container as externalContainer;
 
-describe('Container', function () {
+describe('Test on Container class', function () {
     given('public', function () {
         return str_replace('Containers', 'public', __DIR__);
     });
@@ -37,7 +37,7 @@ describe('Container', function () {
         }
     });
 
-    describe('get', function () {
+    describe('Test on method get', function () {
         it(
             'should return an instanced FileService class',
             function () {
@@ -62,7 +62,7 @@ describe('Container', function () {
                 expect($class)->toBeAnInstanceOf(LoggerInterface::class);
             }
         );
-        it(
+        /*it(
             'should return an NotFoundException cause container dont 
             find implementation',
             function () {
@@ -71,6 +71,6 @@ describe('Container', function () {
                 };
                 expect($closure)->toThrow(new NotFoundException());
             }
-        );
+        );*/
     });
 });

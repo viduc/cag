@@ -17,6 +17,8 @@ use Cag\Validator\FileValidator;
 
 class ComposerService implements ServiceInterface
 {
+    const DS = DIRECTORY_SEPARATOR;
+
     /**
      * @var string
      */
@@ -31,7 +33,7 @@ class ComposerService implements ServiceInterface
      * @param string|null $composerFile
      *
      * @throws FileException
-     * @throws FolderException
+     * @throws FolderException|NotFoundException
      */
     public function __construct(?string $composerFile = null)
     {
@@ -49,22 +51,24 @@ class ComposerService implements ServiceInterface
      */
     private function findComposerFile(string $path): string
     {
-        $path = str_ends_with($path, DS) ?
+        $path = str_ends_with($path, self::DS) ?
             substr($path, 0, -1) : $path;
 
         foreach (scandir($path) as $file) {
-            if (is_file($path.DS.$file) && 'composer.json' === $file) {
-                return $path.DS.$file;
+            if (is_file($path.self::DS.$file) &&
+                'composer.json' === $file
+            ) {
+                return $path.self::DS.$file;
             }
         }
-        if ($path === DS) {
+        if ($path === self::DS) {
             throw new NotFoundException(
                 'composer.json file not found',
                 100
             );
         }
         return $this->findComposerFile(
-            substr($path, 0, strripos($path, DS))
+            substr($path, 0, strripos($path, self::DS))
         );
     }
 
