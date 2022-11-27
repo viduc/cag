@@ -28,6 +28,7 @@
     "test": "kahlan --reporter=verbose",
     "coverage": "kahlan --reporter=verbose --coverage=4 --clover=clover.xml"
   },
+  "bin": ["bin/cag"],
   "require": {
     "minicli/minicli": "^3.2",
     "minicli/command-help": "^0.1.0"
