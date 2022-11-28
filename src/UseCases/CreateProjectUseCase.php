@@ -105,6 +105,7 @@ class CreateProjectUseCase extends UseCaseAbstract
             }
             $reponse->setStructureModel($model);
         } catch (ExceptionAbstract $e) {
+            $this->container()->get(LoggerInterface::class)->add($e->getMessage());
             $reponse->setErreur(new ErreurModel(
                 $e->getCode(),
                 $e->getMessage()

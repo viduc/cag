@@ -36,7 +36,7 @@ class StructureService extends ServiceAbstract
      */
     public function create(StructureModel $model): void
     {
-        $this->folderService = $this->container()->get(folderService::class);
+        $this->folderService = $this->container()->get(FolderService::class);
         $this->fileService = $this->container()->get(FileService::class);
         $this->folderService->create(
             $this->folderService->getProjectPath().$model->getPath()
@@ -44,12 +44,12 @@ class StructureService extends ServiceAbstract
         foreach ($model->getFolders() as $folder) {
             $this->container()->get(folderService::class)->create(
                 $this->folderService->getProjectPath().
-                $model->getPath().DS.$folder->getName()
+                $model->getPath().self::DS.$folder->getName()
             );
         }
         foreach ($model->getFiles() as $file) {
             $path = $this->folderService->getProjectPath().
-                $model->getPath().DS.$file->getParent()->getName().
+                $model->getPath().self::DS.$file->getParent()->getName().
                 DS.$file->getName();
             $this->fileService->create($path, $file->getContent());
         }
