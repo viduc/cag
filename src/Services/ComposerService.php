@@ -51,6 +51,9 @@ class ComposerService implements ServiceInterface
      */
     private function findComposerFile(string $path): string
     {
+        $search = self::DS.'vendor'.self::DS.'viduc'.self::DS.'cag'.self::DS;
+        $search .= 'src'.self::DS.'Services';
+        $path = str_replace($search, '', $path);
         $path = str_ends_with($path, self::DS) ?
             substr($path, 0, -1) : $path;
 
