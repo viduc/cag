@@ -50,7 +50,7 @@ class StructureService extends ServiceAbstract
         foreach ($model->getFiles() as $file) {
             $path = $this->folderService->getProjectPath().
                 $model->getPath().self::DS.$file->getParent()->getName().
-                DS.$file->getName();
+                self::DS.$file->getName();
             $this->fileService->create($path, $file->getContent());
         }
     }

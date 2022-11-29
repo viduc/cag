@@ -99,7 +99,7 @@ class CreateProjectUseCase extends UseCaseAbstract
             $this->structureService->create($model);
             if ($this->getParam('composer') === 'true') {
                 $this->composerService->addAutoload(
-                    $this->getParam('nameSpace').'\\',
+                    $this->getParam('name').'\\',
                     [$this->getParam('nameSpacePath')]
                 );
             }
