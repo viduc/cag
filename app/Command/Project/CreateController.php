@@ -69,7 +69,7 @@ class CreateController extends CagControllerAbstract
         )) {
             $this->container->get(CreateService::class)->create(
                 $name,
-                $path,
+                $name,
                 $autoload
             );
         }
