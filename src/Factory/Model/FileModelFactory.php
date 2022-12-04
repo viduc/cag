@@ -37,7 +37,7 @@ class FileModelFactory extends FactoryAbstract
         $model->setContent(
             sprintf(
                 StructureModelConstantes::FILES_CONTENT,
-                $model->getNameSpace(),
+                $model->getNameSpace().';',
                 $model->getType(),
                 str_replace('.php', '', $model->getName())
             )
