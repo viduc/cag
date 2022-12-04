@@ -94,13 +94,13 @@ class CreateProjectUseCase extends UseCaseAbstract
         try {
             $model = $this->structureModelFactory->getStandard(
                 $this->getParam('name'),
-                $this->getParam('nameSpacePath')
+                $this->getParam('path')
             );
             $this->structureService->create($model);
             if ($this->getParam('composer') === 'true') {
                 $this->composerService->addAutoload(
                     $this->getParam('name').'\\',
-                    [$this->getParam('nameSpacePath')]
+                    [$this->getParam('path')]
                 );
             }
             $reponse->setStructureModel($model);

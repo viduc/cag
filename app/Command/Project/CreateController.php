@@ -11,12 +11,9 @@ declare(strict_types=1);
 namespace App\Command\Project;
 
 use App\Command\CagControllerAbstract;
-use App\Presenters\CreateProjectPresenter;
-use App\Requests\CreateRequest;
 use App\Services\CreateService;
 use Cag\Exceptions\ContainerException;
 use Cag\Exceptions\NotFoundException;
-use Cag\UseCases\CreateProjectUseCase;
 use Minicli\Input;
 
 class CreateController extends CagControllerAbstract
@@ -36,7 +33,7 @@ class CreateController extends CagControllerAbstract
 
         $name = $this->getInputString(
             'name',
-            'fill in the name of your application'
+            'fill in the name of your application (will use as namespace)'
         );
 
         $path = $this->getInputString(
@@ -69,7 +66,7 @@ class CreateController extends CagControllerAbstract
         )) {
             $this->container->get(CreateService::class)->create(
                 $name,
-                $name,
+                $path,
                 $autoload
             );
         }

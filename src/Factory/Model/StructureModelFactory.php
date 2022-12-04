@@ -39,7 +39,7 @@ class StructureModelFactory extends FactoryAbstract
 
     /**
      * @param string      $name
-     * @param string|null $nameSpace
+     * @param string|null $path
      *
      * @return StructureModel
      * @throws ContainerException
@@ -47,10 +47,10 @@ class StructureModelFactory extends FactoryAbstract
      */
     public function getStandard(
         string $name,
-        ?string $nameSpace = 'src'
+        ?string $path = 'src'
     ): StructureModel {
-        $this->sturctureModel = new StructureModel($name, $nameSpace);
-        $this->nameSpace = $this->sturctureModel->getPath();
+        $this->sturctureModel = new StructureModel($name, $path);
+        $this->nameSpace = $this->sturctureModel->getSrcName();
         $this->addStandardFolder();
         $this->addStandardFile();
 

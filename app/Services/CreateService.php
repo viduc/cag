@@ -28,11 +28,11 @@ class CreateService extends ServiceAbstract
         parent::__construct(new Container($controller));
     }
 
-    public function create(string $name, string $namespace, string $composer): void
+    public function create(string $name, string $path, string $composer): void
     {
         $request = $this->container->get(CreateRequest::class);
         $request->addParam('name', $name);
-        $request->addParam('nameSpacePath', $namespace);
+        $request->addParam('path', $path);
         $request->addParam('composer', $composer);
         $presenter = $this->container->get(CreateProjectPresenter::class);
         try {
