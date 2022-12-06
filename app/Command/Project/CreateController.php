@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 /**
  * CAG - Clean Architecture Generator
@@ -19,6 +20,21 @@ use Minicli\Input;
 class CreateController extends CagControllerAbstract
 {
     /**
+     * @var string
+     */
+    private string $name;
+
+    /**
+     * @var string
+     */
+    private string $path;
+
+    /**
+     * @var string
+     */
+    private string $autoload;
+
+    /**
      * @return void
      * @throws ContainerException
      * @throws NotFoundException
@@ -30,23 +46,9 @@ class CreateController extends CagControllerAbstract
             true
         );
         $this->getPrinter()->newline();
-
-        $name = $this->getInputString(
-            'name',
-            'fill in the name of your application (will use as namespace)'
-        );
-
-        $path = $this->getInputString(
-            'path',
-            'enter the relative path of your project folder (ex: src or'.
-             'src\domain)'
-        );
-
-        $autoload = $this->getInputYesOrNo(
-            'Add autoload',
-            'want to add your application to composer autoload? (Y/n)'
-        ) ? 'true': 'false';
-
+        $this->askName();
+        $this->askPath();
+        $this->askAutoload();
         $this->getPrinter()->info(
             sprintf(
                 'A new project will be created with the following '.
@@ -54,20 +56,62 @@ class CreateController extends CagControllerAbstract
             application name: %s
             path: %s
             composer add autoload: %s',
-                $name,
-                $path,
-                $autoload
+                $this->name,
+                $this->path,
+                $this->autoload
             )
         );
+        $this->askValidation();
+    }
 
+    /**
+     * @return void
+     */
+    private function askName(): void
+    {
+        $this->name = $this->getInputString(
+            'name',
+            'fill in the name of your application (will use as namespace)'
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function askPath(): void
+    {
+        $this->path = $this->getInputString(
+            'path',
+            'enter the relative path of your project folder (ex: src or'.
+            'src\domain)'
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function askAutoload(): void
+    {
+        $this->autoload = $this->getInputYesOrNo(
+            'Add autoload',
+            'want to add your application to composer autoload? (Y/n)'
+        ) ? 'true' : 'false';
+    }
+
+    /**
+     * @throws ContainerException
+     * @throws NotFoundException
+     */
+    private function askValidation(): void
+    {
         if ($this->getInputYesOrNo(
             'Create',
             'Do you want to create the project? (Y/n)'
         )) {
             $this->container->get(CreateService::class)->create(
-                $name,
-                $path,
-                $autoload
+                $this->name,
+                $this->path,
+                $this->autoload
             );
         }
     }
