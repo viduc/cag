@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 use Cag\Containers\Container;
 use Cag\Exceptions\NotFoundException;
-use Cag\Loggers\LoggerInterface;
 use Cag\Services\ComposerService;
 use Cag\Services\FileService;
 use Cag\Services\ServiceInterface;
@@ -55,14 +54,6 @@ describe('Test on Container class', function () {
             }
         );
         it(
-            'should return an instanced LoggerInterface class from
-                external container',
-            function () {
-                $class = $this->container->get(LoggerInterface::class);
-                expect($class)->toBeAnInstanceOf(LoggerInterface::class);
-            }
-        );
-        /*it(
             'should return an NotFoundException cause container dont 
             find implementation',
             function () {
@@ -71,6 +62,6 @@ describe('Test on Container class', function () {
                 };
                 expect($closure)->toThrow(new NotFoundException());
             }
-        );*/
+        );
     });
 });

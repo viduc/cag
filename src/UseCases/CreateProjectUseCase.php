@@ -10,18 +10,18 @@ declare(strict_types=1);
 
 namespace Cag\UseCases;
 
-use Cag\Constantes\LogConstantes;
 use Cag\Containers\Container;
 use Cag\Containers\ContainerInterface;
 use Cag\Exceptions\ContainerException;
 use Cag\Exceptions\ExceptionAbstract;
 use Cag\Exceptions\NotFoundException;
+use Cag\Factory\Model\ErreurModelFactory;
 use Cag\Factory\Model\StructureModelFactory;
 use Cag\Factory\Response\CreateProjectResponseFactory;
-use Cag\Loggers\LoggerInterface;
 use Cag\Models\ErreurModel;
 use Cag\Presenters\PresenterInterface;
 use Cag\Requests\RequestInterface;
+use Cag\Responses\ResponseInterface;
 use Cag\Services\ComposerService;
 use Cag\Services\StructureService;
 
@@ -42,6 +42,9 @@ class CreateProjectUseCase extends UseCaseAbstract
      */
     private StructureModelFactory $structureModelFactory;
 
+    /**
+     * @var CreateProjectResponseFactory|mixed
+     */
     private CreateProjectResponseFactory $createProjectResponseFactory;
 
     /**
@@ -50,10 +53,18 @@ class CreateProjectUseCase extends UseCaseAbstract
     private RequestInterface $request;
 
     /**
-     * @var LoggerInterface
+     * @var ResponseInterface
      */
-    private LoggerInterface $logger;
+    private ResponseInterface $response;
 
+    /**
+     * array
+     */
+    private const DEFAULT_PARAMS = [
+        'name' => 'project',
+        'composer' => 'true',
+        'path' => ''
+    ];
 
     /**
      * @param ContainerInterface $container
@@ -76,7 +87,7 @@ class CreateProjectUseCase extends UseCaseAbstract
         $this->createProjectResponseFactory = $this->container()->get(
             CreateProjectResponseFactory::class
         );
-        $this->logger = $this->container()->get(LoggerInterface::class);
+        $this->response = $this->createProjectResponseFactory->createResponse();
     }
 
     /**
@@ -90,7 +101,6 @@ class CreateProjectUseCase extends UseCaseAbstract
         PresenterInterface $presenter
     ): PresenterInterface {
         $this->request = $request;
-        $reponse = $this->createProjectResponseFactory->createResponse();
         try {
             $model = $this->structureModelFactory->getStandard(
                 $this->getParam('name'),
@@ -103,15 +113,14 @@ class CreateProjectUseCase extends UseCaseAbstract
                     [$this->getParam('path')]
                 );
             }
-            $reponse->setStructureModel($model);
+            $this->response->setStructureModel($model);
         } catch (ExceptionAbstract $e) {
-            $this->container()->get(LoggerInterface::class)->add($e->getMessage());
-            $reponse->setErreur(new ErreurModel(
+            $this->response->setErreur(new ErreurModel(
                 $e->getCode(),
                 $e->getMessage()
             ));
         }
-        $presenter->presente($reponse);
+        $presenter->presente($this->response);
 
         return $presenter;
     }
@@ -126,24 +135,12 @@ class CreateProjectUseCase extends UseCaseAbstract
         try {
             $value = $this->request->getParam($param) ?? '';
         } catch (ExceptionAbstract $e) {
-            $this->logger->add(
-                "Param ".$param." not found in request",
-                LogConstantes::WARNING
-            );
+            $erreur = ErreurModelFactory::get();
+            $erreur->setMessage("Param ".$param." not found in request");
+            $this->response->setErreur($erreur);
             $value = '';
         }
-        if ('' === $value) {
-            if ($param === 'name') {
-                $value = 'project';
-            }
-            if ($param === 'composer') {
-                $value = 'true';
-            }
-            if ($param === 'nameSpacePath') {
-                $value = '';
-            }
-        }
 
-        return $value;
+        return '' === $value ? self::DEFAULT_PARAMS[$param] : $value;
     }
 }
