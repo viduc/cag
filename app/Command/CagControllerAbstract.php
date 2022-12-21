@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Containers\Container;
+use App\Containers\DependencyInjection;
 use Cag\Containers\ContainerInterface;
 use Minicli\Command\CommandController;
 use Minicli\Output\OutputHandler;
@@ -24,7 +24,7 @@ abstract class CagControllerAbstract extends CommandController
 
     public function __construct()
     {
-        $this->container = new Container($this);
+        $this->container = new DependencyInjection();
     }
 
     /**

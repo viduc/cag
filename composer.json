@@ -31,7 +31,8 @@
   "bin": ["bin/cag"],
   "require": {
     "minicli/minicli": "^3.2",
-    "minicli/command-help": "^0.1.0"
+    "minicli/command-help": "^0.1.0",
+    "php-di/php-di": "v7.x-dev"
   },
   "require-dev": {
     "kahlan/kahlan": "5.*",

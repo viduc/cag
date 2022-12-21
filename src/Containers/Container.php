@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 /**
  * CAG - Clean Architecture Generator
@@ -17,8 +18,8 @@ use ReflectionException;
 
 class Container implements ContainerInterface
 {
-    const CONTAINER_NAME = 'ContainerInterface';
-    const BASE_NAMESPACE = 'Cag';
+    public const CONTAINER_NAME = 'ContainerInterface';
+    public const BASE_NAMESPACE = 'Cag';
 
     /**
      * @var ?ContainerInterface
@@ -49,7 +50,7 @@ class Container implements ContainerInterface
                 return str_contains(
                     $this->reflection->getName(),
                     self::CONTAINER_NAME
-                ) ? $this: $this->externalContainer->get($id);
+                ) ? $this : $this->externalContainer->get($id);
             }
             if (str_contains($this->reflection->getNamespaceName(), 'Cag')) {
                 return $this->reflection->newInstanceArgs(
@@ -79,7 +80,7 @@ class Container implements ContainerInterface
             ) {
                 $type = $param->getType();
                 $dependencies[] = !$type->isBuiltin() ?
-                    $this->get((string) $type):
+                    $this->get((string) $type) :
                     $this->getBuiltinParameter($param->getName());
             }
         }

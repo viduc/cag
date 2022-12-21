@@ -10,13 +10,13 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Containers\Container;
+use App\Containers\DependencyInjection;
 
 class ServiceAbstract
 {
-    public Container $container;
+    public DependencyInjection $container;
 
-    public function __construct(Container $container)
+    public function __construct(DependencyInjection $container)
     {
         $this->container = $container;
     }
