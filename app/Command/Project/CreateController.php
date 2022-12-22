@@ -112,7 +112,7 @@ class CreateController extends CagControllerAbstract
             'Create',
             'Do you want to create the project? (Y/n)'
         )) {
-            $this->container->get('createService')->create(
+            $this->container->get(CreateService::class)->create(
                 $this->name,
                 $this->path,
                 $this->autoload

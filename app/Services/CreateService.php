@@ -13,23 +13,25 @@ namespace App\Services;
 use App\Presenters\CreateProjectPresenter;
 use App\Requests\CreateRequest;
 use Cag\Exceptions\ContainerException;
-use Cag\Exceptions\NotFoundException;
 use Cag\UseCases\CreateProjectUseCase;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class CreateService extends ServiceAbstract
 {
     /**
      * @throws ContainerException
-     * @throws NotFoundException
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
      */
     public function create(string $name, string $path, string $composer): void
     {
-        $request = $this->container->get('createRequest');
+        $request = $this->container->get(CreateRequest::class);
         $request->addParam('name', $name);
         $request->addParam('path', $path);
         $request->addParam('composer', $composer);
-        $presenter = $this->container->get('createProjectPresenter');
-        $this->container->get('createProjectUseCase')->execute(
+        $presenter = $this->container->get(CreateProjectPresenter::class);
+        $this->container->get(CreateProjectUseCase::class)->execute(
             $request,
             $presenter
         );

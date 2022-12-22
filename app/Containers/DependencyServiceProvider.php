@@ -47,25 +47,14 @@ class DependencyServiceProvider extends AbstractServiceProvider
      */
     public function register(): void
     {
-        $this->getContainer()->add(
-            'createProjectPresenter',
-            CreateProjectPresenter::class
-        );
-        $this->getContainer()->add(
-            'createRequest',
-            CreateRequest::class
-        );
-        $this->getContainer()->add(
-            'createService',
-            CreateService::class
-        )->addArgument('dependencyInjection');
-        $this->getContainer()->add(
-            'dependencyInjection',
-            DependencyInjection::class
-        );
-        $this->getContainer()->add(
-            'createProjectUseCase',
-            CreateProjectUseCase::class
-        )->addArgument('dependencyInjection');
+        $this->getContainer()->add(DependencyInjection::class);
+        $this->getContainer()->add(CreateProjectPresenter::class);
+        $this->getContainer()->add(CreateRequest::class);
+        $this->getContainer()
+            ->add(CreateService::class)
+            ->addArgument(DependencyInjection::class);
+        $this->getContainer()
+            ->add(CreateProjectUseCase::class)
+            ->addArgument(DependencyInjection::class);
     }
 }
