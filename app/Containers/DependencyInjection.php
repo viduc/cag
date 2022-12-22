@@ -12,7 +12,9 @@ declare(strict_types=1);
 namespace App\Containers;
 
 use Cag\Containers\ContainerInterface;
-use DI\Container;
+use League\Container\Container;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class DependencyInjection implements ContainerInterface
 {
@@ -24,8 +26,13 @@ class DependencyInjection implements ContainerInterface
     public function __construct()
     {
         $this->container = new Container();
+        $this->container->addServiceProvider(new DependencyServiceProvider());
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function get(string $id): mixed
     {
         return $this->container->get($id);
