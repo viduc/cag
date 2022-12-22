@@ -24,12 +24,12 @@ class CreateService extends ServiceAbstract
      */
     public function create(string $name, string $path, string $composer): void
     {
-        $request = $this->container->get(CreateRequest::class);
+        $request = $this->container->get('createRequest');
         $request->addParam('name', $name);
         $request->addParam('path', $path);
         $request->addParam('composer', $composer);
-        $presenter = $this->container->get(CreateProjectPresenter::class);
-        $this->container->get(CreateProjectUseCase::class)->execute(
+        $presenter = $this->container->get('createProjectPresenter');
+        $this->container->get('createProjectUseCase')->execute(
             $request,
             $presenter
         );

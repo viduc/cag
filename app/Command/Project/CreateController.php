@@ -16,6 +16,8 @@ use App\Services\CreateService;
 use Cag\Exceptions\ContainerException;
 use Cag\Exceptions\NotFoundException;
 use Minicli\Input;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class CreateController extends CagControllerAbstract
 {
@@ -101,6 +103,8 @@ class CreateController extends CagControllerAbstract
     /**
      * @throws ContainerException
      * @throws NotFoundException
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
      */
     private function askValidation(): void
     {
@@ -108,7 +112,7 @@ class CreateController extends CagControllerAbstract
             'Create',
             'Do you want to create the project? (Y/n)'
         )) {
-            $this->container->get(CreateService::class)->create(
+            $this->container->get('createService')->create(
                 $this->name,
                 $this->path,
                 $this->autoload
