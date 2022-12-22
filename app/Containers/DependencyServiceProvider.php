@@ -53,6 +53,6 @@ class DependencyServiceProvider extends AbstractServiceProvider
         $this->getContainer()->add(
             'createService',
             CreateService::class
-        )->addArgument(DependencyInjection::class);
+        )->addArgument($this->getContainer());
     }
 }
