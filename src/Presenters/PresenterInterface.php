@@ -25,5 +25,5 @@ interface PresenterInterface
      * @codeCoverageIgnore
      * @return ResponseInterface
      */
-    public function getReponse(): ResponseInterface;
+    public function getResponse(): ResponseInterface;
 }

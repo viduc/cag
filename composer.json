@@ -21,8 +21,14 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Spec\\": ["spec"]
-    }
+      "Cag\\Spec\\": ["spec"],
+      "Cag\\Tests\\": "tests",
+      "External\\": "spec/Mock/ClassForProvider/Implementations/External"
+    },
+    "classmap": [
+      "tests",
+      "spec"
+    ]
   },
   "scripts": {
     "test": "kahlan --reporter=verbose",
@@ -32,7 +38,8 @@
   "require": {
     "minicli/minicli": "^3.2",
     "minicli/command-help": "^0.1.0",
-    "league/container": "^4.2"
+    "league/container": "^4.2",
+    "ext-yaml": "*"
   },
   "require-dev": {
     "kahlan/kahlan": "5.*",

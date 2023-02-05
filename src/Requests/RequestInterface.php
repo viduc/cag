@@ -17,6 +17,11 @@ interface RequestInterface
     /**
      * @return string
      */
+    public function getUseCase(): string;
+
+    /**
+     * @return string
+     */
     public function getAction(): string;
 
     /**

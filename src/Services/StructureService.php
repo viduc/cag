@@ -10,29 +10,25 @@ declare(strict_types=1);
 
 namespace Cag\Services;
 
-use Cag\Exceptions\ContainerException;
+use Cag\Containers\Exceptions\DependencyInjectionException;
 use Cag\Exceptions\FileException;
 use Cag\Exceptions\FolderException;
-use Cag\Exceptions\NotFoundException;
+use Cag\Containers\Exceptions\NotFoundException;
 use Cag\Models\StructureModel;
 
-class StructureService extends ServiceAbstract
+class StructureService extends StructureServiceAbstract
 {
     const DS = DIRECTORY_SEPARATOR;
-    /**
-     * @var FolderService
-     */
-    protected FolderService $folderService;
-    /**
-     * @var FileService
-     */
-    protected FileService $fileService;
+
+
 
     /**
      * @param StructureModel $model
-     *
      * @return void
-     * @throws FolderException|FileException|NotFoundException|ContainerException
+     * @throws FileException
+     * @throws FolderException
+     * @throws DependencyInjectionException
+     * @throws NotFoundException
      */
     public function create(StructureModel $model): void
     {

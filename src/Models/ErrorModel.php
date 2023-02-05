@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Cag\Models;
 
-class ErreurModel extends ModelAbstract
+class ErrorModel extends ModelAbstract
 {
     private int $code;
     private string $message;

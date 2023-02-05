@@ -10,18 +10,18 @@ declare(strict_types=1);
 
 namespace Cag\Responses;
 
-use Cag\Models\ErreurModel;
+use Cag\Models\ErrorModel;
 
 interface ResponseInterface
 {
     /**
-     * @param ErreurModel $erreur
+     * @param ErrorModel $erreur
      * @return void
      */
-    public function setErreur(ErreurModel $erreur): void;
+    public function setError(ErrorModel $erreur): void;
 
     /**
-     * @return ErreurModel
+     * @return ErrorModel
      */
-    public function getErreur(): ErreurModel;
+    public function getError(): ErrorModel;
 }

@@ -8,32 +8,33 @@ declare(strict_types=1);
  * Licence: GPL v3 https://opensource.org/licenses/gpl-3.0.html
  */
 
-namespace Spec\Implentation\Containers;
+namespace Cag\Spec\Implentation\Containers;
 
-use Cag\Containers\ContainerInterface;
+use Cag\Containers\DependencyInjectionInterface;
 use Cag\Exceptions\NotFoundException;
 use ReflectionClass;
-use Spec\Implentation\Loggers\Logger;
+use ReflectionException;
 
-class Container implements ContainerInterface
+class Container implements DependencyInjectionInterface
 {
     /**
-     * @throws \ReflectionException
+     * @throws ReflectionException
      * @throws NotFoundException
      */
     public function get(string $id): mixed
     {
         $reflection = new ReflectionClass($id);
-        if (str_contains($reflection->getName(), 'LoggerInterface')) {
+        /*if (str_contains($reflection->getName(), 'LoggerInterface')) {
             return new Logger();
-        }
+        }*/
+        return $this;
         throw new NotFoundException(
             "No entry found for ".$id." indentifier"
         );
     }
 
     /**
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function has(string $id): bool
     {

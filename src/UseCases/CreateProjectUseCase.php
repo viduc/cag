@@ -10,22 +10,18 @@ declare(strict_types=1);
 
 namespace Cag\UseCases;
 
-use Cag\Containers\Container;
-use Cag\Containers\ContainerInterface;
-use Cag\Exceptions\ContainerException;
 use Cag\Exceptions\ExceptionAbstract;
-use Cag\Exceptions\NotFoundException;
 use Cag\Factory\Model\ErreurModelFactory;
 use Cag\Factory\Model\StructureModelFactory;
 use Cag\Factory\Response\CreateProjectResponseFactory;
-use Cag\Models\ErreurModel;
+use Cag\Models\ErrorModel;
 use Cag\Presenters\PresenterInterface;
 use Cag\Requests\RequestInterface;
 use Cag\Responses\ResponseInterface;
 use Cag\Services\ComposerService;
 use Cag\Services\StructureService;
 
-class CreateProjectUseCase extends UseCaseAbstract
+class CreateProjectUseCase implements UseCaseInterface
 {
     /**
      * @var StructureService
@@ -67,26 +63,21 @@ class CreateProjectUseCase extends UseCaseAbstract
     ];
 
     /**
-     * @param ContainerInterface $container
-     *
-     * @throws ContainerException
-     * @throws NotFoundException
+     * @param StructureService $structureService
+     * @param ComposerService $composerService
+     * @param StructureModelFactory $structureModelFactory
+     * @param CreateProjectResponseFactory $createProjectResponseFactory
      */
-    public function __construct(ContainerInterface $container)
-    {
-        parent::__construct(new Container($container));
-        $this->structureService = $this->container()->get(
-            StructureService::class
-        );
-        $this->composerService = $this->container()->get(
-            ComposerService::class
-        );
-        $this->structureModelFactory = $this->container()->get(
-            StructureModelFactory::class
-        );
-        $this->createProjectResponseFactory = $this->container()->get(
-            CreateProjectResponseFactory::class
-        );
+    public function __construct(
+        StructureService $structureService,
+        ComposerService $composerService,
+        StructureModelFactory $structureModelFactory,
+        CreateProjectResponseFactory $createProjectResponseFactory
+    ) {
+        $this->structureService = $structureService;
+        $this->composerService = $composerService;
+        $this->structureModelFactory = $structureModelFactory;
+        $this->createProjectResponseFactory = $createProjectResponseFactory;
         $this->response = $this->createProjectResponseFactory->createResponse();
     }
 
@@ -115,7 +106,7 @@ class CreateProjectUseCase extends UseCaseAbstract
             }
             $this->response->setStructureModel($model);
         } catch (ExceptionAbstract $e) {
-            $this->response->setErreur(new ErreurModel(
+            $this->response->setErreur(new ErrorModel(
                 $e->getCode(),
                 $e->getMessage()
             ));

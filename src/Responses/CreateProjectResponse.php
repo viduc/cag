@@ -10,19 +10,19 @@ declare(strict_types=1);
 
 namespace Cag\Responses;
 
-use Cag\Models\ErreurModel;
+use Cag\Models\ErrorModel;
 use Cag\Models\StructureModel;
 
 class CreateProjectResponse extends ResponseAbstract
 {
-    private ErreurModel $erreur;
+    private ErrorModel $erreur;
 
     private StructureModel $model;
 
     /**
      * @inheritDoc
      */
-    public function setErreur(ErreurModel $erreur): void
+    public function setErreur(ErrorModel $erreur): void
     {
         $this->erreur = $erreur;
     }
@@ -30,9 +30,9 @@ class CreateProjectResponse extends ResponseAbstract
     /**
      * @inheritDoc
      */
-    public function getErreur(): ErreurModel
+    public function getErreur(): ErrorModel
     {
-        $this->erreur = $this->erreur ?? new ErreurModel();
+        $this->erreur = $this->erreur ?? new ErrorModel();
 
         return $this->erreur;
     }

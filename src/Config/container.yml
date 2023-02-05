@@ -1,0 +1,7 @@
+services:
+  Cag\Spec\Mock\ClassForProvider\WithStringParam:
+    class: [Cag\Spec\Mock\ClassForProvider\WithStringParam]
+    params: [ 'test': 'test']
+  Cag\Spec\Mock\ClassForProvider\WithInterfaceParamMultiImp:
+    class: [Cag\Spec\Mock\ClassForProvider\WithInterfaceParamMultiImp]
+    params: [ 'test': 'Cag\Spec\Mock\ClassForProvider\Implementations\ImpWithMultipleImp1']

@@ -10,11 +10,10 @@ declare(strict_types=1);
 
 namespace Cag\UseCases;
 
-use Cag\Containers\ContainerAbstract;
 use Cag\Presenters\PresenterInterface;
 use Cag\Requests\RequestInterface;
 
-abstract class UseCaseAbstract extends ContainerAbstract
+interface UseCaseInterface
 {
     /**
      * @param RequestInterface   $requete
@@ -22,7 +21,7 @@ abstract class UseCaseAbstract extends ContainerAbstract
      *
      * @return PresenterInterface
      */
-    abstract public function execute(
+    public function execute(
         RequestInterface   $requete,
         PresenterInterface $presenter
     ): PresenterInterface;

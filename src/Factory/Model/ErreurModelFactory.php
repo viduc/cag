@@ -11,15 +11,15 @@ declare(strict_types=1);
 namespace Cag\Factory\Model;
 
 use Cag\Factory\FactoryAbstract;
-use Cag\Models\ErreurModel;
+use Cag\Models\ErrorModel;
 
 class ErreurModelFactory extends FactoryAbstract
 {
     /**
-     * @return ErreurModel
+     * @return ErrorModel
      */
-    public static function get(): ErreurModel
+    public static function get(): ErrorModel
     {
-        return new ErreurModel();
+        return new ErrorModel();
     }
 }

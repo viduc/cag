@@ -14,7 +14,7 @@ use Cag\Exceptions\FileException;
 use Cag\Exceptions\FolderException;
 use Cag\Validator\FileValidator;
 
-class FileService extends ServiceAbstract
+class FileService extends FileServiceAbstract
 {
     /**
      * @param string $name

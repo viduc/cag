@@ -13,34 +13,32 @@ namespace Cag\Containers;
 abstract class ContainerAbstract
 {
     /**
-     * @var ContainerInterface|null
+     * @var DependencyInjectionInterface|null
      */
-    private ?ContainerInterface $container;
+    private ?DependencyInjectionInterface $container;
 
-    public function __construct(?ContainerInterface $container = null)
+    public function __construct(?DependencyInjectionInterface $container = null)
     {
         $this->container = $container;
     }
 
     /**
-     * @return ContainerInterface
+     * @return DependencyInjectionInterface
      */
-    public function container(): ContainerInterface
+    public function container(): DependencyInjectionInterface
     {
         if (null === $this->container) {
-            $this->container = new Container();
+            $this->container = new DependencyInjection();
         }
 
         return $this->container;
     }
 
     /**
-     * @param ContainerInterface|null $container
+     * @param DependencyInjectionInterface|null $container
      */
-    public function setContainer(?ContainerInterface $container): void
+    public function setContainer(?DependencyInjectionInterface $container): void
     {
         $this->container = $container;
     }
-
-
 }

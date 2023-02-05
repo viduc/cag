@@ -41,7 +41,7 @@ class StructureModelConstantes
         'RepositoryInterface.php' => 'Repository',
         'RequestInterface>.php' => 'Requests',
         'ServiceInterface.php' => 'Services',
-        'UseCaseAbstract.php' => 'UseCase',
+        'UseCaseInterface.php' => 'UseCase',
         'ValidatorInterface.php' => 'Validators'
     ];
 

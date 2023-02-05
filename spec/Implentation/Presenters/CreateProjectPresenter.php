@@ -8,7 +8,7 @@ declare(strict_types=1);
  * Licence: GPL v3 https://opensource.org/licenses/gpl-3.0.html
  */
 
-namespace Spec\Implentation\Presenters;
+namespace Cag\Spec\Implentation\Presenters;
 
 use Cag\Presenters\PresenterInterface;
 use Cag\Responses\ResponseInterface;
@@ -28,7 +28,7 @@ class CreateProjectPresenter implements PresenterInterface
     /**
      * @inheritDoc
      */
-    public function getReponse(): ResponseInterface
+    public function getResponse(): ResponseInterface
     {
         return $this->reponse;
     }

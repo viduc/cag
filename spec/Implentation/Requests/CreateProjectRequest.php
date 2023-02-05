@@ -8,7 +8,7 @@ declare(strict_types=1);
  * Licence: GPL v3 https://opensource.org/licenses/gpl-3.0.html
  */
 
-namespace Spec\Implentation\Requests;
+namespace Cag\Spec\Implentation\Requests;
 
 use Cag\Requests\RequestInterface;
 
@@ -42,5 +42,10 @@ class CreateProjectRequest implements RequestInterface
         }
 
         return null;
+    }
+
+    public function getUseCase(): string
+    {
+        return 'test';
     }
 }

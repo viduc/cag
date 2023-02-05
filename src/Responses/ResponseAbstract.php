@@ -11,17 +11,17 @@ declare(strict_types=1);
 namespace Cag\Responses;
 
 use Cag\Containers\ContainerAbstract;
-use Cag\Models\ErreurModel;
+use Cag\Models\ErrorModel;
 
 abstract class ResponseAbstract extends ContainerAbstract implements ResponseInterface
 {
     /**
      * @inheritDoc
      */
-    abstract public function setErreur(ErreurModel $erreur): void;
+    abstract public function setErreur(ErrorModel $erreur): void;
 
     /**
      * @inheritDoc
      */
-    abstract public function getErreur(): ErreurModel;
+    abstract public function getErreur(): ErrorModel;
 }
