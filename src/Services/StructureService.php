@@ -20,25 +20,19 @@ class StructureService extends StructureServiceAbstract
 {
     const DS = DIRECTORY_SEPARATOR;
 
-
-
     /**
      * @param StructureModel $model
      * @return void
      * @throws FileException
      * @throws FolderException
-     * @throws DependencyInjectionException
-     * @throws NotFoundException
      */
     public function create(StructureModel $model): void
     {
-        $this->folderService = $this->container()->get(FolderService::class);
-        $this->fileService = $this->container()->get(FileService::class);
         $this->folderService->create(
             $this->folderService->getProjectPath().$model->getPath()
         );
         foreach ($model->getFolders() as $folder) {
-            $this->container()->get(folderService::class)->create(
+            $this->folderService->create(
                 $this->folderService->getProjectPath().
                 $model->getPath().self::DS.$folder->getName()
             );

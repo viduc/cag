@@ -11,8 +11,11 @@ declare(strict_types=1);
 use Cag\Constantes\StructureModelConstantes as Constantes;
 use Cag\Exceptions\ContainerException;
 use Cag\Exceptions\NotFoundException;
+use Cag\Factory\Model\FileModelFactory;
+use Cag\Factory\Model\FolderModelFactory;
 use Cag\Factory\Model\StructureModelFactory;
 use Cag\Models\StructureModel;
+use Cag\Services\FileService;
 use Cag\Services\FolderService;
 use Cag\Services\StructureService;
 
@@ -39,7 +42,19 @@ describe('Test on StructureService Class', function () {
          * @throws Exception
          */
         function () {
-            $this->structureService = new StructureService();
+            $this->folderService = new FolderService();
+            $this->fileService = new FileService();
+            $this->structureService = new StructureService(
+                $this->fileService,
+                $this->folderService
+            );
+            $this->fileModelFactory = new FileModelFactory();
+            $this->folderModelFactory = new FolderModelFactory();
+            $this->factory = new StructureModelFactory(
+                $this->fileModelFactory,
+                $this->folderModelFactory
+            );
+
             allow(FolderService::class)
                 ->toReceive('getProjectPath')
                 ->andReturn($this->public.DS);
@@ -77,9 +92,8 @@ describe('Test on StructureService Class', function () {
              * @throws NotFoundException
              */
             function () {
-                $factory = new StructureModelFactory();
                 $this->structureService->create(
-                    $factory->getStandard(
+                    $this->factory->getStandard(
                         'folderStructure2',
                         'folderStructure2'
                     )
@@ -98,9 +112,8 @@ describe('Test on StructureService Class', function () {
              * @throws NotFoundException
              */
             function () {
-                $factory = new StructureModelFactory();
                 $this->structureService->create(
-                    $factory->getStandard(
+                    $this->factory->getStandard(
                         'folderStructure3',
                         'folderStructure3'
                     )

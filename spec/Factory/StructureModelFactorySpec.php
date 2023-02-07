@@ -9,13 +9,20 @@ declare(strict_types=1);
  */
 
 use Cag\Constantes\StructureModelConstantes as Constantes;
+use Cag\Factory\Model\FileModelFactory;
+use Cag\Factory\Model\FolderModelFactory;
 use Cag\Factory\Model\StructureModelFactory;
 use Cag\Models\FileModel;
 use Cag\Models\FolderModel;
 
 describe('StructureModelFactory', function () {
     beforeEach(function () {
-        $this->factory = new StructureModelFactory();
+        $this->fileModelFactory = new FileModelFactory();
+        $this->folderModelFactory = new FolderModelFactory();
+        $this->factory = new StructureModelFactory(
+            $this->fileModelFactory,
+            $this->folderModelFactory
+        );
     });
     afterEach(function () {
     });

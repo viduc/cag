@@ -13,7 +13,7 @@ namespace Cag\Services;
 use Cag\Exceptions\FolderException;
 use Cag\Validator\FolderValidator;
 
-class FolderService extends ServiceAbstract
+class FolderService extends FolderServiceAbstract
 {
     /**
      * @param string $name
@@ -36,10 +36,10 @@ class FolderService extends ServiceAbstract
     /**
      * @param string $name
      *
-     * @return void
+     * @return bool
      * @throws FolderException
      */
-    public function delete(string $name): void
+    public function delete(string $name): bool
     {
         FolderValidator::checkFile($name, false);
         if (!is_dir($name)) {
@@ -55,6 +55,8 @@ class FolderService extends ServiceAbstract
                 103
             );
         }
+
+        return true;
     }
 
     /**

@@ -22,6 +22,16 @@ use Exception;
 
 class StructureModelFactory extends FactoryAbstract
 {
+    private FolderModelFactory $folderModelFactory;
+    private FileModelFactory $fileModelFactory;
+
+    public function __construct(
+        FileModelFactory $fileModelFactory,
+        FolderModelFactory $folderModelFactory
+    ) {
+        $this->folderModelFactory = $folderModelFactory;
+        $this->fileModelFactory = $fileModelFactory;
+    }
     /**
      * @var StructureModel
      */
@@ -59,23 +69,17 @@ class StructureModelFactory extends FactoryAbstract
 
     /**
      * @return void
-     * @throws ContainerException
-     * @throws NotFoundException
      */
     private function addStandardFolder(): void
     {
         foreach (Constantes::FOLDERS as $folder) {
             try {
-                $this->folders[$folder] = $this->container()->get(
-                    FolderModelFactory::class
-                )->getStandard($folder);
+                $this->folders[$folder] = $this->folderModelFactory->getStandard(
+                    $folder
+                );
                 $this->sturctureModel->addFolder($this->folders[$folder]);
             } catch (StructureModelException $exception) {
-                $this->addLog(
-                    $exception->getMessage(),
-                    LogConstantes::INFO,
-                    $exception->getCode()
-                );
+                //TODO revoir remplacement log
             }
         }
     }
@@ -87,11 +91,7 @@ class StructureModelFactory extends FactoryAbstract
     {
         foreach (Constantes::FILES_IN_FOLDER as $fileName => $folderName) {
             if (!isset($this->folders[$folderName])) {
-                $this->addLog(
-                    'Le dossier '.$folderName.' pour le fichier'.
-                    $fileName." n'existe pas",
-                    LogConstantes::WARNING
-                );
+                //TODO revoir remplacement log
                 continue;
             }
             $this->getStandardFile($fileName, $this->folders[$folderName]);
@@ -108,16 +108,14 @@ class StructureModelFactory extends FactoryAbstract
     {
         try {
             $this->sturctureModel->addFile(
-                $this->container()->get(
-                    FileModelFactory::class
-                )->getStandard($fileName, $this->nameSpace, $folder)
+                $this->fileModelFactory->getStandard(
+                    $fileName,
+                    $this->nameSpace,
+                    $folder
+                )
             );
         } catch (Exception $exception) {
-            $this->addLog(
-                $exception->getMessage(),
-                LogConstantes::WARNING,
-                $exception->getCode()
-            );
+            //TODO revoir remplacement log
         }
     }
 }

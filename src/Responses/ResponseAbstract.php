@@ -13,15 +13,6 @@ namespace Cag\Responses;
 use Cag\Containers\ContainerAbstract;
 use Cag\Models\ErrorModel;
 
-abstract class ResponseAbstract extends ContainerAbstract implements ResponseInterface
+abstract class ResponseAbstract implements ResponseInterface
 {
-    /**
-     * @inheritDoc
-     */
-    abstract public function setErreur(ErrorModel $erreur): void;
-
-    /**
-     * @inheritDoc
-     */
-    abstract public function getErreur(): ErrorModel;
 }

@@ -15,6 +15,8 @@ use Cag\Requests\RequestInterface;
 
 class CreateRequest implements RequestInterface
 {
+    private const ACTION = 'create';
+    private const USECASE = 'CreateProject';
     /**
      * @var array
      */
@@ -25,7 +27,7 @@ class CreateRequest implements RequestInterface
      */
     public function getAction(): string
     {
-        return 'create';
+        return self::ACTION;
     }
 
     /**
@@ -51,5 +53,13 @@ class CreateRequest implements RequestInterface
             'Param: '.$param.' not found',
             101
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getUseCase(): string
+    {
+        return self::USECASE;
     }
 }

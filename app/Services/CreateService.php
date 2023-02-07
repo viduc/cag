@@ -12,8 +12,8 @@ namespace App\Services;
 
 use App\Presenters\CreateProjectPresenter;
 use App\Requests\CreateRequest;
+use Cag\Cag;
 use Cag\Exceptions\ContainerException;
-use Cag\UseCases\CreateProjectUseCase;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -31,7 +31,7 @@ class CreateService extends ServiceAbstract
         $request->addParam('path', $path);
         $request->addParam('composer', $composer);
         $presenter = $this->container->get(CreateProjectPresenter::class);
-        $this->container->get(CreateProjectUseCase::class)->execute(
+        $this->container->get(Cag::class)->execute(
             $request,
             $presenter
         );

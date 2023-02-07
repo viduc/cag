@@ -36,12 +36,12 @@ class Cag implements UseCaseInterface
      * @throws NotFoundException
      */
     public function execute(
-        RequestInterface $requete,
+        RequestInterface $requeste,
         PresenterInterface $presenter
     ): PresenterInterface {
         $useCase = $this->dependencyInjection->get(
-            UseCaseNameExtenderAbstract::extend($requete->getUseCase())
+            UseCaseNameExtenderAbstract::extend($requeste->getUseCase())
         );
-        return $useCase->execute($requete, $presenter);
+        return $useCase->execute($requeste, $presenter);
     }
 }

@@ -19,24 +19,6 @@ class CreateProjectResponse extends ResponseAbstract
 
     private StructureModel $model;
 
-    /**
-     * @inheritDoc
-     */
-    public function setErreur(ErrorModel $erreur): void
-    {
-        $this->erreur = $erreur;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getErreur(): ErrorModel
-    {
-        $this->erreur = $this->erreur ?? new ErrorModel();
-
-        return $this->erreur;
-    }
-
     public function getStructureModel(): StructureModel
     {
         return $this->model;
@@ -45,5 +27,17 @@ class CreateProjectResponse extends ResponseAbstract
     public function setStructureModel(StructureModel $model): void
     {
         $this->model = $model;
+    }
+
+    public function setError(ErrorModel $erreur): void
+    {
+        $this->erreur = $erreur;
+    }
+
+    public function getError(): ErrorModel
+    {
+        $this->erreur = $this->erreur ?? new ErrorModel();
+
+        return $this->erreur;
     }
 }
