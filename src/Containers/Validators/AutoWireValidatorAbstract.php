@@ -59,7 +59,7 @@ abstract class AutoWireValidatorAbstract implements ValidatorInterface
      *
      * @return bool
      */
-    public static function validParams(ReflectionClass $reflection): bool
+    public static function validParams(ReflectionClass $reflection): bool //TODO refacto this
     {
         $constructor = $reflection->getConstructor();
         if (is_null($constructor)) {
@@ -89,6 +89,22 @@ abstract class AutoWireValidatorAbstract implements ValidatorInterface
         }
 
         return true;
+    }
+
+    /**
+     * @param ReflectionParameter $parameter
+     * @return bool
+     */
+    public static function isParamTypeOfClass(
+        ReflectionParameter $parameter
+    ): bool {
+        $name = $parameter->getType()->getName();
+        try {
+            $refectionParam = new ReflectionClass($name);
+            return true;
+        } catch (ReflectionException) {
+                return false;
+        }
     }
 
     /**
