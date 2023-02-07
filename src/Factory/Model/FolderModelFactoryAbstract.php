@@ -12,15 +12,11 @@ namespace Cag\Factory\Model;
 
 use Cag\Models\FolderModel;
 
-class FolderModelFactory extends FolderModelFactoryAbstract
+abstract class FolderModelFactoryAbstract implements ModelFactoryInterface
 {
     /**
      * @param string $name
-     *
      * @return FolderModel
      */
-    public function getStandard(string $name): FolderModel
-    {
-        return new FolderModel($name);
-    }
+    public abstract  function getStandard(string $name): FolderModel;
 }

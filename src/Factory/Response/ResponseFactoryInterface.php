@@ -10,16 +10,12 @@ declare(strict_types=1);
 
 namespace Cag\Factory\Response;
 
-use Cag\Responses\CreateProjectResponse;
 use Cag\Responses\ResponseInterface;
 
-class CreateProjectResponseFactory extends CreateProjectResponseFactoryAbstract
+interface ResponseFactoryInterface
 {
     /**
      * @return ResponseInterface
      */
-    public function createResponse(): ResponseInterface
-    {
-        return new CreateProjectResponse();
-    }
+    function createResponse(): ResponseInterface;
 }

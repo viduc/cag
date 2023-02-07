@@ -10,50 +10,47 @@ declare(strict_types=1);
 
 namespace Cag\Factory\Model;
 
-use Cag\Constantes\LogConstantes;
 use Cag\Constantes\StructureModelConstantes as Constantes;
-use Cag\Exceptions\ContainerException;
-use Cag\Exceptions\NotFoundException;
 use Cag\Exceptions\StructureModelException;
-use Cag\Factory\FactoryAbstract;
 use Cag\Models\FolderModel;
 use Cag\Models\StructureModel;
 use Exception;
 
-class StructureModelFactory extends FactoryAbstract
+class StructureModelFactory extends StructureModelFactoryAbstract
 {
-    private FolderModelFactory $folderModelFactory;
-    private FileModelFactory $fileModelFactory;
-
-    public function __construct(
-        FileModelFactory $fileModelFactory,
-        FolderModelFactory $folderModelFactory
-    ) {
-        $this->folderModelFactory = $folderModelFactory;
-        $this->fileModelFactory = $fileModelFactory;
-    }
+    /**
+     * @var FolderModelFactoryAbstract
+     */
+    private FolderModelFactoryAbstract $folderModelFactory;
+    /**
+     * @var FileModelFactoryAbstract
+     */
+    private FileModelFactoryAbstract $fileModelFactory;
     /**
      * @var StructureModel
      */
     private StructureModel $sturctureModel;
-
     /**
      * @var string
      */
     private string $nameSpace = '';
-
     /**
      * @var FolderModel[]
      */
     private array $folders = [];
 
+    public function __construct(
+        FileModelFactoryAbstract $fileModelFactory,
+        FolderModelFactoryAbstract $folderModelFactory
+    ) {
+        $this->folderModelFactory = $folderModelFactory;
+        $this->fileModelFactory = $fileModelFactory;
+    }
+
     /**
-     * @param string      $name
+     * @param string $name
      * @param string|null $path
-     *
      * @return StructureModel
-     * @throws ContainerException
-     * @throws NotFoundException
      */
     public function getStandard(
         string $name,

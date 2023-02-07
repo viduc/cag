@@ -13,16 +13,11 @@ namespace Cag\Responses;
 use Cag\Models\ErrorModel;
 use Cag\Models\StructureModel;
 
-class CreateProjectResponse extends ResponseAbstract
+class CreateProjectResponse extends CreateProjectResponseAbstract
 {
     private ErrorModel $erreur;
 
     private StructureModel $model;
-
-    public function getStructureModel(): StructureModel
-    {
-        return $this->model;
-    }
 
     public function setStructureModel(StructureModel $model): void
     {

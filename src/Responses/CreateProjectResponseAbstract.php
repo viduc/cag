@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace Cag\Responses;
 
-use Cag\Containers\ContainerAbstract;
-use Cag\Models\ErrorModel;
+use Cag\Models\StructureModel;
 
-abstract class ResponseAbstract implements ResponseInterface
+abstract class CreateProjectResponseAbstract implements ResponseInterface
 {
+    public abstract function setStructureModel(StructureModel $model): void;
 }

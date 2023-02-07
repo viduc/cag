@@ -11,11 +11,10 @@ declare(strict_types=1);
 namespace Cag\Factory\Model;
 
 use Cag\Constantes\StructureModelConstantes;
-use Cag\Factory\FactoryAbstract;
 use Cag\Models\FileModel;
 use Cag\Models\FolderModel;
 
-class FileModelFactory extends FactoryAbstract
+class FileModelFactory extends FileModelFactoryAbstract
 {
     /**
      * @param string           $name

@@ -13,35 +13,39 @@ namespace Cag\UseCases;
 use Cag\Exceptions\ExceptionAbstract;
 use Cag\Factory\Model\ErreurModelFactory;
 use Cag\Factory\Model\StructureModelFactory;
+use Cag\Factory\Model\StructureModelFactoryAbstract;
 use Cag\Factory\Response\CreateProjectResponseFactory;
+use Cag\Factory\Response\CreateProjectResponseFactoryAbstract;
 use Cag\Models\ErrorModel;
 use Cag\Presenters\PresenterInterface;
 use Cag\Requests\RequestInterface;
 use Cag\Responses\ResponseInterface;
 use Cag\Services\ComposerService;
+use Cag\Services\ComposerServiceAbstract;
 use Cag\Services\StructureService;
+use Cag\Services\StructureServiceAbstract;
 
 class CreateProjectUseCase implements UseCaseInterface
 {
     /**
      * @var StructureService
      */
-    private StructureService $structureService;
+    private StructureServiceAbstract $structureService;
 
     /**
      * @var ComposerService
      */
-    private ComposerService $composerService;
+    private ComposerServiceAbstract $composerService;
 
     /**
-     * @var StructureModelFactory
+     * @var StructureModelFactoryAbstract
      */
-    private StructureModelFactory $structureModelFactory;
+    private StructureModelFactoryAbstract $structureModelFactory;
 
     /**
-     * @var CreateProjectResponseFactory|mixed
+     * @var CreateProjectResponseFactoryAbstract
      */
-    private CreateProjectResponseFactory $createProjectResponseFactory;
+    private CreateProjectResponseFactoryAbstract $createProjectResponseFactory;
 
     /**
      * @var RequestInterface
@@ -63,16 +67,16 @@ class CreateProjectUseCase implements UseCaseInterface
     ];
 
     /**
-     * @param StructureService $structureService
-     * @param ComposerService $composerService
-     * @param StructureModelFactory $structureModelFactory
-     * @param CreateProjectResponseFactory $createProjectResponseFactory
+     * @param StructureServiceAbstract $structureService
+     * @param ComposerServiceAbstract $composerService
+     * @param StructureModelFactoryAbstract $structureModelFactory
+     * @param CreateProjectResponseFactoryAbstract $createProjectResponseFactory
      */
     public function __construct(
-        StructureService $structureService,
-        ComposerService $composerService,
-        StructureModelFactory $structureModelFactory,
-        CreateProjectResponseFactory $createProjectResponseFactory
+        StructureServiceAbstract $structureService,
+        ComposerServiceAbstract $composerService,
+        StructureModelFactoryAbstract $structureModelFactory,
+        CreateProjectResponseFactoryAbstract $createProjectResponseFactory
     ) {
         $this->structureService = $structureService;
         $this->composerService = $composerService;
@@ -106,7 +110,7 @@ class CreateProjectUseCase implements UseCaseInterface
             }
             $this->response->setStructureModel($model);
         } catch (ExceptionAbstract $e) {
-            $this->response->setErreur(new ErrorModel(
+            $this->response->setError(new ErrorModel(
                 $e->getCode(),
                 $e->getMessage()
             ));
@@ -128,7 +132,7 @@ class CreateProjectUseCase implements UseCaseInterface
         } catch (ExceptionAbstract $e) {
             $erreur = ErreurModelFactory::get();
             $erreur->setMessage("Param ".$param." not found in request");
-            $this->response->setErreur($erreur);
+            $this->response->setError($erreur);
             $value = '';
         }
 

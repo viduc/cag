@@ -15,7 +15,7 @@ use Cag\Exceptions\FolderException;
 use Cag\Exceptions\NotFoundException;
 use Cag\Validator\FileValidator;
 
-class ComposerService implements ServiceInterface
+class ComposerService extends ComposerServiceAbstract
 {
     const DS = DIRECTORY_SEPARATOR;
 
