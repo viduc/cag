@@ -88,8 +88,9 @@ abstract class AutoWireValidatorAbstract implements ValidatorInterface
         $name = $parameter->getType()->getName();
         try {
             $refectionParam = new ReflectionClass($name);
-            return (AutoWireValidatorAbstract::isInterfaceinstantiable($refectionParam) ||
-                AutoWireValidatorAbstract::isClassInstantiable($refectionParam)
+            return (
+                AutoWireValidatorAbstract::isInterfaceinstantiable($refectionParam)
+                || AutoWireValidatorAbstract::isClassInstantiable($refectionParam)
             );
         } catch (ReflectionException) {
             return !in_array($name, self::PHP_DATA_TYPES, true);
