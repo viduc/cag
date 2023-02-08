@@ -65,26 +65,13 @@ abstract class AutoWireValidatorAbstract implements ValidatorInterface
         if (is_null($constructor)) {
             return true;
         }
+
         foreach ($constructor->getParameters() as $parameter) {
-            $name = $parameter->getType()->getName();
-            try {
-                $refectionParam = new ReflectionClass($name);
-                if (!AutoWireValidatorAbstract::validParamOptional($parameter) ||
-                    (($refectionParam->isInterface() || $refectionParam->isAbstract()) &&
-                        !AutoWireValidatorAbstract::validParamInterface(
-                            $refectionParam
-                        )) ||
-                    ($refectionParam->isInstantiable() &&
-                        !AutoWireValidatorAbstract::validNameSpace(
-                            $refectionParam
-                        ))
-                ) {
-                    return false;
-                }
-            } catch (ReflectionException) {
-                if (in_array($name, self::PHP_DATA_TYPES, true)) {
-                    return false;
-                }
+            if (!AutoWireValidatorAbstract::validParamOptional($parameter)) {
+                return false;
+            }
+            if (!AutoWireValidatorAbstract::isParamInstantiable($parameter)) {
+                return false;
             }
         }
 
@@ -95,16 +82,30 @@ abstract class AutoWireValidatorAbstract implements ValidatorInterface
      * @param ReflectionParameter $parameter
      * @return bool
      */
-    public static function isParamTypeOfClass(
+    public static function isParamInstantiable(
         ReflectionParameter $parameter
     ): bool {
         $name = $parameter->getType()->getName();
         try {
             $refectionParam = new ReflectionClass($name);
-            return true;
-        } catch (ReflectionException) {
+            if ((($refectionParam->isInterface() || $refectionParam->isAbstract()) &&
+                    !AutoWireValidatorAbstract::validParamInterface(
+                        $refectionParam
+                    )) ||
+                ($refectionParam->isInstantiable() &&
+                    !AutoWireValidatorAbstract::validNameSpace(
+                        $refectionParam
+                    ))
+            ) {
                 return false;
+            }
+        } catch (ReflectionException) {
+            if (in_array($name, self::PHP_DATA_TYPES, true)) {
+                return false;
+            }
         }
+
+        return true;
     }
 
     /**

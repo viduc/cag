@@ -24,6 +24,6 @@ abstract class ComposerAbstract
             __DIR__
         );
 
-        //exec('cd '.$path.' | composer dump-autoload');
+        exec('cd '.$path.' | composer dump-autoload');
     }
 }
