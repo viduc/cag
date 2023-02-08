@@ -88,44 +88,39 @@ abstract class AutoWireValidatorAbstract implements ValidatorInterface
         $name = $parameter->getType()->getName();
         try {
             $refectionParam = new ReflectionClass($name);
-            if (!AutoWireValidatorAbstract::isInterfaceinstantiable($refectionParam) ||
-                ($refectionParam->isInstantiable() &&
-                    !AutoWireValidatorAbstract::validNameSpace($refectionParam))
-            ) {
-                return false;
-            }
+            return (AutoWireValidatorAbstract::isInterfaceinstantiable($refectionParam) ||
+                AutoWireValidatorAbstract::isClassInstantiable($refectionParam)
+            );
         } catch (ReflectionException) {
-            if (in_array($name, self::PHP_DATA_TYPES, true)) {
-                return false;
-            }
+            return !in_array($name, self::PHP_DATA_TYPES, true);
         }
-
-        return true;
     }
 
     /**
      * @param ReflectionClass $reflection
      * @return bool
      */
-    public static function isInstantiable(ReflectionClass $reflection): bool
+    public static function isClassInstantiable(ReflectionClass $reflection): bool
     {
-        return $reflection->isInstantiable() &&
-            AutoWireValidatorAbstract::validNameSpace($reflection);
+        if($reflection->isInstantiable()) {
+            return AutoWireValidatorAbstract::validNameSpace($reflection);
+        }
+
+        return false;
     }
 
     /**
      * @param ReflectionClass $reflection
      * @return bool
+     * @throws ReflectionException
      */
     public static function isInterfaceinstantiable(ReflectionClass $reflection): bool
     {
-        /*return ($reflection->isInterface() || $reflection->isAbstract()) &&
-            AutoWireValidatorAbstract::validParamInterface($reflection);*/
         if ($reflection->isInterface() || $reflection->isAbstract()) {
             return AutoWireValidatorAbstract::validParamInterface($reflection);
         }
 
-        return true;
+        return false;
     }
 
     /**
