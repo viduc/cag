@@ -22,6 +22,7 @@ use Cag\Spec\Mock\ClassForProvider\TraitClass;
 use Cag\Spec\Mock\ClassForProvider\WithAbstractParamOneImp;
 use Cag\Spec\Mock\ClassForProvider\WithInterfaceParamMultiImp;
 use Cag\Spec\Mock\ClassForProvider\WithInterfaceParamOneImp;
+use Cag\Spec\Mock\ClassForProvider\WithSimpleClassParam;
 use Cag\Tests\Containers\Config\ComposerAbstract;
 use PHPUnit\Framework\TestCase;
 use ReflectionException;
@@ -53,6 +54,14 @@ class AutoWireProviderTest extends TestCase
         /* should have a class with no param*/
         self::assertTrue(
             $this->provider->getAggregate()->has(Simple::class)
+        );
+    }
+
+    public function testShouldRegisterClassWithSimpleClassParam(): void
+    {
+        /* should have a class with no param*/
+        self::assertTrue(
+            $this->provider->getAggregate()->has(WithSimpleClassParam::class)
         );
     }
 
