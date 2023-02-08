@@ -88,8 +88,7 @@ abstract class AutoWireValidatorAbstract implements ValidatorInterface
         $name = $parameter->getType()->getName();
         try {
             $refectionParam = new ReflectionClass($name);
-            if ((($refectionParam->isInterface() || $refectionParam->isAbstract()) &&
-                    !AutoWireValidatorAbstract::validParamInterface(
+            if ((!AutoWireValidatorAbstract::validParamInterface(
                         $refectionParam
                     )) ||
                 ($refectionParam->isInstantiable() &&
@@ -116,7 +115,8 @@ abstract class AutoWireValidatorAbstract implements ValidatorInterface
      */
     public static function validParamInterface(ReflectionClass $reflection): bool
     {
-        return (AutoWireValidatorAbstract::validNameSpace($reflection) ||
+        return ($reflection->isInterface() || $reflection->isAbstract()) &&
+            (AutoWireValidatorAbstract::validNameSpace($reflection) ||
             ExternalWireValidatorAbstract::validNameSpace($reflection->name)) &&
         count(
             ClassSearchAbstract::getInterfaceImplentations($reflection->name)
