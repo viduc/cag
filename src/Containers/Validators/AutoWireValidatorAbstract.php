@@ -67,10 +67,8 @@ abstract class AutoWireValidatorAbstract implements ValidatorInterface
         }
 
         foreach ($constructor->getParameters() as $parameter) {
-            if (!AutoWireValidatorAbstract::validParamOptional($parameter)) {
-                return false;
-            }
-            if (!AutoWireValidatorAbstract::isParamInstantiable($parameter)) {
+            if (!AutoWireValidatorAbstract::validParamOptional($parameter) ||
+                !AutoWireValidatorAbstract::isParamInstantiable($parameter)) {
                 return false;
             }
         }
