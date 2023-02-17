@@ -127,26 +127,39 @@ class ConfigWireProvider implements ProviderInterface
         foreach ($service['params'] as $param) {
             $name = array_key_first($param);
             $value = $param[$name];
-            $parameter = new Parameter($value, $name);
-            try {
-                $reflection = new ReflectionClass($value);
-                if ($reflection->isInstantiable()) {
-                    $parameter = new Parameter('%'.$value.'%', $name);
-                    if ($this->provides($value)) {
-                        $parameter = new Parameter(
-                            $this->getDefinition($value),
-                            $name,
-                            true
-                        );
-                    }
-                }
-            } catch (ReflectionException $exception) {
-            }
+            $parameter = $this->defineParameter($name, $value);
             $this->parameterAggregate->add($parameter);
             $this->definitionParameterAggregate->add(
                 new DefinitionParameter($definition->name, $parameter->id)
             );
         }
+    }
+
+    /**
+     * @param string $name
+     * @param string $value
+     * @return Parameter
+     * @throws DefinitionException
+     * @throws NotFoundException
+     */
+    private function defineParameter(string $name, string $value): Parameter
+    {
+        $parameter = new Parameter($value, $name);
+        try {
+            $reflection = new ReflectionClass($value);
+            if ($reflection->isInstantiable()) {
+                $parameter = new Parameter('%'.$value.'%', $name);
+                if ($this->provides($value)) {
+                    $parameter = new Parameter(
+                        $this->getDefinition($value),
+                        $name,
+                        true
+                    );
+                }
+            }
+        } catch (ReflectionException) {}
+
+        return $parameter;
     }
 
     /**
