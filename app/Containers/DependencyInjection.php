@@ -11,12 +11,12 @@ declare(strict_types=1);
 
 namespace App\Containers;
 
-use Cag\Containers\ContainerInterface;
+use Cag\Containers\DependencyInjectionInterface;
 use League\Container\Container;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
-class DependencyInjection implements ContainerInterface
+class DependencyInjection implements DependencyInjectionInterface
 {
     /**
      * @var Container

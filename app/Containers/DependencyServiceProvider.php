@@ -15,7 +15,6 @@ use App\Presenters\CreateProjectPresenter;
 use App\Requests\CreateRequest;
 use App\Services\CreateService;
 use Cag\Cag;
-use Cag\UseCases\CreateProjectUseCase;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 class DependencyServiceProvider extends AbstractServiceProvider
