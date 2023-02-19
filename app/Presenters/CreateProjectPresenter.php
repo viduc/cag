@@ -31,7 +31,7 @@ class CreateProjectPresenter implements PresenterInterface
     /**
      * @inheritDoc
      */
-    public function getReponse(): ResponseInterface
+    public function getResponse(): ResponseInterface
     {
         return $this->response;
     }
