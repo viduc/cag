@@ -26,7 +26,9 @@ abstract class ClassSearchAbstract
     {
         $baseNameSpace = explode('\\', __NAMESPACE__)[0];
         $map = array_keys(
-            require(__DIR__ . "/../../vendor/composer/autoload_classmap.php")
+            require(
+                str_replace('/viduc/cag/src/Containers', '',__DIR__) .
+                "/../../vendor/composer/autoload_classmap.php")
         );
         $aggregate = new ComposerClassAggregate();
         array_walk(

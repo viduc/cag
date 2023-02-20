@@ -45,8 +45,13 @@ class Cag implements UseCaseInterface
 
 
     /**
+     * @param RequestInterface $requeste
+     * @param PresenterInterface $presenter
+     * @return PresenterInterface
+     * @throws DefinitionException
      * @throws DependencyInjectionException
      * @throws NotFoundException
+     * @throws ReflectionException
      */
     public function execute(
         RequestInterface $requeste,
