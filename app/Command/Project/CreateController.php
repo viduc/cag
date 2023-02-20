@@ -39,7 +39,9 @@ class CreateController extends CagControllerAbstract
     /**
      * @return void
      * @throws ContainerException
+     * @throws ContainerExceptionInterface
      * @throws NotFoundException
+     * @throws NotFoundExceptionInterface
      */
     public function handle(): void
     {
