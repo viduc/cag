@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Cag\Containers;
 
+use Cag\UseCases\CreateProjectUseCase;
 use ReflectionClass;
 use ReflectionException;
 use Cag\Containers\Aggregates\ImplementationAggregate;
@@ -50,7 +51,7 @@ class DependencyInjection implements DependencyInjectionInterface
         ?DependencyInjectionInterface $container = null,
         ?string $path = null
     ) {
-        $this->externalContainer = $container;var_dump($this->externalContainer->has('createProjectUseCase'));
+        $this->externalContainer = $container;var_dump($this->externalContainer->has(CreateProjectUseCase::class));
         $this->provider = new DependencyInjectionProvider($path);
         $this->aggregate = new ImplementationAggregate();
     }
