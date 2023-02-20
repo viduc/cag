@@ -16,7 +16,6 @@ use App\Requests\CreateRequest;
 use App\Services\CreateService;
 use Cag\Cag;
 use Cag\Factory\Model\StructureModelFactory;
-use Cag\Factory\Model\StructureModelFactoryAbstract;
 use Cag\Factory\Response\CreateProjectResponseFactory;
 use Cag\Services\ComposerService;
 use Cag\Services\FileService;

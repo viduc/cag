@@ -18,6 +18,6 @@ class ServiceAbstract
 
     public function __construct(DependencyInjection $container)
     {
-        $this->container = $container;
+        $this->container = $container;var_dump($container);
     }
 }
