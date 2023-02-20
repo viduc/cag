@@ -1,4 +1,31 @@
 services:
-  Cag\Spec\Mock\ClassForProvider\WithInterfaceParamMultiImp:
-    class: [Cag\Spec\Mock\ClassForProvider\WithInterfaceParamMultiImp]
-    params: [ 'test': 'Cag\Spec\Mock\ClassForProvider\Implementations\ImpWithMultipleImp1']
+  Cag\Cag:
+    class: [Cag\Cag]
+  Cag\Services\FileService:
+    class: [Cag\Services\FileService]
+  Cag\Services\FolderService:
+    class: [Cag\Services\FolderService]
+  Cag\Services\StructureService:
+    class: [Cag\Services\StructureService]
+    params: [
+      'fileService': 'Cag\Services\FileService',
+      'folderService': 'Cag\Services\FolderService'
+    ]
+  Cag\Services\ComposerService:
+    class: [Cag\Services\ComposerService]
+  Cag\Factory\Model\StructureModelFactory:
+    class: [Cag\Factory\Model\StructureModelFactory]
+    params: [
+      'fileService': 'Cag\Services\FileService',
+      'folderService': 'Cag\Services\FolderService'
+    ]
+  Cag\Factory\Response\CreateProjectResponseFactory:
+    class: [Cag\Factory\Response\CreateProjectResponseFactory]
+  Cag\UseCases\CreateProjectUseCase:
+    class: [Cag\UseCases\CreateProjectUseCase]
+    params: [
+      'structureService': 'Cag\Services\StructureService',
+      'composerService': 'Cag\Services\ComposerService',
+      'structureModelFactory': 'Cag\Factory\Model\StructureModelFactory',
+      'createProjectResponseFactory': 'Cag\Factory\Response\CreateProjectResponseFactory'
+    ]
