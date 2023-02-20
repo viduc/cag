@@ -38,10 +38,10 @@ class Cag implements UseCaseInterface
     public function __construct(
         ?DependencyInjectionInterface $externalDependencyInjection = null
     ) {
-        $this->dependencyInjection = new DependencyInjection(
+        /*$this->dependencyInjection = new DependencyInjection(
             $externalDependencyInjection
-        );
-        var_dump($this->dependencyInjection->has('createProjectUseCase'));
+        );*/
+        $this->dependencyInjection = $externalDependencyInjection;
     }
 
 
