@@ -42,7 +42,7 @@ abstract class ExternalWireValidatorAbstract implements ValidatorInterface
             $reflexion = new ReflectionClass($class);
             return $reflexion->isInterface() &&
                 count(
-                    ClassSearchAbstract::getInterfaceImplentations($class)
+                    ClassSearchAbstract::getInterfaceImplementations($class)
                 ) === 0;
         } catch (ReflectionException $e) {
             return false;

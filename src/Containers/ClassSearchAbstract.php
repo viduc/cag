@@ -27,8 +27,8 @@ abstract class ClassSearchAbstract
         $baseNameSpace = explode('\\', __NAMESPACE__)[0];
         $map = array_keys(
             require(
-                str_replace('/viduc/cag/src/Containers', '',__DIR__) .
-                "/composer/autoload_classmap.php")
+                str_replace(['/vendor/viduc/cag', '/src/Containers'], '',__DIR__) .
+                "/vendor/composer/autoload_classmap.php")
         );
         $aggregate = new ComposerClassAggregate();
         array_walk(
@@ -50,7 +50,7 @@ abstract class ClassSearchAbstract
      * @return array
      * @throws ReflectionException
      */
-    public static function getInterfaceImplentations(
+    public static function getInterfaceImplementations(
         string $interface
     ): array {
         $classImplements = [];
@@ -79,7 +79,7 @@ abstract class ClassSearchAbstract
         $aggregate = new ComposerClassAggregate();
         foreach (ClassSearchAbstract::getAllClass() as $class) {
             if (0 === count(
-                ClassSearchAbstract::getInterfaceImplentations($class->class)
+                ClassSearchAbstract::getInterfaceImplementations($class->class)
             )) {
                 $aggregate->add($class);
             }

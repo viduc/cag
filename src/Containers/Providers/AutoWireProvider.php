@@ -120,7 +120,7 @@ class AutoWireProvider implements ProviderInterface
         if (!is_null($param->getType())) {
             $class = $param->getType()->getName();
             $parameter = new Parameter('%'.$class.'%', $param->getName());
-            $implementations = ClassSearchAbstract::getInterfaceImplentations(
+            $implementations = ClassSearchAbstract::getInterfaceImplementations(
                 $class
             );
             $class = count($implementations) === 1 ? $implementations[0]->class:

@@ -104,9 +104,7 @@ class AutoWireProviderTest extends TestCase
             $this->provider->getAggregate()->get(
                 WithInterfaceParamOneImp::class
             )
-        ) as $parameter) {var_dump($this->provider->parameterAggregate->getById(
-            $parameter->parameter_id
-        )->value);
+        ) as $parameter) {
             self::assertTrue(
                 in_array(
                     $this->provider->parameterAggregate->getById(

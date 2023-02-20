@@ -133,7 +133,7 @@ abstract class AutoWireValidatorAbstract implements ValidatorInterface
         return (AutoWireValidatorAbstract::validNameSpace($reflection) ||
             ExternalWireValidatorAbstract::validNameSpace($reflection->name)) &&
         count(
-            ClassSearchAbstract::getInterfaceImplentations($reflection->name)
+            ClassSearchAbstract::getInterfaceImplementations($reflection->name)
         ) <= 1;
     }
 
