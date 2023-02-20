@@ -51,7 +51,7 @@ class DependencyInjection implements DependencyInjectionInterface
         ?DependencyInjectionInterface $container = null,
         ?string $path = null
     ) {
-        $this->externalContainer = $container;var_dump($this->externalContainer->has(CreateProjectUseCase::class));
+        $this->externalContainer = $container;
         $this->provider = new DependencyInjectionProvider($path);
         $this->aggregate = new ImplementationAggregate();
     }
