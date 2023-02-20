@@ -31,7 +31,6 @@ abstract class ClassSearchAbstract
                 "/vendor/composer/autoload_classmap.php")
         );
         $aggregate = new ComposerClassAggregate();
-        var_dump($baseNameSpace);
         array_walk(
             $map,
             function ($class, $key, $aggregate) use ($baseNameSpace) {

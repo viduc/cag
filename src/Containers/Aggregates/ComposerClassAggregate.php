@@ -24,7 +24,7 @@ class ComposerClassAggregate implements AggregateInterface
     /**
      * @var ComposerClass[]
      */
-    public array $aggregates;
+    public array $aggregates = [];
 
     /**
      * @param string $class
