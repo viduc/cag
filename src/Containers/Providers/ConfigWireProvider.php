@@ -124,14 +124,16 @@ class ConfigWireProvider implements ProviderInterface
      */
     private function addParam(Definition $definition, array $service): void
     {
-        foreach ($service['params'] as $param) {
-            $name = array_key_first($param);
-            $value = $param[$name];
-            $parameter = $this->defineParameter($name, $value);
-            $this->parameterAggregate->add($parameter);
-            $this->definitionParameterAggregate->add(
-                new DefinitionParameter($definition->name, $parameter->id)
-            );
+        if (isset($service['params']) && is_array($service['params'])) {
+            foreach ($service['params'] as $param) {
+                $name = array_key_first($param);
+                $value = $param[$name];
+                $parameter = $this->defineParameter($name, $value);
+                $this->parameterAggregate->add($parameter);
+                $this->definitionParameterAggregate->add(
+                    new DefinitionParameter($definition->name, $parameter->id)
+                );
+            }
         }
     }
 
