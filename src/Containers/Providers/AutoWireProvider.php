@@ -126,9 +126,8 @@ class AutoWireProvider implements ProviderInterface
             $class = count($implementations) === 1 ? $implementations[0]->class:
                 $class;
             if ($this->provides($class)) {
-                $name = $this->getDefinition($class)->name;
                 $parameter = new Parameter(
-                    $name,
+                    $this->getDefinition($class),
                     $param->getName(),
                     true
                 );

@@ -129,14 +129,14 @@ class DependencyInjectionProvider implements ProviderInterface
 
     /**
      * @param Parameter $param
-     *
      * @return Parameter
+     * @throws DefinitionException
      */
     private function completeDefinitionParameters(Parameter $param): Parameter
     {
         $value = str_replace('%', '', $param->value);
         if ($this->aggregate->has($value)) {
-            $param->value = $value;
+            $param->value = $this->aggregate->get($value);
             $param->type = "definition";
             $param->isDefinition = true;
         }

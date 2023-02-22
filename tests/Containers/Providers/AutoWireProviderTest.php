@@ -109,7 +109,7 @@ class AutoWireProviderTest extends TestCase
                 in_array(
                     $this->provider->parameterAggregate->getById(
                         $parameter->parameter_id
-                    )->value,
+                    )->value->class,
                     [ImpWithOneImp::class]
                 )
             );
@@ -137,7 +137,7 @@ class AutoWireProviderTest extends TestCase
                 in_array(
                     $this->provider->parameterAggregate->getById(
                         $parameter->parameter_id
-                    )->value,
+                    )->value->class,
                     [ImpWithOneAbstract::class]
                 )
             );
