@@ -110,7 +110,7 @@ class DependencyInjection implements DependencyInjectionInterface
                 $params[$parameter->name] = $this->get($parameter->value->class);
             }
         }
-        $reflection = new ReflectionClass($definition->class);var_dump($reflection);
+        $reflection = new ReflectionClass($definition->class);var_dump($reflection);var_dump($params);
         $instance = $reflection->newInstanceArgs($params);
         $this->aggregate->add($instance);
 
