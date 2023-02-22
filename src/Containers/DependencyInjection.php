@@ -104,13 +104,13 @@ class DependencyInjection implements DependencyInjectionInterface
             return $this->instantiateExternal($definition);
         }
         $params = [];
-        foreach ($this->provider->getDefinitionParameters($id) as $parameter) {//var_dump($parameter);
+        foreach ($this->provider->getDefinitionParameters($id) as $parameter) {
             $params[$parameter->name] = $parameter->value;
             if ($parameter->isDefinition) {
                 $params[$parameter->name] = $this->get($parameter->value->class);
             }
         }
-        $reflection = new ReflectionClass($definition->class);
+        $reflection = new ReflectionClass($definition->class);var_dump($reflection);
         $instance = $reflection->newInstanceArgs($params);
         $this->aggregate->add($instance);
 
