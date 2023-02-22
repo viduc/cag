@@ -106,7 +106,7 @@ class DependencyInjection implements DependencyInjectionInterface
         $params = [];
         foreach ($this->provider->getDefinitionParameters($id) as $parameter) {
             $params[$parameter->name] = $parameter->value;
-            if ($parameter->isDefinition) {
+            if ($parameter->isDefinition) {var_dump($id);var_dump($parameter);
                 $params[$parameter->name] = $this->get($parameter->value->class);
             }
         }
