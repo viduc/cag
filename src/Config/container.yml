@@ -13,6 +13,10 @@ services:
     ]
   Cag\Services\ComposerService:
     class: [Cag\Services\ComposerService]
+  Cag\Factory\Model\FileModelFactory:
+    class: [Cag\Factory\Model\FileModelFactory]
+  Cag\Factory\Model\FolderModelFactory:
+    class: [Cag\Factory\Model\FolderModelFactory]
   Cag\Factory\Model\StructureModelFactory:
     class: [Cag\Factory\Model\StructureModelFactory]
     params: [
