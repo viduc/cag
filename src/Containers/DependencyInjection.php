@@ -103,8 +103,8 @@ class DependencyInjection implements DependencyInjectionInterface
         if ($definition->external) {
             return $this->instantiateExternal($definition);
         }
-        $params = [];
-        foreach ($this->provider->getDefinitionParameters($id) as $parameter) {
+        $params = [];var_dump($id);
+        foreach ($this->provider->getDefinitionParameters($id) as $parameter) {var_dump($parameter);
             $params[$parameter->name] = $parameter->value;
             if ($parameter->isDefinition) {
                 $params[$parameter->name] = $this->instantiate($parameter->value);
