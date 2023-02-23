@@ -100,7 +100,15 @@ describe('Test on StructureService Class', function () {
                 );
                 $folders = scandir($this->folder2);
                 foreach (Constantes::FOLDERS as $folder) {
-                    expect(in_array($folder, $folders))->toBeTruthy();
+                    if (str_contains($folder, DS)) {
+                        $subFolders = explode(DS, $folder);
+                        expect(in_array(
+                            $subFolders[1],
+                            scandir($this->folder2.DS.$subFolders[0])
+                        ))->toBeTruthy();
+                    } else {
+                        expect(in_array($folder, $folders))->toBeTruthy();
+                    }
                 }
             }
         );
