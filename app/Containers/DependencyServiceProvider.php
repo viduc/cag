@@ -14,6 +14,7 @@ namespace App\Containers;
 use App\Presenters\CreateProjectPresenter;
 use App\Requests\CreateRequest;
 use App\Services\CreateService;
+use Cag\Cag;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 class DependencyServiceProvider extends AbstractServiceProvider
@@ -27,6 +28,8 @@ class DependencyServiceProvider extends AbstractServiceProvider
         CreateService::class,
         'dependencyInjection',
         DependencyInjection::class,
+         'cag',
+        Cag::class
     ];
     /**
      * @param string $id
@@ -50,6 +53,9 @@ class DependencyServiceProvider extends AbstractServiceProvider
         $this->getContainer()->add(CreateRequest::class);
         $this->getContainer()
             ->add(CreateService::class)
+            ->addArgument(DependencyInjection::class);
+        $this->getContainer()
+            ->add(Cag::class)
             ->addArgument(DependencyInjection::class);
     }
 }
