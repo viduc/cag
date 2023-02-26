@@ -42,11 +42,23 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
 
+    - name: Install merge clover
+      run: |
+        cd clover
+        composer install --prefer-dist --no-progress
+
     - name: Create folder
       run: mkdir -p build/logs && mkdir -p spec/public
 
     - name: Run test suite
-      run: ./vendor/bin/kahlan --reporter=verbose --coverage=4 --clover=build/logs/clover.xml
+      run: |
+        ./vendor/bin/kahlan --reporter=verbose --coverage=4 --clover=clover-kahlan.xml
+        ./vendor/phpunit/phpunit/phpunit --configuration phpunit.xml --teamcity
+
+    - name: Merge clover
+      run: |
+            cd clover
+            ./vendor/bin/clover-merge merge -o ../build/logs/clover.xml ../clover-kahlan.xml ../clover.xml
 
     - name: Publish code coverage
       uses: paambaati/codeclimate-action@v3.2.0
