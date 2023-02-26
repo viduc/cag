@@ -9,11 +9,12 @@ declare(strict_types=1);
  */
 
 use Cag\Exceptions\FolderException;
+use Cag\Exceptions\NameException;
 use Cag\Services\FolderService;
 
 const DS = DIRECTORY_SEPARATOR;
 
-describe('FileService', function () {
+describe('FolderService', function () {
     given('public', function () {
         return str_replace('Services', 'public', __DIR__);
     });
@@ -32,36 +33,36 @@ describe('FileService', function () {
 
     describe('create and delete', function () {
         it(
-            'should return a FileException if name of folder is empty
+            'should return a NameException if name of folder is empty
             and is not valid',
             function () {
                 $closure = function () {
                     $this->folderService->create('');
                 };
-                expect($closure)->toThrow(new FolderException(
-                    'Name of folder must not be empty',
+                expect($closure)->toThrow(new NameException(
+                    'Name must not be empty',
                     100
                 ));
                 $closure = function () {
                     $this->folderService->create(DS . "ziap" . DS . "test");
                 };
-                expect($closure)->toThrow(new FolderException(
-                    'The target folder is invalid',
+                expect($closure)->toThrow(new NameException(
+                    'The target is invalid',
                     101
                 ));
 
                 $closure = function () {
                     $this->folderService->delete('');
                 };
-                expect($closure)->toThrow(new FolderException(
-                    'Name of folder must not be empty',
+                expect($closure)->toThrow(new NameException(
+                    'Name must not be empty',
                     100
                 ));
                 $closure = function () {
                     $this->folderService->delete(DS . "ziap" . DS . "test");
                 };
-                expect($closure)->toThrow(new FolderException(
-                    'The target folder is invalid',
+                expect($closure)->toThrow(new NameException(
+                    'The target is invalid',
                     101
                 ));
             }
@@ -69,7 +70,7 @@ describe('FileService', function () {
     });
     describe('create', function () {
         it(
-            'should return a FolderException if folder already exist',
+            'should return a NameException if folder already exist',
             function () {
                 mkdir($this->folder);
                 $closure = function () {

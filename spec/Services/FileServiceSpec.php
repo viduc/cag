@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 use Cag\Exceptions\FileException;
 use Cag\Exceptions\FolderException;
+use Cag\Exceptions\NameException;
 use Cag\Services\FileService;
 
 describe('FileService', function () {
@@ -31,34 +32,34 @@ describe('FileService', function () {
 
     describe('create and update', function () {
         it(
-            'should return a FileException if name of file is empty',
+            'should return a NameException if name of file is empty',
             function () {
                 $closure = function () {
                     $this->fileService->create('');
                 };
-                expect($closure)->toThrow(new FileException(
-                    'Name of file must not be empty',
+                expect($closure)->toThrow(new NameException(
+                    'Name must not be empty',
                     100
                 ));
                 $closure = function () {
                     $this->fileService->update('');
                 };
-                expect($closure)->toThrow(new FileException(
-                    'Name of file must not be empty',
+                expect($closure)->toThrow(new NameException(
+                    'Name must not be empty',
                     100
                 ));
             }
         );
         it(
-            'should return a FileException if name of file is not valid',
+            'should return a NameException if name of folder is not valid',
             function () {
                 $closure = function () {
                     $this->fileService->create(
                         DIRECTORY_SEPARATOR."ziap".DIRECTORY_SEPARATOR."test"
                     );
                 };
-                expect($closure)->toThrow(new FolderException(
-                    "The target folder is invalid",
+                expect($closure)->toThrow(new NameException(
+                    "The target is invalid",
                     101
                 ));
                 $closure = function () {
@@ -66,8 +67,8 @@ describe('FileService', function () {
                         DIRECTORY_SEPARATOR."ziap".DIRECTORY_SEPARATOR."test"
                     );
                 };
-                expect($closure)->toThrow(new FolderException(
-                    "The target folder is invalid",
+                expect($closure)->toThrow(new NameException(
+                    "The target is invalid",
                     101
                 ));
             }

@@ -12,6 +12,7 @@ namespace Cag\Validator;
 
 use Cag\Exceptions\FileException;
 use Cag\Exceptions\FolderException;
+use Cag\Exceptions\NameException;
 
 class FileValidator extends ValidatorAbstract
 {
@@ -20,7 +21,7 @@ class FileValidator extends ValidatorAbstract
      * @param bool $exist
      *
      * @return void
-     * @throws FileException|FolderException
+     * @throws FileException|NameException
      */
     public static function checkFile(string $name, bool $exist = true): void
     {

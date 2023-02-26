@@ -10,22 +10,28 @@ declare(strict_types=1);
 
 namespace Cag\Validator;
 
-use Cag\Exceptions\FolderException;
+use Cag\Exceptions\NameException;
 
 class CheckValidator extends ValidatorAbstract
 {
+    /**
+     * @param string $name
+     * @param bool $exist
+     * @return void
+     * @throws NameException
+     */
     public static function checkFile(string $name, bool $exist = true): void
     {
         if ('' === $name) {
-            throw new FolderException(
-                'Name of folder must not be empty',
+            throw new NameException(
+                'Name must not be empty',
                 100
             );
         }
 
         if (!FolderValidator::isFolderWritable($name)) {
-            throw new FolderException(
-                "The target folder is invalid",
+            throw new NameException(
+                "The target is invalid",
                 101
             );
         }
