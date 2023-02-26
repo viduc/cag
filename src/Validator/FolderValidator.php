@@ -22,19 +22,7 @@ class FolderValidator extends ValidatorAbstract
      */
     public static function checkFile(string $name, bool $exist = true): void
     {
-        if ('' === $name) {
-            throw new FolderException(
-                'Name of folder must not be empty',
-                100
-            );
-        }
-
-        if (!FolderValidator::isFolderWritable($name)) {
-            throw new FolderException(
-                "The target folder is invalid",
-                101
-            );
-        }
+        CheckValidator::checkFile($name, $exist);
 
         if ($exist && is_dir($name)) {
             throw new FolderException(
