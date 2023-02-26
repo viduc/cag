@@ -32,7 +32,7 @@
   },
   "scripts": {
     "test": "kahlan --reporter=verbose",
-    "coverage": "kahlan --reporter=verbose --coverage=4 --clover=clover.xml"
+    "coverage": "kahlan --reporter=verbose --coverage=4 --clover=clover-kahlan.xml"
   },
   "bin": ["bin/cag"],
   "require": {
