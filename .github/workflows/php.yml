@@ -58,7 +58,7 @@ jobs:
     - name: Merge clover
       run: |
             cd clover
-            ./vendor/bin/clover-merge merge -o ../build/logs/clover.xml ../clover-kahlan.xml ../clover.xml
+            ./vendor/bin/clover-merge merge -o ../clover-kahlan.xml ../build/logs/clover.xml ../clover.xml
 
     - name: Publish code coverage
       uses: paambaati/codeclimate-action@v3.2.0
