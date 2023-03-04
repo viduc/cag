@@ -50,21 +50,6 @@ describe('FolderService', function () {
                     'The target is invalid',
                     101
                 ));
-
-                $closure = function () {
-                    $this->folderService->delete('');
-                };
-                expect($closure)->toThrow(new NameException(
-                    'Name must not be empty',
-                    100
-                ));
-                $closure = function () {
-                    $this->folderService->delete(DS . "ziap" . DS . "test");
-                };
-                expect($closure)->toThrow(new NameException(
-                    'The target is invalid',
-                    101
-                ));
             }
         );
     });
@@ -87,30 +72,6 @@ describe('FolderService', function () {
             function () {
                 $this->folderService->create($this->folder);
                 expect(is_dir($this->folder))->toBeTruthy();
-            }
-        );
-    });
-
-    describe('delete', function () {
-        it(
-            'should return a FileException if folder not exist',
-            function () {
-                $closure = function () {
-                    $this->folderService->delete($this->folder);
-                };
-                expect($closure)->toThrow(new FolderException(
-                    'The target folder is invalid',
-                    101
-                ));
-            }
-        );
-        it(
-            'The folder must be deleted',
-            function () {
-                mkdir($this->folder);
-                expect(is_dir($this->folder))->toBeTruthy();
-                $this->folderService->delete($this->folder);
-                expect(is_dir($this->folder))->toBeFalsy();
             }
         );
     });

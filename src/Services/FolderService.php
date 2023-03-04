@@ -11,15 +11,16 @@ declare(strict_types=1);
 namespace Cag\Services;
 
 use Cag\Exceptions\FolderException;
+use Cag\Exceptions\NameException;
 use Cag\Validator\FolderValidator;
 
 class FolderService extends FolderServiceAbstract
 {
     /**
      * @param string $name
-     *
      * @return void
      * @throws FolderException
+     * @throws NameException
      */
     public function create(string $name): void
     {
@@ -34,46 +35,38 @@ class FolderService extends FolderServiceAbstract
     }
 
     /**
-     * @param string $name
-     *
-     * @return bool
-     * @throws FolderException
+     * @param string $source
+     * @param string $target
+     * @param bool $recursive
+     * @return void
      */
-    public function delete(string $name): bool
-    {
-        FolderValidator::checkFile($name, false);
-        if (!is_dir($name)) {
-            throw new FolderException(
-                "The target folder is invalid",
-                101
-            );
+    public function copy(
+        string $source,
+        string $target,
+        bool $recursive = true
+    ): void {
+        if (is_dir($source)) {
+            try {
+                $this->create($target);
+            } catch (FolderException|NameException) {}
+            $d = dir($source);
+            while (false !== ($entry = $d->read())) {
+                if ($entry == '.' || $entry == '..') {
+                    continue;
+                }
+                $Entry = $source . DIRECTORY_SEPARATOR . $entry;
+                if (is_dir($Entry)) {
+                    $this->copy(
+                        $Entry,
+                        $target . DIRECTORY_SEPARATOR . $entry);
+                    continue;
+                }
+                copy($Entry, $target . DIRECTORY_SEPARATOR . $entry);
+            }
+
+            $d->close();
+        } else {
+            copy($source, $target);
         }
-        if (false === rmdir($name)) {
-            throw new FolderException(
-                "An undetermined error occurred during the 
-                folder suppression: ".$name,
-                103
-            );
-        }
-
-        return true;
-    }
-
-    /**
-     * @return string
-     */
-    public function getProjectPath(): string
-    {
-        $explode = explode('vendor', $this->getFullPath());
-
-        return $explode[0];
-    }
-
-    /**
-     * @return string
-     */
-    public function getFullPath(): string
-    {
-        return __DIR__;
     }
 }

@@ -8,11 +8,9 @@ declare(strict_types=1);
  * Licence: GPL v3 https://opensource.org/licenses/gpl-3.0.html
  */
 
-namespace Cag\Services;
+namespace Sources\UseCases;
 
-use Cag\Models\StructureModel;
-
-abstract class StructureServiceAbstract implements ServiceInterface
+interface UseCaseInterface
 {
-    public abstract function create(StructureModel $model): void;
+
 }

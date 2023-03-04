@@ -23,12 +23,32 @@ abstract class FolderServiceAbstract implements ServiceInterface
     public abstract function create(string $name): void;
 
     /**
-     * @param string $name
-     * @return bool
+     * @param string $source
+     * @param string $target
+     * @param bool $recursive
+     * @return void
      */
-    public abstract function delete(string $name): bool;
+    public abstract function copy(
+        string $source,
+        string $target,
+        bool $recursive = true
+    ): void;
 
-    public abstract  function getProjectPath(): string;
+    /**
+     * @return string
+     */
+    public function getProjectPath(): string
+    {
+        $explode = explode('vendor', self::getFullPath());
 
-    public abstract function getFullPath(): string;
+        return $explode[0];
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullPath(): string
+    {
+        return __DIR__;
+    }
 }

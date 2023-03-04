@@ -1,22 +1,13 @@
 services:
   Cag\Cag:
     class: [Cag\Cag]
-  Cag\Services\FileService:
-    class: [Cag\Services\FileService]
   Cag\Services\FolderService:
     class: [Cag\Services\FolderService]
   Cag\Services\StructureService:
     class: [Cag\Services\StructureService]
-    params: [
-      'fileService': 'Cag\Services\FileService',
-      'folderService': 'Cag\Services\FolderService'
-    ]
+    params: ['folderService': 'Cag\Services\FolderService']
   Cag\Services\ComposerService:
     class: [Cag\Services\ComposerService]
-  Cag\Factory\Model\FileModelFactory:
-    class: [Cag\Factory\Model\FileModelFactory]
-  Cag\Factory\Model\FolderModelFactory:
-    class: [Cag\Factory\Model\FolderModelFactory]
   Cag\Factory\Model\StructureModelFactory:
     class: [Cag\Factory\Model\StructureModelFactory]
     params: [

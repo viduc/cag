@@ -12,9 +12,7 @@ namespace Cag\UseCases;
 
 use Cag\Exceptions\ExceptionAbstract;
 use Cag\Factory\Model\ErreurModelFactory;
-use Cag\Factory\Model\StructureModelFactory;
 use Cag\Factory\Model\StructureModelFactoryAbstract;
-use Cag\Factory\Response\CreateProjectResponseFactory;
 use Cag\Factory\Response\CreateProjectResponseFactoryAbstract;
 use Cag\Models\ErrorModel;
 use Cag\Presenters\PresenterInterface;
