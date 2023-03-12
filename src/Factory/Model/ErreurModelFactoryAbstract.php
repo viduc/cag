@@ -10,10 +10,9 @@ declare(strict_types=1);
 
 namespace Cag\Factory\Model;
 
-use Cag\Factory\FactoryAbstract;
 use Cag\Models\ErrorModel;
 
-class ErreurModelFactory extends FactoryAbstract
+class ErreurModelFactoryAbstract
 {
     /**
      * @return ErrorModel

@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace Cag\UseCases;
 
 use Cag\Exceptions\ExceptionAbstract;
-use Cag\Factory\Model\ErreurModelFactory;
+use Cag\Factory\Model\ErreurModelFactoryAbstract;
 use Cag\Factory\Model\StructureModelFactoryAbstract;
 use Cag\Factory\Response\CreateProjectResponseFactoryAbstract;
 use Cag\Models\ErrorModel;
@@ -128,7 +128,7 @@ class CreateProjectUseCase implements UseCaseInterface
         try {
             $value = $this->request->getParam($param) ?? '';
         } catch (ExceptionAbstract $e) {
-            $erreur = ErreurModelFactory::get();
+            $erreur = ErreurModelFactoryAbstract::get();
             $erreur->setMessage("Param ".$param." not found in request");
             $this->response->setError($erreur);
             $value = '';
