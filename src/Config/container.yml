@@ -8,12 +8,6 @@ services:
     params: ['folderService': 'Cag\Services\FolderService']
   Cag\Services\ComposerService:
     class: [Cag\Services\ComposerService]
-  Cag\Factory\Model\StructureModelFactory:
-    class: [Cag\Factory\Model\StructureModelFactory]
-    params: [
-      'fileModelFactory': 'Cag\Factory\Model\FileModelFactory',
-      'folderModelFactory': 'Cag\Factory\Model\FolderModelFactory'
-    ]
   Cag\Factory\Response\CreateProjectResponseFactory:
     class: [Cag\Factory\Response\CreateProjectResponseFactory]
   Cag\UseCases\CreateProjectUseCase:
