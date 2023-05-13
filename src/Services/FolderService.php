@@ -49,24 +49,25 @@ class FolderService extends FolderServiceAbstract
             try {
                 $this->create($target);
             } catch (FolderException|NameException) {}
-            $d = dir($source);
-            while (false !== ($entry = $d->read())) {
-                if ($entry == '.' || $entry == '..') {
-                    continue;
-                }
-                $Entry = $source . DIRECTORY_SEPARATOR . $entry;
-                if (is_dir($Entry)) {
-                    $this->copy(
-                        $Entry,
-                        $target . DIRECTORY_SEPARATOR . $entry);
-                    continue;
-                }
-                copy($Entry, $target . DIRECTORY_SEPARATOR . $entry);
-            }
-
-            $d->close();
+            $this->copyDir($source, $target);
         } else {
             copy($source, $target);
         }
+    }
+
+    private function copyDir(string $source, string $target): void
+    {
+        $d = dir($source);
+        while (false !== ($entry = $d->read())) {
+            if ($entry === '.' || $entry === '..') {
+                continue;
+            }
+            $this->copy(
+                $source . DIRECTORY_SEPARATOR . $entry,
+                $target . DIRECTORY_SEPARATOR . $entry
+            );
+        }
+
+        $d->close();
     }
 }
