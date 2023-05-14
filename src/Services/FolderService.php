@@ -55,6 +55,11 @@ class FolderService extends FolderServiceAbstract
         }
     }
 
+    /**
+     * @param string $source
+     * @param string $target
+     * @return void
+     */
     private function copyDir(string $source, string $target): void
     {
         $d = dir($source);
