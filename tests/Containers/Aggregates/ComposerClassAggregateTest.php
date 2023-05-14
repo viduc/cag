@@ -23,7 +23,7 @@ class ComposerClassAggregateTest extends TestCase
         $this->composerClassAggregate = new ComposerClassAggregate();
     }
 
-    public function testGetNotFOund(): void
+    public function testGetNotFound(): void
     {
         $this->expectExceptionMessage(
             sprintf(
