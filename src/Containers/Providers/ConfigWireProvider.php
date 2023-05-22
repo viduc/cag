@@ -26,7 +26,7 @@ class ConfigWireProvider implements ProviderInterface
     /**
      * @var array|mixed
      */
-    private array $list;
+    public array $list;
 
     /**
      * @var DefinitionsAggregate
@@ -91,6 +91,14 @@ class ConfigWireProvider implements ProviderInterface
                     $this->addDefinition($name, $service);
                 }
             } catch (ReflectionException $exception) {
+                throw new DefinitionException(
+                    sprintf(
+                                DefinitionException::LOG_NOT_FOUND,
+                        'class',
+                        $name
+                    ),
+                    DefinitionException::CODE_NOT_FOUND
+                );
             }
         }
     }

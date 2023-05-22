@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Cag\Tests\Containers\Providers;
 
 use Cag\Containers\Exceptions\DefinitionException;
+use Cag\Containers\Models\Definition;
 use Cag\Containers\Providers\AutoWireProvider;
 use Cag\Spec\Mock\ClassForProvider\AbstractClass;
 use Cag\Spec\Mock\ClassForProvider\Implementations\ImpWithOneAbstract;
@@ -154,6 +155,22 @@ class AutoWireProviderTest extends TestCase
             $this->provider->getAggregate()->has(
                 WithInterfaceParamMultiImp::class
             )
+        );
+    }
+
+    public function testShouldNotProvides(): void
+    {
+        self::assertFalse(
+            $this->provider->provides('test')
+        );
+    }
+
+    public function testShouldReturnDefinitionNotContainInAggregate(): void
+    {
+        unset($this->provider->getAggregate()->aggregates[Simple::class]);
+        self::assertInstanceOf(
+            Definition::class,
+            $this->provider->getDefinition(Simple::class)
         );
     }
 }

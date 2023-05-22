@@ -13,9 +13,11 @@ namespace Cag\Tests\Containers\Providers;
 
 use Cag\Containers\Exceptions\DefinitionException;
 use Cag\Containers\Exceptions\NotFoundException;
+use Cag\Containers\Models\Definition;
 use Cag\Containers\Providers\ConfigWireProvider;
 use Cag\Spec\Mock\ClassForProvider\Implementations\ImpWithMultipleAbstract1;
 use Cag\Spec\Mock\ClassForProvider\Implementations\ImpWithMultipleImp1;
+use Cag\Spec\Mock\ClassForProvider\Simple;
 use Cag\Spec\Mock\ClassForProvider\WithAbstractParamMultiImp;
 use Cag\Spec\Mock\ClassForProvider\WithInterfaceParamMultiImp;
 use Cag\Spec\Mock\ClassForProvider\WithStringParam;
@@ -127,5 +129,33 @@ class ConfigWireProviderTest extends TestCase
                 )
             );
         }
+    }
+
+    public function testShouldReturnDefinition(): void
+    {
+        self::assertInstanceOf(
+            Definition::class,
+            $this->provider->getDefinition(WithAbstractParamMultiImp::class)
+        );
+    }
+
+    public function testShouldNotRegister(): void
+    {
+        $this->provider->list = ['test' => ['class' => 'toto']];
+        $this->expectException(DefinitionException::class);
+        $this->provider->register();
+    }
+
+    public function testShouldProvides(): void
+    {
+        self::assertTrue(
+            $this->provider->provides(WithStringParam::class)
+        );
+    }
+
+    public function testConstructWithPathNull(): void
+    {
+        $this->provider = new ConfigWireProvider(null);
+        self::assertIsArray($this->provider->list);
     }
 }
