@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Cag\Containers\Providers;
 
+use Cag\Spec\Mock\ClassForProvider\WithSimpleClassParam;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionParameter;
@@ -117,7 +118,7 @@ class AutoWireProvider implements ProviderInterface
         Definition $definition,
         ReflectionParameter $param
     ): void {
-        if (!is_null($param->getType())) {
+        if (!is_null($param->getType()) && !$param->isOptional()) {
             $class = $param->getType()->getName();
             $parameter = new Parameter('%'.$class.'%', $param->getName());
             $implementations = ClassSearchAbstract::getInterfaceImplementations(

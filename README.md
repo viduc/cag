@@ -35,3 +35,20 @@ software for all its users.  We, the Free Software Foundation, use the
 GNU General Public License for most of our software; it applies also to
 any other work released this way by its authors.  You can apply it to
 your programs, too.
+
+CLEAN ARCHITECTURE GENERATOR - CAG
+-------
+
+The cag library allows you to create a development structure using a 
+hexagonal type architecture. This structure will be created within your 
+project or framework in an isolated folder. Once your structure is created, 
+it is advisable to uninstall cag from your project.
+
+LANGAGE
+-------
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/viduc/44652f42dbbd9f45f3f640a9197baeec#file-version-json/raw/version.json)
+
+INSTALLATION
+-------
+
+    composer require viduc/cag --dev

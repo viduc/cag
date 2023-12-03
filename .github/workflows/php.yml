@@ -64,3 +64,13 @@ jobs:
       uses: paambaati/codeclimate-action@v3.2.0
       env:
         CC_TEST_REPORTER_ID: 2c8e02c733427a8a315db588b680f39011c144fffaaa6bea88695113e798222b
+
+    - name: Create Badge Version
+      uses: schneegans/dynamic-badges-action@v1.7.0
+      with:
+        auth: ${{ secrets.GIST_SECRET }}
+        gistID: 44652f42dbbd9f45f3f640a9197baeec#file-version-json
+        filename: version.json
+        label: Version Php
+        message: ${{ matrix.php-versions }}
+        color: orange

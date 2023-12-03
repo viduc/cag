@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Cag\Containers\Validators;
 
+use Cag\Spec\Mock\ClassForProvider\WithSimpleClassParam;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionParameter;
@@ -65,9 +66,8 @@ abstract class AutoWireValidatorAbstract implements ValidatorInterface
         if (is_null($constructor)) {
             return true;
         }
-
         foreach ($constructor->getParameters() as $parameter) {
-            if (!AutoWireValidatorAbstract::validParamOptional($parameter) ||
+            if (!AutoWireValidatorAbstract::validParamOptional($parameter) &&
                 !AutoWireValidatorAbstract::isParamInstantiable($parameter)) {
                 return false;
             }
@@ -145,12 +145,6 @@ abstract class AutoWireValidatorAbstract implements ValidatorInterface
     public static function validParamOptional(
         ReflectionParameter $parameter
     ): bool {
-        if ($parameter->isOptional()) {
-            return true;
-        }
-        return !in_array(
-            $parameter->getType()->getName(),
-            AutoWireValidatorAbstract::PHP_DATA_TYPES
-        );
+        return $parameter->isOptional();
     }
 }
