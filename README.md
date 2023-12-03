@@ -46,7 +46,8 @@ it is advisable to uninstall cag from your project.
 
 LANGAGE
 -------
-![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/viduc/44652f42dbbd9f45f3f640a9197baeec#file-version-json/raw/version.json)
+![badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fgist.githubusercontent.com%2Fviduc%2F44652f42dbbd9f45f3f640a9197baeec%2Fraw%2F2efe99fdaba0bcf5df9d5aaea30d9e5a00895a6c%2Fversion.json
+)
 
 INSTALLATION
 -------

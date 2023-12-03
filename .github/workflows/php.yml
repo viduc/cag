@@ -69,7 +69,7 @@ jobs:
       uses: schneegans/dynamic-badges-action@v1.7.0
       with:
         auth: ${{ secrets.GIST_SECRET }}
-        gistID: 44652f42dbbd9f45f3f640a9197baeec#file-version-json
+        gistID: 44652f42dbbd9f45f3f640a9197baeec/raw/e74d5c0bddce135d91031ff3cb3b7c7fc0cdff47/version.json
         filename: version.json
         label: Version Php
         message: ${{ matrix.php-versions }}
