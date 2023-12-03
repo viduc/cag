@@ -70,7 +70,7 @@ jobs:
       with:
         auth: ${{ secrets.GIST_SECRET }}
         gistID: 0b7d92547a358f4b3cf944145315170f/raw/7fa60f047154cef6f9a8e8168aa17d3b47517122/php_8.0.json
-        filename: version.json
-        label: Version Php
+        filename: php_8.0.json
+        label: Php
         message: ${{ matrix.php-versions }}
         color: orange
