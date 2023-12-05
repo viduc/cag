@@ -46,8 +46,9 @@ it is advisable to uninstall cag from your project.
 
 LANGAGE
 -------
-![badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fgist.githubusercontent.com%2Fviduc%2F44652f42dbbd9f45f3f640a9197baeec%2Fraw%2F2efe99fdaba0bcf5df9d5aaea30d9e5a00895a6c%2Fversion.json
-)
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/viduc/0b7d92547a358f4b3cf944145315170f/raw/php_8.0.json)
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/viduc/47feab281f5de327b2a210b785710946/raw/php_8.1.json)
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/viduc/e67a73e720803cc15d12339389d7d0c2/raw/php_8.2.json)
 
 INSTALLATION
 -------

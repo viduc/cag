@@ -67,10 +67,14 @@ jobs:
 
     - name: Create Badge Version
       uses: schneegans/dynamic-badges-action@v1.7.0
+      env:
+        gistId_8.0: 0b7d92547a358f4b3cf944145315170f
+        gistId_8.1: 47feab281f5de327b2a210b785710946
+        gistId_8.2: e67a73e720803cc15d12339389d7d0c2
       with:
         auth: ${{ secrets.GIST_SECRET }}
-        gistID: 0b7d92547a358f4b3cf944145315170f
-        filename: php_8.0.json
+        gistID: $gistId_${{ matrix.php-versions }}
+        filename: php_${{ matrix.php-versions }}.json
         label: Php
         message: ${{ matrix.php-versions }}
         color: orange
