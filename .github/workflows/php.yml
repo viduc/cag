@@ -70,20 +70,20 @@ jobs:
       env:
         CC_TEST_REPORTER_ID: 2c8e02c733427a8a315db588b680f39011c144fffaaa6bea88695113e798222b
 
-    - name: configuration for gist 8.0
+    - name: configuration for gist ZERO
       if: {{ matrix.php-versions == '8.0' }}
-      run: |
-        echo "GIST_ID=${{ env.GIST_ID_ZERO }}" >> $GITHUB_ENV
+      env:
+        GIST_ID: ${{ env.GIST_ID_ZERO }}
 
-    - name: configuration for gist 8.1
+    - name: configuration for gist ONE
       if: {{ matrix.php-versions == '8.1'}}
-      run: |
-        echo "GIST_ID=${{ env.GIST_ID_ONE }}" >> $GITHUB_ENV
+      env:
+        GIST_ID: ${{ env.GIST_ID_ONE }}
 
-    - name: configuration for gist 8.2
+    - name: configuration for gist TWO
       if: {{ matrix.php-versions == '8.2'}}
-      run: |
-        echo "GIST_ID=${{ env.GIST_ID_TWO }}" >> $GITHUB_ENV
+      env:
+        GIST_ID: ${{ env.GIST_ID_TWO }}
 
     - name: Create Badge Version
       uses: schneegans/dynamic-badges-action@v1.7.0
