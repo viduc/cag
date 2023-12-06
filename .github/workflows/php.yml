@@ -1,9 +1,9 @@
 name: PHP Composer
 
 env:
-  gistId_8.0: 0b7d92547a358f4b3cf944145315170f
-  gistId_8.1: 47feab281f5de327b2a210b785710946
-  gistId_8.2: e67a73e720803cc15d12339389d7d0c2
+  GIST_ID_ZERO: 0b7d92547a358f4b3cf944145315170f
+  GIST_ID_ONE: 47feab281f5de327b2a210b785710946
+  GIST_ID_TWO: e67a73e720803cc15d12339389d7d0c2
 
 on:
   push:
@@ -71,19 +71,19 @@ jobs:
         CC_TEST_REPORTER_ID: 2c8e02c733427a8a315db588b680f39011c144fffaaa6bea88695113e798222b
 
     - name: configuration for gist 8.0
-      if: {{ matrix.php-versions == '8.0'}}
+      if: {{ matrix.php-versions == '8.0' }}
       run: |
-        echo "GIST_ID=${{ env.gistId_8.0 }}" >> $GITHUB_ENV
+        echo "GIST_ID=${{ env.GIST_ID_ZERO }}" >> $GITHUB_ENV
 
     - name: configuration for gist 8.1
       if: {{ matrix.php-versions == '8.1'}}
       run: |
-        echo "GIST_ID=${{ env.gistId_8.1 }}" >> $GITHUB_ENV
+        echo "GIST_ID=${{ env.GIST_ID_ONE }}" >> $GITHUB_ENV
 
     - name: configuration for gist 8.2
       if: {{ matrix.php-versions == '8.2'}}
       run: |
-        echo "GIST_ID=${{ env.gistId_8.2 }}" >> $GITHUB_ENV
+        echo "GIST_ID=${{ env.GIST_ID_TWO }}" >> $GITHUB_ENV
 
     - name: Create Badge Version
       uses: schneegans/dynamic-badges-action@v1.7.0
