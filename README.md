@@ -5,7 +5,7 @@ Viduc/Cag
 AUTEUR
 ------
 [![Viduc](https://www.shareicon.net/data/48x48/2016/01/02/229394_cylon_256x256.png)](https://github.com/viduc)
-[![Mail](https://www.shareicon.net/data/48x48/2016/03/20/444954_mail_200x200.png)](mailto:viduc@mail.fr?subject=[GitHub]%20Source%20Han%20Sans)
+[![Mail](https://www.shareicon.net/data/48x48/2017/06/21/887452_email_512x512.png)](mailto:viduc@mail.fr?subject=[GitHub]%20Source%20Han%20Sans)
 
 STATUT
 ------
@@ -53,10 +53,6 @@ LANGAGE
 ![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/viduc/47feab281f5de327b2a210b785710946/raw/php_8.1.json)
 ![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/viduc/e67a73e720803cc15d12339389d7d0c2/raw/php_8.2.json)
 
-PROJECT
--------
-
-
 INSTALLATION
 -------
 
@@ -69,9 +65,10 @@ SUPPRESSION
 
 Créer un nouveau projet:
 -------
+
 Ouvrez un terminal à la racine de votre projet et entrez cette commande:
 
-`php ./vendor/bin/cag project create`
+    php ./vendor/bin/cag project create
 
 1. Choisissez un nom pour votre projet (ex Domain, Job...), Il sera utilisé comma namespace pour vos class.
 2. Choisissez un path pour votre projet, ce sera le dossier dans lequel tout les fichiers et dossiers seront créés.
