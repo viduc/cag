@@ -4,7 +4,7 @@ Viduc/Cag
 
 AUTEUR
 ------
-[![Viduc](https://www.shareicon.net/data/48x48/2016/01/02/229394_cylon_256x256.png)](https://github.com/viduc)
+[![Viduc](https://www.shareicon.net/data/48x48/2015/08/29/92755_linkedin_606x606.png)](https://www.linkedin.com/in/tristan-fleury/)
 [![Mail](https://www.shareicon.net/data/48x48/2017/06/21/887452_email_512x512.png)](mailto:viduc@mail.fr?subject=[GitHub]%20Source%20Han%20Sans)
 
 STATUT
