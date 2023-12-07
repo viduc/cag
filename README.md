@@ -38,11 +38,14 @@ your programs, too.
 
 CLEAN ARCHITECTURE GENERATOR - CAG
 -------
+Le projet CAG permet de créer une structure de développement en se basant sur les principes de l'architecture hexagonale.
 
-The cag library allows you to create a development structure using a 
-hexagonal type architecture. This structure will be created within your 
-project or framework in an isolated folder. Once your structure is created, 
-it is advisable to uninstall cag from your project.
+Celle ci permet d'isoler totalement le code métier du reste du projet (infrastructure, base de données, librairies etc...).
+
+Le projet est à installer au sein de votre framework en mode développement.
+
+Une fois votre projet créé, il est conseillé de supprimer cag, il ne sera plus utilisé par la suite:
+
 
 LANGAGE
 -------
@@ -50,7 +53,29 @@ LANGAGE
 ![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/viduc/47feab281f5de327b2a210b785710946/raw/php_8.1.json)
 ![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/viduc/e67a73e720803cc15d12339389d7d0c2/raw/php_8.2.json)
 
+PROJECT
+-------
+
+
 INSTALLATION
 -------
 
+    composer remove viduc/cag
+
+SUPPRESSION
+-------
+
     composer require viduc/cag --dev
+
+Créer un nouveau projet:
+-------
+Ouvrez un terminal à la racine de votre projet et entrez cette commande:
+
+`php ./vendor/bin/cag project create`
+
+1. Choisissez un nom pour votre projet (ex Domain, Job...), Il sera utilisé comma namespace pour vos class.
+2. Choisissez un path pour votre projet, ce sera le dossier dans lequel tout les fichiers et dossiers seront créés.
+3. Choisissez si vous souhaitez ajouter votre projet à l'autoload de composer. Si vous ne savez pas choisissez oui par défaut. Cette action modifiera votre composer.json en ajoutant le namespace à la paprtie autoload/PSR4.
+4. Enfin acceptez de créer le projet
+
+![create_project.png](.%2FDocumentation%2Fcreate_project.png)
