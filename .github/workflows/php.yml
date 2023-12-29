@@ -1,7 +1,6 @@
 name: PHP Composer
 
 env:
-  GIST_ID_ZERO: 0b7d92547a358f4b3cf944145315170f
   GIST_ID_ONE: 47feab281f5de327b2a210b785710946
   GIST_ID_TWO: e67a73e720803cc15d12339389d7d0c2
 
@@ -21,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: [ '8.0', '8.1', '8.2' ]
+        php-versions: ['8.1', '8.2' ]
     steps:
     - name: Setup PHP Action
       uses: shivammathur/setup-php@v2
@@ -69,10 +68,6 @@ jobs:
       uses: paambaati/codeclimate-action@v3.2.0
       env:
         CC_TEST_REPORTER_ID: 2c8e02c733427a8a315db588b680f39011c144fffaaa6bea88695113e798222b
-
-    - name: configuration for gist ZERO
-      if: ${{ matrix.php-versions == '8.0' }}
-      run: echo "GIST_ID=${{ env.GIST_ID_ZERO }}" >> $GITHUB_ENV
 
     - name: configuration for gist ONE
       if: ${{ matrix.php-versions == '8.1'}}

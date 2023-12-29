@@ -49,7 +49,6 @@ Une fois votre projet créé, il est conseillé de supprimer cag, il ne sera plu
 
 LANGAGE
 -------
-![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/viduc/0b7d92547a358f4b3cf944145315170f/raw/php_8.0.json)
 ![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/viduc/47feab281f5de327b2a210b785710946/raw/php_8.1.json)
 ![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/viduc/e67a73e720803cc15d12339389d7d0c2/raw/php_8.2.json)
 
