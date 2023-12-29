@@ -19,19 +19,27 @@ class FolderServiceTest extends TestCase
     private FolderService $folderService;
     private string $source = '';
     private string $target = '';
+    #[\Override]
     public function setUp(): void
     {
-        parent::setUp();
         $this->folderService = new FolderService();
-        $this->source = str_replace('tests/Services', 'src/Sources', __DIR__);
-        $this->target = str_replace('Services', 'Target', __DIR__);
-        $this->cleanDirectory($this->target);
+        $this->source = str_replace(
+            search: 'tests/Services',
+            replace: 'src/Sources',
+            subject: __DIR__
+        );
+        $this->target = str_replace(
+            search: 'Services',
+            replace: 'Target',
+            subject: __DIR__
+        );
+        $this->cleanDirectory(directory: $this->target);
     }
 
+    #[\Override]
     public function tearDown(): void
     {
-        parent::tearDown();
-        $this->cleanDirectory($this->target);
+        $this->cleanDirectory(directory: $this->target);
     }
 
     /**
@@ -40,10 +48,10 @@ class FolderServiceTest extends TestCase
     public function testCopy(): void
     {
         $this->folderService->copy(
-            $this->source,
-            $this->target
+            source: $this->source,
+            target: $this->target
         );
-        $this->verifyDirectory($this->source, $this->target);
+        $this->verifyDirectory(source: $this->source, target: $this->target);
     }
 
     /**
@@ -54,22 +62,22 @@ class FolderServiceTest extends TestCase
     private function verifyDirectory(string $source, string $target): void
     {
         $d = dir($source);
-        while (false !== ($entry = $d->read())) {
+        while (($entry = $d->read()) !== false) {
             if ($entry == '.' || $entry == '..') {
                 continue;
             }
-            if (is_dir($source . DIRECTORY_SEPARATOR . $entry)) {
+            if (is_dir(filename: $source . DIRECTORY_SEPARATOR . $entry)) {
                 $this->assertDirectoryExists(
-                    $target . DIRECTORY_SEPARATOR . $entry
+                    directory: $target . DIRECTORY_SEPARATOR . $entry
                 );
                 $this->verifyDirectory(
-                    $source . DIRECTORY_SEPARATOR . $entry,
-                    $target . DIRECTORY_SEPARATOR . $entry
+                    source: $source . DIRECTORY_SEPARATOR . $entry,
+                    target: $target . DIRECTORY_SEPARATOR . $entry
                 );
             }
-            if (is_file($source . DIRECTORY_SEPARATOR . $entry)) {
+            if (is_file(filename: $source . DIRECTORY_SEPARATOR . $entry)) {
                 $this->assertFileExists(
-                    $target . DIRECTORY_SEPARATOR . $entry
+                    filename: $target . DIRECTORY_SEPARATOR . $entry
                 );
             }
         }
@@ -77,16 +85,17 @@ class FolderServiceTest extends TestCase
 
     private function cleanDirectory(string $directory): void
     {
-        if (!is_dir($directory)) {
+        if (!is_dir(filename: $directory)) {
             return;
         }
-        $files = array_diff(scandir($directory), array('.','..'));
+        $files = array_diff(scandir(directory: $directory), array('.','..'));
 
         foreach ($files as $file) {
 
-            (is_dir($directory . DIRECTORY_SEPARATOR . $file)) ?
-                self::cleanDirectory($directory . DIRECTORY_SEPARATOR . $file) :
-                unlink($directory . DIRECTORY_SEPARATOR . $file);
+            (is_dir(filename: $directory . DIRECTORY_SEPARATOR . $file)) ?
+                self::cleanDirectory(
+                    directory: $directory . DIRECTORY_SEPARATOR . $file)
+                : unlink(filename: $directory . DIRECTORY_SEPARATOR . $file);
 
         }
         rmdir($directory);

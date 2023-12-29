@@ -29,11 +29,13 @@ abstract class CagControllerAbstract extends CommandController
     /**
      * @return void
      */
+    #[\Override]
     abstract public function handle(): void;
 
     /**
      * @return OutputHandler
      */
+    #[\Override]
     public function getPrinter(): OutputHandler
     {
         return parent::getPrinter();

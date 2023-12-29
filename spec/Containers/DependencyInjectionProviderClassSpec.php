@@ -1,12 +1,11 @@
 <?php
 declare(strict_types=1);
 /**
- * This file is part of the Cag package.
+ * CAG - Clean Architecture Generator
  *
- * (c) GammaSoftware <http://www.winlassie.com/>
+ * Tristan Fleury <http://viduc.github.com/>
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * Licence: GPL v3 https://opensource.org/licenses/gpl-3.0.html
  */
 
 use Cag\Containers\Exceptions\ComposerException;
@@ -25,12 +24,10 @@ use Cag\Spec\Mock\ClassForProvider\WithStringParam;
 use Cag\Tests\Containers\Config\ComposerAbstract;
 
 describe(
-    'Specification to Container\Providers\DependencyInjectionProvider',
-    function () {
+    message: 'Specification to Container\Providers\DependencyInjectionProvider',
+    closure: function () {
         beforeAll(
-            function () {
-                ComposerAbstract::autoload();
-            }
+            closure: function () {ComposerAbstract::autoload();}
         );
         beforeEach(
             /**
@@ -41,88 +38,70 @@ describe(
              */
             function () {
                 $path = str_replace(
-                    'spec/Containers',
-                    'tests/Containers/Config',
-                    __DIR__
+                    search: 'spec/Containers',
+                    replace: 'tests/Containers/Config',
+                    subject: __DIR__
                 );
                 $path .= '/container.yml';
-                $this->provider = new DependencyInjectionProvider($path);
+                $this->provider = new DependencyInjectionProvider(path: $path);
             }
         );
 
         describe(
-            'Specification to provides methode',
-            function () {
-                it(
-                    'should provide a simple class with no param (autowire)',
-                    function () {
+            message: 'Specification to provides methode',
+            closure: function () {
+                with_provided_data_it(
+                    message: "should provide a {:0}",
+                    closure: function($message, $class) {
                         expect(
-                            $this->provider->provides(Simple::class)
+                            actual: $this->provider->provides(id: $class)
                         )->toBeTruthy();
+                    },
+                    provider: function () {
+                        yield [
+                            'simple class with no param (autowire)',
+                            Simple::class
+                        ];
+                        yield [
+                            'class with internal class (simple) param (autowire)',
+                            WithSimpleClassParam::class
+                        ];
+                        yield [
+                            'class with valid interface (external) param (autowire)',
+                            WithExternalValidInterfaceParam::class
+                        ];
+                        yield [
+                            'class with internal interface param (one imp) (autowire)',
+                            WithInterfaceParamOneImp::class
+                        ];
+                        yield [
+                            'class with string param (configwire)',
+                            WithStringParam::class
+                        ];
+                        yield [
+                            'class with internal interface param (multiple imp) (configwire)',
+                            WithInterfaceParamMultiImp::class
+                        ];
+                        yield [
+                            'class with internal class param who have string param',
+                            WithComplexeClassParam::class
+                        ];
                     }
                 );
-                it(
-                    'should provide a class with internal class (simple) param (autowire)',
-                    function () {
-                        expect(
-                            $this->provider->provides(WithSimpleClassParam::class)
-                        )->toBeTruthy();
-                    }
-                );
-                it(
-                    'should provide a class with valid interface (external) param (autowire)',
-                    function () {
-                        expect(
-                            $this->provider->provides(WithExternalValidInterfaceParam::class)
-                        )->toBeTruthy();
-                    }
-                );
-                it(
-                    'should not provide a class with interface (external) param (autowire)',
-                    function () {
-                        expect(
-                            $this->provider->provides(WithExternalInterfaceParam::class)
-                        )->toBeFalsy();
-                    }
-                );
-                it(
-                    'should not provide a class with class (external) param (autowire)',
-                    function () {
-                        expect(
-                            $this->provider->provides(WithExternalClassParam::class)
-                        )->toBeFalsy();
-                    }
-                );
-                it(
-                    'should provide a class with internal interface param (one imp) (autowire)',
-                    function () {
-                        expect(
-                            $this->provider->provides(WithInterfaceParamOneImp::class)
-                        )->toBeTruthy();
-                    }
-                );
-                it(
-                    'should provide a class with string param (configwire)',
-                    function () {
-                        expect(
-                            $this->provider->provides(WithStringParam::class)
-                        )->toBeTruthy();
-                    }
-                );
-                it(
-                    'should provide a class with internal interface param (multiple imp) (configwire)',
-                    function () {
-                        expect(
-                            $this->provider->provides(WithInterfaceParamMultiImp::class)
-                        )->toBeTruthy();
-                    }
-                );
-                it(
-                    'should provide a class with internal class param who have string param',
-                    function () {
-                        expect(
-                            $this->provider->provides(WithComplexeClassParam::class)
-                        )->toBeTruthy();
+                with_provided_data_it(
+                    message: "should not provide a {:0}",
+                    closure: function($message, $class) {
+                        expect($this->provider->provides(id: $class))->toBeFalsy();
+                    },
+                    provider: function () {
+                        yield [
+                            'class with interface (external) param (autowire)',
+                            WithExternalInterfaceParam::class
+                        ];
+                        yield [
+                            'class with class (external) param (autowire)',
+                            WithExternalClassParam::class
+                        ];
                     }
                 );
             }

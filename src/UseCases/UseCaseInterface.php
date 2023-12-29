@@ -16,13 +16,13 @@ use Cag\Requests\RequestInterface;
 interface UseCaseInterface
 {
     /**
-     * @param RequestInterface   $requete
+     * @param RequestInterface   $request
      * @param PresenterInterface $presenter
      *
      * @return PresenterInterface
      */
     public function execute(
-        RequestInterface   $requete,
+        RequestInterface   $request,
         PresenterInterface $presenter
     ): PresenterInterface;
 }

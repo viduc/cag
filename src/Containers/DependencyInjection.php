@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace Cag\Containers;
 
-use Cag\UseCases\CreateProjectUseCase;
 use ReflectionClass;
 use ReflectionException;
 use Cag\Containers\Aggregates\ImplementationAggregate;
@@ -31,7 +30,7 @@ class DependencyInjection implements DependencyInjectionInterface
     /**
      * @var DependencyInjectionInterface|null
      */
-    private ?DependencyInjectionInterface $externalContainer;
+    private DependencyInjectionInterface|null $externalContainer;
 
     /**
      * @var DependencyInjectionProvider
@@ -48,11 +47,11 @@ class DependencyInjection implements DependencyInjectionInterface
      * @throws ReflectionException
      */
     public function __construct(
-        ?DependencyInjectionInterface $container = null,
-        ?string $path = null
+        DependencyInjectionInterface|null $container = null,
+        string|null $path = null
     ) {
         $this->externalContainer = $container;
-        $this->provider = new DependencyInjectionProvider($path);
+        $this->provider = new DependencyInjectionProvider(path: $path);
         $this->aggregate = new ImplementationAggregate();
     }
 
@@ -67,15 +66,15 @@ class DependencyInjection implements DependencyInjectionInterface
      */
     public function get(string $id): mixed
     {
-        if (!$this->has($id)) {
+        if (!$this->has(id: $id)) {
             throw new NotFoundException(
-                sprintf(self::LOG_NOT_FOUND, $id),
-                self::LOG_NOT_FOUND_CODE
+                message: sprintf(self::LOG_NOT_FOUND, $id),
+                code: self::LOG_NOT_FOUND_CODE
             );
         }
 
-        return $this->aggregate->has($id) ? $this->aggregate->get($id):
-            $this->instantiate($id);
+        return $this->aggregate->has(param: $id) ? $this->aggregate->get(param: $id):
+            $this->instantiate(id: $id);
     }
 
     /**
@@ -85,7 +84,7 @@ class DependencyInjection implements DependencyInjectionInterface
      */
     public function has(string $id): bool
     {
-        return $this->provider->provides($id);
+        return $this->provider->provides(id: $id);
     }
 
     /**
@@ -99,20 +98,20 @@ class DependencyInjection implements DependencyInjectionInterface
      */
     private function instantiate(string $id): mixed
     {
-        $definition = $this->provider->getDefinition($id);
+        $definition = $this->provider->getDefinition(id: $id);
         if ($definition->external) {
-            return $this->instantiateExternal($definition);
+            return $this->instantiateExternal(definition: $definition);
         }
         $params = [];
-        foreach ($this->provider->getDefinitionParameters($id) as $parameter) {
+        foreach ($this->provider->getDefinitionParameters(id: $id) as $parameter) {
             $params[$parameter->name] = $parameter->value;
             if ($parameter->isDefinition) {
-                $params[$parameter->name] = $this->get($parameter->value->class);
+                $params[$parameter->name] = $this->get(id: $parameter->value->class);
             }
         }
-        $reflection = new ReflectionClass($definition->class);
-        $instance = $reflection->newInstanceArgs($params);
-        $this->aggregate->add($instance);
+        $reflection = new ReflectionClass(objectOrClass: $definition->class);
+        $instance = $reflection->newInstanceArgs(args: $params);
+        $this->aggregate->add(param: $instance);
 
         return $instance;
     }
@@ -127,13 +126,13 @@ class DependencyInjection implements DependencyInjectionInterface
     private function instantiateExternal(Definition $definition): mixed
     {
         if ($this->externalContainer !== null &&
-            $this->externalContainer->has($definition->class)
+            $this->externalContainer->has(id: $definition->class)
         ) {
-            return $this->externalContainer->get($definition->class);
+            return $this->externalContainer->get(id: $definition->class);
         }
         throw new NotFoundException(
-            sprintf(self::LOG_NOT_FOUND, $definition->class),
-            self::LOG_NOT_FOUND_CODE
+            message: sprintf(format: self::LOG_NOT_FOUND, values: $definition->class),
+            code: self::LOG_NOT_FOUND_CODE
         );
     }
 }

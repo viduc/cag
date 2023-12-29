@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Cag\Tests\Containers;
 
 use Cag\Containers\ClassSearchAbstract;
+use Cag\Containers\Exceptions\ComposerException;
 use Cag\Tests\Containers\Config\ComposerAbstract;
 use PHPUnit\Framework\TestCase;
 
@@ -20,14 +21,17 @@ class ClassSearchAbstractTest extends TestCase
     /**
      * @return void
      */
+    #[\Override]
     public function setUp(): void
     {
-        parent::setUp();
         ComposerAbstract::autoload();
     }
 
+    /**
+     * @throws ComposerException
+     */
     public function testGetAllClass(): void
     {
-        self::assertIsArray(ClassSearchAbstract::getAllClass());
+        self::assertIsArray(actual: ClassSearchAbstract::getAllClass());
     }
 }

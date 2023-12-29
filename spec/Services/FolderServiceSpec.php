@@ -14,86 +14,130 @@ use Cag\Services\FolderService;
 
 const DS = DIRECTORY_SEPARATOR;
 
-describe('FolderService', function () {
-    given('public', function () {
-        return str_replace('Services', 'public', __DIR__);
-    });
-    given('folder', function () {
-        return $this->public.DIRECTORY_SEPARATOR."folderPresent";
-    });
-
-    beforeEach(function () {
-        $this->folderService = new FolderService();
-    });
-    afterEach(function () {
-        if (is_dir($this->folder)) {
-            rmdir($this->folder);
-        }
-    });
-
-    describe('create and delete', function () {
-        it(
-            'should return a NameException if name of folder is empty
-            and is not valid',
-            function () {
-                $closure = function () {
-                    $this->folderService->create('');
-                };
-                expect($closure)->toThrow(new NameException(
-                    'Name must not be empty',
-                    100
-                ));
-                $closure = function () {
-                    $this->folderService->create(DS . "ziap" . DS . "test");
-                };
-                expect($closure)->toThrow(new NameException(
-                    'The target is invalid',
-                    101
-                ));
+describe(
+    message: 'FolderService',
+    closure: function () {
+        given(
+            name: 'public',
+            value: function () {
+                return str_replace(
+                    search: 'Services',
+                    replace: 'public',
+                    subject: __DIR__
+                );
             }
         );
-    });
-    describe('create', function () {
-        it(
-            'should return a NameException if folder already exist',
-            function () {
-                mkdir($this->folder);
-                $closure = function () {
-                    $this->folderService->create($this->folder);
-                };
-                expect($closure)->toThrow(new FolderException(
-                    'The folder already exists',
-                    102
-                ));
+        given(
+            name: 'folder',
+            value: function () {
+                return $this->public.DIRECTORY_SEPARATOR."folderPresent";
             }
         );
-        it(
-            'Folder "folderPresent" must be present',
-            function () {
-                $this->folderService->create($this->folder);
-                expect(is_dir($this->folder))->toBeTruthy();
-            }
-        );
-    });
 
-    it(
-        'The returned path must end with cag',
-        function () {
-            allow($this->folderService)->toReceive('getFullPath')->andRun(
-                function () {
-                    return str_replace(
-                        'spec'.DS.'Service',
-                        'vendor'.DS.'viduc',
-                        __DIR__
-                    );
+        beforeEach(closure: function () {
+            $this->folderService = new FolderService();
+        });
+        afterEach(
+            closure: function () {
+                if (is_dir(filename: $this->folder)) {
+                    rmdir(directory: $this->folder);
                 }
-            );
-            expect(
-                str_ends_with(
-                    $this->folderService->getProjectPath(),
-                    'cag/'
-                )
-            )->toBeTruthy();
-        }
-    );
-});
+            }
+        );
+
+        describe(
+            message: 'Return exception when trying create',
+            closure: function () {
+                with_provided_data_it(
+                    message: 'should return a NameException with message: "{:0}" and code: "{:1}"',
+                    closure: function($message, $code, $closure) {
+                        expect(actual: $closure)->toThrow(
+                            expected: new NameException(
+                                message: $message,
+                                code: $code
+                            )
+                        );
+                    },
+                    provider: function () {
+                        yield [
+                            'Name must not be empty',
+                            100,
+                            function () {
+                                $this->folderService->create(name: '');
+                            }
+                        ];
+                        yield [
+                            'The target is invalid',
+                            101,
+                            function () {
+                                $this->folderService->create(
+                                    name: DIRECTORY_SEPARATOR."ziap"
+                                    .DIRECTORY_SEPARATOR."test"
+                                );
+                            }
+                        ];
+                    }
+                );
+                it(
+                    message: 'should return a FolderException if folder already exist',
+                    closure: function () {
+                        mkdir(directory: $this->folder);
+                        $closure = function () {
+                            $this->folderService->create(name: $this->folder);
+                        };
+                        expect(actual: $closure)->toThrow(
+                            expected: new FolderException(
+                                message: 'The folder already exists',
+                                code: 102
+                            )
+                        );
+                    }
+                );
+            }
+        );
+        describe(
+            message: 'Create folder',
+            closure: function () {
+                it(
+                    message: 'Folder "folderPresent" must be present',
+                    closure: function () {
+                        $this->folderService->create(name: $this->folder);
+                        expect(
+                            actual: is_dir(filename: $this->folder)
+                        )->toBeTruthy();
+                    }
+                );
+            }
+        );
+        describe(
+            message: 'Validate path',
+            closure: function () {
+                it(
+                    message: 'The returned path must end with cag',
+                    /**
+                     * @throws Exception
+                     */
+                    closure: function () {
+                        allow(
+                            actual: $this->folderService
+                        )->toReceive('getFullPath')->andRun(
+                            function () {
+                                return str_replace(
+                                    search: 'spec'.DIRECTORY_SEPARATOR.'Service',
+                                    replace: 'vendor'.DIRECTORY_SEPARATOR.'viduc',
+                                    subject: __DIR__
+                                );
+                            }
+                        );
+                        expect(
+                            actual: str_ends_with(
+                                haystack: $this->folderService->getProjectPath(),
+                                needle: 'cag/'
+                            )
+                        )->toBeTruthy();
+                    }
+                );
+            }
+        );
+    }
+);

@@ -26,9 +26,9 @@ class ExternalWireProviderTest extends TestCase
      */
     private ExternalWireProvider $provider;
 
+    #[\Override]
     public function setUp(): void
     {
-        parent::setUp();
         ComposerAbstract::autoload();
         $this->provider = new ExternalWireProvider();
     }
@@ -39,7 +39,7 @@ class ExternalWireProviderTest extends TestCase
     public function testProvideInterface(): void
     {
         self::assertTrue(
-            $this->provider->provides(ExternalDependenceInterface::class)
+            $this->provider->provides(id: ExternalDependenceInterface::class)
         );
     }
 
@@ -52,13 +52,13 @@ class ExternalWireProviderTest extends TestCase
     {
         $this->provider->register();
         self::assertTrue(
-            $this->provider->getAggregate()->has(
-                ExternalDependenceInterface::class
+            condition: $this->provider->getAggregate()->has(
+                param: ExternalDependenceInterface::class
             )
         );
         self::assertFalse(
-            $this->provider->getAggregate()->has(
-                WithOneImpInterface::class
+            condition: $this->provider->getAggregate()->has(
+                param: WithOneImpInterface::class
             )
         );
     }

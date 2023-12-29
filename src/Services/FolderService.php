@@ -22,14 +22,15 @@ class FolderService extends FolderServiceAbstract
      * @throws FolderException
      * @throws NameException
      */
+    #[\Override]
     public function create(string $name): void
     {
-        FolderValidator::checkFile($name);
-        if (false === mkdir($name)) {
+        FolderValidator::checkFile(name: $name);
+        if (mkdir(directory: $name) === false) {
             throw new FolderException(
-                "An undetermined error occurred during the 
+                message: "An undetermined error occurred during the 
                 folder creation: ".$name,
-                103
+                code: 103
             );
         }
     }
@@ -40,18 +41,19 @@ class FolderService extends FolderServiceAbstract
      * @param bool $recursive
      * @return void
      */
+    #[\Override]
     public function copy(
         string $source,
         string $target,
         bool $recursive = true
     ): void {
-        if (is_dir($source)) {
+        if (is_dir(filename: $source)) {
             try {
-                $this->create($target);
+                $this->create(name: $target);
             } catch (FolderException|NameException) {}
-            $this->copyDir($source, $target);
+            $this->copyDir(source: $source, target: $target);
         } else {
-            copy($source, $target);
+            copy(from: $source, to: $target);
         }
     }
 
@@ -62,14 +64,14 @@ class FolderService extends FolderServiceAbstract
      */
     private function copyDir(string $source, string $target): void
     {
-        $d = dir($source);
-        while (false !== ($entry = $d->read())) {
+        $d = dir(directory: $source);
+        while (($entry = $d->read()) !== false) {
             if ($entry === '.' || $entry === '..') {
                 continue;
             }
             $this->copy(
-                $source . DIRECTORY_SEPARATOR . $entry,
-                $target . DIRECTORY_SEPARATOR . $entry
+                source: $source . DIRECTORY_SEPARATOR . $entry,
+                target: $target . DIRECTORY_SEPARATOR . $entry
             );
         }
 

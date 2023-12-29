@@ -17,7 +17,6 @@ use Cag\Containers\Models\Definition;
 use Cag\Containers\Providers\ConfigWireProvider;
 use Cag\Spec\Mock\ClassForProvider\Implementations\ImpWithMultipleAbstract1;
 use Cag\Spec\Mock\ClassForProvider\Implementations\ImpWithMultipleImp1;
-use Cag\Spec\Mock\ClassForProvider\Simple;
 use Cag\Spec\Mock\ClassForProvider\WithAbstractParamMultiImp;
 use Cag\Spec\Mock\ClassForProvider\WithInterfaceParamMultiImp;
 use Cag\Spec\Mock\ClassForProvider\WithStringParam;
@@ -27,23 +26,23 @@ use PHPUnit\Framework\TestCase;
 class ConfigWireProviderTest extends TestCase
 {
     /**
-     * @var ConfigWireProvider
+     * @var ConfigWireProvider|null
      */
-    private ConfigWireProvider $provider;
+    private ConfigWireProvider|null $provider;
 
     /**
      * @return void
      * @throws DefinitionException
      * @throws NotFoundException
      */
+    #[\Override]
     protected function setUp(): void
     {
-        parent::setUp();
         ComposerAbstract::autoload();
         $path = str_replace(
-            'Providers',
-            'Config',
-            __DIR__
+            search: 'Providers',
+            replace: 'Config',
+            subject: __DIR__
         );
         $path .= '/container.yml';
         $this->provider = new ConfigWireProvider($path);
@@ -57,21 +56,21 @@ class ConfigWireProviderTest extends TestCase
     public function testRegisterWithStringParam(): void
     {
         self::assertTrue(
-            $this->provider->getAggregate()->has(
-                WithStringParam::class
+            condition: $this->provider->getAggregate()->has(
+                param: WithStringParam::class
             )
         );
         foreach ($this->provider->definitionParameterAggregate->getByDefinition(
-            $this->provider->getAggregate()->get(
-                WithStringParam::class
+            definition: $this->provider->getAggregate()->get(
+                param: WithStringParam::class
             )
         ) as $parameter) {
             self::assertTrue(
                 in_array(
-                    $this->provider->parameterAggregate->getById(
-                        $parameter->parameter_id
+                    needle: $this->provider->parameterAggregate->getById(
+                        id: $parameter->parameter_id
                     )->name,
-                    ['test', 'toto']
+                    haystack: ['test', 'toto']
                 )
             );
         }
@@ -84,21 +83,21 @@ class ConfigWireProviderTest extends TestCase
     public function testRegisterWithInterfaceMultipleImp(): void
     {
         self::assertTrue(
-            $this->provider->aggregate->has(
-                WithInterfaceParamMultiImp::class
+            condition: $this->provider->aggregate->has(
+                param: WithInterfaceParamMultiImp::class
             )
         );
         foreach ($this->provider->definitionParameterAggregate->getByDefinition(
-            $this->provider->getAggregate()->get(
-                WithInterfaceParamMultiImp::class
+            definition: $this->provider->getAggregate()->get(
+                param: WithInterfaceParamMultiImp::class
             )
         ) as $parameter) {
             self::assertTrue(
-                in_array(
-                    $this->provider->parameterAggregate->getById(
-                        $parameter->parameter_id
+                condition: in_array(
+                    needle: $this->provider->parameterAggregate->getById(
+                        id: $parameter->parameter_id
                     )->value,
-                    ['%'.ImpWithMultipleImp1::class.'%']
+                    haystack: ['%'.ImpWithMultipleImp1::class.'%']
                 )
             );
         }
@@ -111,51 +110,60 @@ class ConfigWireProviderTest extends TestCase
     public function testRegisterWithAbstractMultipleImp(): void
     {
         self::assertTrue(
-            $this->provider->aggregate->has(
-                WithAbstractParamMultiImp::class
+            condition: $this->provider->aggregate->has(
+                param: WithAbstractParamMultiImp::class
             )
         );
         foreach ($this->provider->definitionParameterAggregate->getByDefinition(
-            $this->provider->getAggregate()->get(
-                WithAbstractParamMultiImp::class
+            definition: $this->provider->getAggregate()->get(
+                param: WithAbstractParamMultiImp::class
             )
         ) as $parameter) {
             self::assertTrue(
-                in_array(
-                    $this->provider->parameterAggregate->getById(
-                        $parameter->parameter_id
+                condition: in_array(
+                    needle: $this->provider->parameterAggregate->getById(
+                        id: $parameter->parameter_id
                     )->value,
-                    ['%'.ImpWithMultipleAbstract1::class.'%']
+                    haystack: ['%'.ImpWithMultipleAbstract1::class.'%']
                 )
             );
         }
     }
 
+    /**
+     * @throws DefinitionException
+     * @throws NotFoundException
+     */
     public function testShouldReturnDefinition(): void
     {
         self::assertInstanceOf(
-            Definition::class,
-            $this->provider->getDefinition(WithAbstractParamMultiImp::class)
+            expected: Definition::class,
+            actual: $this->provider->getDefinition(
+                name: WithAbstractParamMultiImp::class
+            )
         );
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function testShouldNotRegister(): void
     {
         $this->provider->list = ['test' => ['class' => 'toto']];
-        $this->expectException(DefinitionException::class);
+        $this->expectException(exception: DefinitionException::class);
         $this->provider->register();
     }
 
     public function testShouldProvides(): void
     {
         self::assertTrue(
-            $this->provider->provides(WithStringParam::class)
+            condition: $this->provider->provides(id: WithStringParam::class)
         );
     }
 
     public function testConstructWithPathNull(): void
     {
-        $this->provider = new ConfigWireProvider(null);
-        self::assertIsArray($this->provider->list);
+        $this->provider = new ConfigWireProvider(path: null);
+        self::assertIsArray(actual: $this->provider->list);
     }
 }

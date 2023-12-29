@@ -11,61 +11,72 @@ declare(strict_types=1);
 namespace Cag\Tests\Containers\Aggregates;
 
 use Cag\Containers\Aggregates\ComposerClassAggregate;
+use Cag\Containers\Exceptions\ComposerException;
+use Cag\Containers\Exceptions\NotFoundException;
 use Cag\Containers\Models\ComposerClass;
 use PHPUnit\Framework\TestCase;
 
 class ComposerClassAggregateTest extends TestCase
 {
     private ComposerClassAggregate $composerClassAggregate;
+    #[\Override]
     public function setUp(): void
     {
-        parent::setUp();
         $this->composerClassAggregate = new ComposerClassAggregate();
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function testGetNotFound(): void
     {
         $this->expectExceptionMessage(
-            sprintf(
+            message: sprintf(
                 ComposerClassAggregate::LOG_NOT_FOUND,
                 'test'
             )
         );
-        $this->expectExceptionCode(ComposerClassAggregate::CODE_NOT_FOUND);
-        $this->composerClassAggregate->get('test');
+        $this->expectExceptionCode(code: ComposerClassAggregate::CODE_NOT_FOUND);
+        $this->composerClassAggregate->get(class: 'test');
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function testGet(): void
     {
-        $composerClass = new ComposerClass('test');
+        $composerClass = new ComposerClass(class: 'test');
         $this->composerClassAggregate->aggregates['test'] = $composerClass;
         $this->assertInstanceOf(
-            ComposerClass::class,
-            $this->composerClassAggregate->get('test')
+            expected: ComposerClass::class,
+            actual: $this->composerClassAggregate->get(class: 'test')
         );
     }
 
+    /**
+     * @throws ComposerException
+     */
     public function testAddExeption(): void
     {
-        $composerClass = new ComposerClass('test');
+        $composerClass = new ComposerClass(class: 'test');
         $this->composerClassAggregate->aggregates['test'] = $composerClass;
         $this->expectExceptionMessage(
-            sprintf(
+            message: sprintf(
                 ComposerClassAggregate::LOG_ALREADY_EXIST,
                 'test'
             )
         );
-        $this->expectExceptionCode(ComposerClassAggregate::CODE_ALREADY_EXIST);
-        $this->composerClassAggregate->add($composerClass);
+        $this->expectExceptionCode(code: ComposerClassAggregate::CODE_ALREADY_EXIST);
+        $this->composerClassAggregate->add(class: $composerClass);
     }
 
     public function testMerge(): void
     {
         $composerClassAggregate = new ComposerClassAggregate();
-        $composerClassAggregate->add(new ComposerClass('test'));
+        $composerClassAggregate->add(class: new ComposerClass(class: 'test'));
         $this->assertInstanceOf(
-            ComposerClassAggregate::class,
-            $this->composerClassAggregate->merge($composerClassAggregate)
+            expected: ComposerClassAggregate::class,
+            actual: $this->composerClassAggregate->merge($composerClassAggregate)
         );
     }
 }

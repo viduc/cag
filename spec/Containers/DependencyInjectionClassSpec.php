@@ -1,12 +1,11 @@
 <?php
 declare(strict_types=1);
 /**
- * This file is part of the Cag package.
+ * CAG - Clean Architecture Generator
  *
- * (c) GammaSoftware <http://www.winlassie.com/>
+ * Tristan Fleury <http://viduc.github.com/>
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * Licence: GPL v3 https://opensource.org/licenses/gpl-3.0.html
  */
 
 use Cag\Containers\DependencyInjection;
@@ -25,13 +24,9 @@ use Cag\Spec\Mock\ClassForProvider\WithStringParam;
 use Cag\Tests\Containers\Config\ComposerAbstract;
 
 describe(
-    'Specification to Container\DependencyInjection',
-    function () {
-        beforeAll(
-            function () {
-                ComposerAbstract::autoload();
-            }
-        );
+    message: 'Specification to Container\DependencyInjection',
+    closure: function () {
+        beforeAll(closure: function () {ComposerAbstract::autoload();});
         beforeEach(
             /**
              * @throws ReflectionException
@@ -39,101 +34,95 @@ describe(
              * @throws ComposerException
              * @throws NotFoundException
              */
-            function () {
+            closure: function () {
                 $path = str_replace(
-                    'spec/Containers',
-                    'tests/Containers/Config',
-                    __DIR__
+                    search: 'spec/Containers',
+                    replace: 'tests/Containers/Config',
+                    subject: __DIR__
                 );
                 $path .= '/container.yml';
                 $this->di = new DependencyInjection(
-                    new ExternalDependencyInjection(),
-                    $path
+                    container: new ExternalDependencyInjection(),
+                    path: $path
                 );
             }
         );
 
         describe(
-            'Specification to has methode',
-            function () {
+            message: 'Specification to has methode',
+            closure: function () {
                 it(
-                    'should has a simple class with no param (autowire)',
-                    function () {
+                    message: 'should has a simple class with no param (autowire)',
+                    closure: function () {
                         expect(
-                            $this->di->has(Simple::class)
+                            actual: $this->di->has(id: Simple::class)
                         )->toBeTruthy();
                         expect(
-                            $this->di->get(Simple::class)
-                        )->toBeAnInstanceOf(Simple::class);
+                            actual: $this->di->get(id: Simple::class)
+                        )->toBeAnInstanceOf(expected: Simple::class);
                         expect(
-                            $this->di->aggregate->has(Simple::class)
+                            actual: $this->di->aggregate->has(param: Simple::class)
                         )->toBeTruthy();
                     }
                 );
-                it(
-                    'should instantiate a class with internal class (simple) param (autowire)',
-                    function () {
+                with_provided_data_it(
+                    message: "should instantiate a class with {:0}",
+                    closure: function($message, $class) {
                         expect(
-                            $this->di->get(WithSimpleClassParam::class)
-                        )->toBeAnInstanceOf(WithSimpleClassParam::class);
+                            actual: $this->di->get(id: $class)
+                        )->toBeAnInstanceOf(expected: $class);
+                    },
+                    provider: function () {
+                        yield [
+                            'internal class (simple) param (autowire)',
+                            WithSimpleClassParam::class
+                        ];
+                        yield [
+                            'interface (external) param (autowire)',
+                            WithExternalValidInterfaceParam::class
+                        ];
+                        yield [
+                            'internal interface param (one imp) (autowire)',
+                            WithInterfaceParamOneImp::class
+                        ];
+                        yield [
+                            'internal interface param (multiple imp) (configwire)',
+                            WithInterfaceParamMultiImp::class
+                        ];
+                        yield [
+                            'internal class param who have string param',
+                            WithComplexeClassParam::class
+                        ];
                     }
                 );
+
                 it(
-                    'should instantiate a class with interface (external) param (autowire)',
-                    function () {
-                        expect(
-                            $this->di->get(WithExternalValidInterfaceParam::class)
-                        )->toBeAnInstanceOf(WithExternalValidInterfaceParam::class);
-                    }
-                );
-                it(
-                    'should not instantiate a class with class (external) param (autowire)',
-                    function () {
+                    message: 'should not instantiate a class with class (external) param (autowire)',
+                    closure: function () {
                         try {
-                            $this->di->get(WithExternalClassParam::class);
+                            $this->di->get(id: WithExternalClassParam::class);
                         } catch (NotFoundException $e) {
-                            expect($e->getMessage())->toBe(
-                                sprintf(
+                            expect(
+                                actual: $e->getMessage())->toBe(
+                                expected: sprintf(
                                     DependencyInjection::LOG_NOT_FOUND,
                                     WithExternalClassParam::class
                                 )
                             );
-                            expect($e->getCode())->toBe(
-                                DependencyInjection::LOG_NOT_FOUND_CODE
+                            expect(actual: $e->getCode())->toBe(
+                                expected: DependencyInjection::LOG_NOT_FOUND_CODE
                             );
                         }
                     }
                 );
                 it(
-                    'should instantiate a class with internal interface param (one imp) (autowire)',
-                    function () {
+                    message: 'should instantiate a class with string param (configwire)',
+                    closure: function () {
                         expect(
-                            $this->di->get(WithInterfaceParamOneImp::class)
-                        )->toBeAnInstanceOf(WithInterfaceParamOneImp::class);
-                    }
-                );
-                it(
-                    'should provide a class with string param (configwire)',
-                    function () {
-                        expect(
-                            $this->di->get(WithStringParam::class)->param
-                        )->toBe('test');
-                    }
-                );
-                it(
-                    'should provide a class with internal interface param (multiple imp) (configwire)',
-                    function () {
-                        expect(
-                            $this->di->get(WithInterfaceParamMultiImp::class)
-                        )->toBeAnInstanceOf(WithInterfaceParamMultiImp::class);
-                    }
-                );
-                it(
-                    'should provide a class with internal class param who have string param',
-                    function () {
-                        expect(
-                            $this->di->get(WithComplexeClassParam::class)
-                        )->toBeAnInstanceOf(WithComplexeClassParam::class);
+                            actual: $this->di->get(
+                                id: WithStringParam::class
+                            )->param
+                        )->toBe(expected: 'test');
                     }
                 );
             }

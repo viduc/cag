@@ -32,8 +32,8 @@ class ExternalWireProvider implements ProviderInterface
      */
     public function provides(string $id): bool
     {
-        return ExternalWireValidatorAbstract::validNameSpace($id) &&
-            ExternalWireValidatorAbstract::validInterface($id);
+        return ExternalWireValidatorAbstract::validNameSpace(class: $id) &&
+            ExternalWireValidatorAbstract::validInterface(class: $id);
     }
 
     /**
@@ -45,14 +45,21 @@ class ExternalWireProvider implements ProviderInterface
     {
         $this->aggregate = new DefinitionsAggregate();
         $list = ClassSearchAbstract::getAllDependencyInterface();
-        foreach ($list as $interface) {
-            $class = $interface->class;
-            if ($this->provides($class)) {
-                $this->aggregate->add(
-                    new Definition($class, $class, true)
-                );
+        array_walk(
+            array: $list,
+            callback: function ($interface) {
+                $class = $interface->class;
+                if ($this->provides(id: $class)) {
+                    $this->aggregate->add(
+                        param: new Definition(
+                            class: $class,
+                            name: $class,
+                            external: true
+                        )
+                    );
+                }
             }
-        }
+        );
     }
 
     /**
@@ -63,7 +70,7 @@ class ExternalWireProvider implements ProviderInterface
      */
     public function get(string $id): Definition
     {
-        return $this->aggregate->get($id);
+        return $this->aggregate->get(param: $id);
     }
 
     /**

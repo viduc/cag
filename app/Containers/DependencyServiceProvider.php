@@ -36,26 +36,26 @@ class DependencyServiceProvider extends AbstractServiceProvider
      *
      * @return bool
      */
+    #[\Override]
     public function provides(string $id): bool
     {
-
-
-        return in_array($id, self::SERVICES);
+        return in_array(needle: $id, haystack: self::SERVICES);
     }
 
     /**
      * @return void
      */
+    #[\Override]
     public function register(): void
     {
-        $this->getContainer()->add(DependencyInjection::class);
-        $this->getContainer()->add(CreateProjectPresenter::class);
-        $this->getContainer()->add(CreateRequest::class);
+        $this->getContainer()->add(id: DependencyInjection::class);
+        $this->getContainer()->add(id: CreateProjectPresenter::class);
+        $this->getContainer()->add(id: CreateRequest::class);
         $this->getContainer()
-            ->add(CreateService::class)
-            ->addArgument(DependencyInjection::class);
+            ->add(id: CreateService::class)
+            ->addArgument(arg: DependencyInjection::class);
         $this->getContainer()
-            ->add(Cag::class)
-            ->addArgument(DependencyInjection::class);
+            ->add(id: Cag::class)
+            ->addArgument(arg: DependencyInjection::class);
     }
 }

@@ -38,23 +38,22 @@ class CreateController extends CagControllerAbstract
 
     /**
      * @return void
-     * @throws ContainerException
      * @throws ContainerExceptionInterface
-     * @throws NotFoundException
      * @throws NotFoundExceptionInterface
      */
+    #[\Override]
     public function handle(): void
     {
         $this->getPrinter()->info(
-            'Create new Clean Architecture project',
-            true
+            content: 'Create new Clean Architecture project',
+            alt: true
         );
         $this->getPrinter()->newline();
         $this->askName();
         $this->askPath();
         $this->askAutoload();
         $this->getPrinter()->info(
-            sprintf(
+            content: sprintf(
                 'A new project will be created with the following '.
                 'parameters:
             application name: %s
@@ -74,8 +73,8 @@ class CreateController extends CagControllerAbstract
     private function askName(): void
     {
         $this->name = $this->getInputString(
-            'name',
-            'fill in the name of your application (will use as namespace)'
+            identifier: 'name',
+            display: 'fill in the name of your application (will use as namespace)'
         );
     }
 
@@ -85,8 +84,8 @@ class CreateController extends CagControllerAbstract
     private function askPath(): void
     {
         $this->path = $this->getInputString(
-            'path',
-            'enter the relative path of your project folder (ex: src or'.
+            identifier: 'path',
+            display: 'enter the relative path of your project folder (ex: src or'.
             'src\domain)'
         );
     }
@@ -97,27 +96,25 @@ class CreateController extends CagControllerAbstract
     private function askAutoload(): void
     {
         $this->autoload = $this->getInputYesOrNo(
-            'Add autoload',
-            'want to add your application to composer autoload? (Y/n)'
+            identifier: 'Add autoload',
+            display: 'want to add your application to composer autoload? (Y/n)'
         ) ? 'true' : 'false';
     }
 
     /**
-     * @throws ContainerException
-     * @throws NotFoundException
      * @throws NotFoundExceptionInterface
      * @throws ContainerExceptionInterface
      */
     private function askValidation(): void
     {
         if ($this->getInputYesOrNo(
-            'Create',
-            'Do you want to create the project? (Y/n)'
+            identifier: 'Create',
+            display: 'Do you want to create the project? (Y/n)'
         )) {
-            $this->container->get(CreateService::class)->create(
-                $this->name,
-                $this->path,
-                $this->autoload
+            $this->container->get(id: CreateService::class)->create(
+                name: $this->name,
+                path: $this->path,
+                composer: $this->autoload
             );
         }
     }
@@ -132,12 +129,12 @@ class CreateController extends CagControllerAbstract
         string $identifier,
         string $display = ''
     ): string {
-        if ('' !== $display) {
-            $this->getPrinter()->display($display);
+        if ($display !== '') {
+            $this->getPrinter()->display(content: $display);
         }
         $value = '';
-        while ('' === $value) {
-            $input = new Input($identifier.' > ');
+        while ($value === '') {
+            $input = new Input(prompt: $identifier.' > ');
             $value = $input->read();
         }
 
@@ -154,14 +151,14 @@ class CreateController extends CagControllerAbstract
         string $identifier,
         string $display = ''
     ): bool {
-        $this->getPrinter()->display($display);
+        $this->getPrinter()->display(content: $display);
         $value = null;
         while ($value === null) {
-            $input = new Input($identifier.'? (Y/n) > ');
+            $input = new Input(prompt: $identifier.'? (Y/n) > ');
             $value = $input->read();
             $value = $value === '' ? 'y' : $value;
-            $value = in_array(strtolower($value), ['y', 'n']) ?
-                strtolower($value) === 'y' : null;
+            $value = in_array(needle: strtolower($value), haystack: ['y', 'n']) ?
+                strtolower(string: $value) === 'y' : null;
         }
 
         return $value == 'y';

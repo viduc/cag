@@ -48,15 +48,15 @@ class ConfigWireProvider implements ProviderInterface
      */
     public function __construct(?string $path = null)
     {
-        if (is_null($path)) {
+        if (is_null(value: $path)) {
             $path = str_replace(
-                'Containers' . DIRECTORY_SEPARATOR . 'Providers',
-                'Config',
-                __DIR__
+                search: 'Containers' . DIRECTORY_SEPARATOR . 'Providers',
+                replace: 'Config',
+                subject: __DIR__
             );
             $path .= '/container.yml';
         }
-        $this->list = yaml_parse_file($path)['services'];
+        $this->list = yaml_parse_file(filename: $path)['services'];
         $this->aggregate = new DefinitionsAggregate();
         $this->definitionParameterAggregate = new DefinitionParameterAggregate();
         $this->parameterAggregate = new ParameterAggregate();
@@ -69,8 +69,8 @@ class ConfigWireProvider implements ProviderInterface
      */
     public function provides(string $id): bool
     {
-        foreach (array_keys($this->list) as $name) {
-            if (strtolower($id) === strtolower($name)) {
+        foreach (array_keys(array: $this->list) as $name) {
+            if (strtolower(string: $id) === strtolower(string: $name)) {
                 return true;
             }
         }
@@ -86,18 +86,18 @@ class ConfigWireProvider implements ProviderInterface
     {
         foreach ($this->list as $name => $service) {
             try {
-                $reflection = new ReflectionClass($name);
+                $reflection = new ReflectionClass(objectOrClass: $name);
                 if ($reflection->isInstantiable()) {
-                    $this->addDefinition($name, $service);
+                    $this->addDefinition(name: $name, service: $service);
                 }
-            } catch (ReflectionException $exception) {
+            } catch (ReflectionException) {
                 throw new DefinitionException(
-                    sprintf(
-                                DefinitionException::LOG_NOT_FOUND,
+                    message: sprintf(
+                        DefinitionException::LOG_NOT_FOUND,
                         'class',
                         $name
                     ),
-                    DefinitionException::CODE_NOT_FOUND
+                    code: DefinitionException::CODE_NOT_FOUND
                 );
             }
         }
@@ -115,10 +115,10 @@ class ConfigWireProvider implements ProviderInterface
         string $name,
         array $service
     ): void {
-        if (!$this->aggregate->has($name)) {
-            $definition = new Definition($name, $name);
-            $this->aggregate->add($definition);
-            $this->addParam($definition, $service);
+        if (!$this->aggregate->has(param: $name)) {
+            $definition = new Definition(class: $name, name: $name);
+            $this->aggregate->add(param: $definition);
+            $this->addParam(definition: $definition, service: $service);
         }
     }
 
@@ -132,17 +132,25 @@ class ConfigWireProvider implements ProviderInterface
      */
     private function addParam(Definition $definition, array $service): void
     {
-        if (isset($service['params']) && is_array($service['params'])) {
-            foreach ($service['params'] as $param) {
-                $name = array_key_first($param);
+        if (!isset($service['params']) || !is_array(value: $service['params'])) {
+            return;
+        }
+        $params = $service['params'];
+        array_walk(
+            array: $params,
+            callback: function ($param) use ($definition) {
+                $name = array_key_first(array: $param);
                 $value = $param[$name];
-                $parameter = $this->defineParameter($name, $value);
-                $this->parameterAggregate->add($parameter);
+                $parameter = $this->defineParameter(name: $name, value: $value);
+                $this->parameterAggregate->add(param: $parameter);
                 $this->definitionParameterAggregate->add(
-                    new DefinitionParameter($definition->name, $parameter->id)
+                    param: new DefinitionParameter(
+                        definition_id: $definition->name,
+                        parameter_id: $parameter->id
+                    )
                 );
             }
-        }
+        );
     }
 
     /**
@@ -154,16 +162,16 @@ class ConfigWireProvider implements ProviderInterface
      */
     private function defineParameter(string $name, string $value): Parameter
     {
-        $parameter = new Parameter($value, $name);
+        $parameter = new Parameter(value: $value, name: $name);
         try {
-            $reflection = new ReflectionClass($value);
+            $reflection = new ReflectionClass(objectOrClass: $value);
             if ($reflection->isInstantiable()) {
-                $parameter = new Parameter('%'.$value.'%', $name);
-                if ($this->provides($value)) {
+                $parameter = new Parameter(value: '%'.$value.'%', name: $name);
+                if ($this->provides(id: $value)) {
                     $parameter = new Parameter(
-                        $this->getDefinition($value),
-                        $name,
-                        true
+                        value: $this->getDefinition($value),
+                        name: $name,
+                        isDefinition: true
                     );
                 }
             }
@@ -181,8 +189,8 @@ class ConfigWireProvider implements ProviderInterface
      */
     public function getDefinition(string $name): Definition
     {
-        $this->addDefinition($name, $this->list[$name]);
-        return $this->aggregate->get($name);
+        $this->addDefinition(name: $name, service: $this->list[$name]);
+        return $this->aggregate->get(param: $name);
     }
 
     /**

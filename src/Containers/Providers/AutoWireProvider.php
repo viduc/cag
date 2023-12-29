@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Cag\Containers\Providers;
 
-use Cag\Spec\Mock\ClassForProvider\WithSimpleClassParam;
+use Cag\Containers\Exceptions\ComposerException;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionParameter;
@@ -49,8 +49,10 @@ class AutoWireProvider implements ProviderInterface
     public function provides(string $class): bool
     {
         try {
-            $reflection = new ReflectionClass($class);
-            return AutoWireValidatorAbstract::validInstantiable($reflection);
+            $reflection = new ReflectionClass(objectOrClass: $class);
+            return AutoWireValidatorAbstract::validInstantiable(
+                reflection: $reflection
+            );
         } catch (ReflectionException) {
             return false;
         }
@@ -58,8 +60,7 @@ class AutoWireProvider implements ProviderInterface
 
     /**
      * @return void
-     * @throws DefinitionException
-     * @throws ReflectionException
+     * @throws ReflectionException|ComposerException|DefinitionException
      */
     public function register(): void
     {
@@ -67,8 +68,8 @@ class AutoWireProvider implements ProviderInterface
         $this->definitionParameterAggregate = new DefinitionParameterAggregate();
         $this->parameterAggregate = new ParameterAggregate();
         foreach (ClassSearchAbstract::getAllClass() as $class) {
-            if ($this->provides($class->class)) {
-                $this->addDefinition($class->class);
+            if ($this->provides(class: $class->class)) {
+                $this->addDefinition(name: $class->class);
             }
         }
     }
@@ -76,32 +77,29 @@ class AutoWireProvider implements ProviderInterface
     /**
      * @param string $name
      *
-     * @throws DefinitionException
-     * @throws ReflectionException
+     * @throws ReflectionException|ComposerException|DefinitionException
      */
     private function addDefinition(string $name): void
     {
-        if (!$this->aggregate->has($name)) {
-            $definition = new Definition($name, $name);
-            $this->aggregate->add($definition);
-            $this->addParam($definition);
+        if (!$this->aggregate->has(param: $name)) {
+            $definition = new Definition(class: $name, name: $name);
+            $this->aggregate->add(param: $definition);
+            $this->addParam(definition: $definition);
         }
     }
 
     /**
      * @param Definition $definition
      *
-     * @throws ReflectionException
-     * @throws DefinitionException
+     * @throws DefinitionException|ComposerException|ReflectionException
      */
     private function addParam(Definition $definition): void
     {
-        $reflection = new ReflectionClass($definition->class);
-
-        if (!is_null($reflection->getConstructor()) &&
-            AutoWireValidatorAbstract::validParams($reflection)) {
+        $reflection = new ReflectionClass(objectOrClass: $definition->class);
+        if (!is_null(value: $reflection->getConstructor()) &&
+            AutoWireValidatorAbstract::validParams(reflection: $reflection)) {
             foreach ($reflection->getConstructor()->getParameters() as $param) {
-                $this->saveParam($definition, $param);
+                $this->saveParam(definition: $definition, param: $param);
             }
         }
     }
@@ -112,33 +110,36 @@ class AutoWireProvider implements ProviderInterface
      *
      * @return void
      * @throws DefinitionException
-     * @throws ReflectionException
+     * @throws ReflectionException|ComposerException
      */
     private function saveParam(
         Definition $definition,
         ReflectionParameter $param
     ): void {
-        if (!is_null($param->getType()) && !$param->isOptional()) {
+
+        if (!is_null(value: $param->getType()) && !$param->isOptional()) {
             $class = $param->getType()->getName();
-            $parameter = new Parameter('%'.$class.'%', $param->getName());
-            $implementations = ClassSearchAbstract::getInterfaceImplementations(
-                $class
+            $parameter = new Parameter(
+                value:'%'.$class.'%',
+                name: $param->getName()
             );
-            $class = count($implementations) === 1 ? $implementations[0]->class:
-                $class;
-            if ($this->provides($class)) {
+            $implementations = ClassSearchAbstract::getInterfaceImplementations(
+                interface: $class
+            );
+            $class = count(value: $implementations) === 1
+                ? $implementations[0]->class: $class;
+            if ($this->provides(class: $class)) {
                 $parameter = new Parameter(
-                    $this->getDefinition($class),
-                    $param->getName(),
-                    true
+                    value: $this->getDefinition(class: $class),
+                    name: $param->getName(),
+                    isDefinition: true
                 );
             }
-
-            $this->parameterAggregate->add($parameter);
+            $this->parameterAggregate->add(param: $parameter);
             $this->definitionParameterAggregate->add(
-                new DefinitionParameter(
-                    $definition->name,
-                    $parameter->id
+                param: new DefinitionParameter(
+                    definition_id: $definition->name,
+                    parameter_id: $parameter->id
                 )
             );
         }
@@ -153,12 +154,12 @@ class AutoWireProvider implements ProviderInterface
      */
     public function getDefinition(string $class): Definition
     {
-        if (!$this->aggregate->has($class)) {
-            $definition = new Definition($class);
-            $this->aggregate->add($definition);
-            $this->addParam($definition);
+        if (!$this->aggregate->has(param: $class)) {
+            $definition = new Definition(class: $class);
+            $this->aggregate->add(param: $definition);
+            $this->addParam(definition: $definition);
         }
-        return $this->aggregate->get($class);
+        return $this->aggregate->get(param: $class);
     }
 
     /**

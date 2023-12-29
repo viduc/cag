@@ -24,12 +24,13 @@ class DefinitionsAggregate extends ContainersAggregate
     public array $aggregates = [];
 
     /**
-     * @param Definition $definition
+     * @param Definition $param
      *
      * @return string
      */
-    public function getIndex(mixed $definition): string
+    #[\Override]
+    public function getIndex(mixed $param): string
     {
-        return $definition->name;
+        return $param->name;
     }
 }

@@ -23,12 +23,16 @@ class StructureService extends StructureServiceAbstract
      * @param StructureModel $model
      * @return void
      */
+    #[\Override]
     public function create(StructureModel $model): void
     {
         $this->folderService->copy(
-            str_replace('Services', 'Sources', __DIR__),
-            $this->folderService->getProjectPath().$model->getPath()
-
+            source: str_replace(
+                search: 'Services',
+                replace: 'Sources',
+                subject: __DIR__
+            ),
+            target: $this->folderService->getProjectPath().$model->getPath()
         );
     }
 }

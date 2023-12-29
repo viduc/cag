@@ -38,6 +38,4 @@ interface DependencyInjectionInterface
      * @return bool
      */
     public function has(string $id): bool;
-
-    //public function add()
 }

@@ -24,24 +24,24 @@ class FolderValidator extends ValidatorAbstract
      */
     public static function checkFile(string $name, bool $exist = true): void
     {
-        CheckValidator::checkFile($name, $exist);
+        CheckValidator::checkFile(name: $name);
 
         if ($exist && is_dir($name)) {
             throw new FolderException(
-                "The folder already exists",
-                102
+                message: "The folder already exists",
+                code: 102
             );
         }
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @return bool
      */
-    public static function isFolderWritable($name): bool
+    public static function isFolderWritable(string $name): bool
     {
-        $folder = dirname($name);
+        $folder = dirname(path: $name);
 
-        return is_writable($folder);
+        return is_writable(filename: $folder);
     }
 }

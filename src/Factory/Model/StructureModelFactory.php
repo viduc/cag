@@ -19,10 +19,11 @@ class StructureModelFactory extends StructureModelFactoryAbstract
      * @param string|null $path
      * @return StructureModel
      */
+    #[\Override]
     public function getStandard(
         string $name,
-        ?string $path = 'src'
+        string|null $path = 'src'
     ): StructureModel {
-        return new StructureModel($name, $path);
+        return new StructureModel(srcName: $name, path: $path);
     }
 }

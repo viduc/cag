@@ -19,11 +19,11 @@ abstract class ComposerAbstract
     public static function autoload(): void
     {
         $path = str_replace(
-            'tests/Containers/Config',
-            '',
-            __DIR__
+            search: 'tests/Containers/Config',
+            replace: '',
+            subject: __DIR__
         );
 
-        exec('cd '.$path.' | composer dump-autoload');
+        exec(command: 'cd '.$path.' | composer dump-autoload');
     }
 }

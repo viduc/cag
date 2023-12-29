@@ -59,10 +59,10 @@ class Parameter
      */
     private function defineType(): void
     {
-        $this->type = gettype($this->value);
+        $this->type = gettype(value: $this->value);
         $this->type = $this->type === 'string' &&
-        str_starts_with($this->value, '%') &&
-        str_ends_with($this->value, '%') ? 'class': $this->type;
+        str_starts_with(haystack: $this->value, needle: '%') &&
+        str_ends_with(haystack: $this->value, needle: '%') ? 'class': $this->type;
         $this->type = $this->isDefinition ? 'definition': $this->type;
     }
 
@@ -71,7 +71,7 @@ class Parameter
      *
      * @return bool
      */
-    public function __equals(Parameter $other): bool
+    public function __equals(self $other): bool
     {
         return $this->value === $other->value
             && $this->type === $other->type
@@ -84,13 +84,5 @@ class Parameter
     public function isClass(): bool
     {
         return $this->type === 'class';
-    }
-
-    /**
-     * @return bool
-     */
-    public function isDefinition(): bool
-    {
-        return $this->isDefinition();
     }
 }

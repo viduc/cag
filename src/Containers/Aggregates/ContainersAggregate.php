@@ -44,13 +44,13 @@ class ContainersAggregate implements AggregateInterface
      */
     public function get(string $param): mixed
     {
-        if ($this->has($param)) {
+        if ($this->has(param: $param)) {
             return $this->aggregates[$param];
         }
 
         throw new DefinitionException(
-            sprintf(self::LOG_NOT_FOUND, $this->type, $param),
-            $this->code_not_found
+            message: sprintf(self::LOG_NOT_FOUND, $this->type, $param),
+            code: $this->code_not_found
         );
     }
 
@@ -62,11 +62,11 @@ class ContainersAggregate implements AggregateInterface
      */
     public function add(mixed $param): void
     {
-        $index = $this->getIndex($param);
-        if ($this->has($index)) {
+        $index = $this->getIndex(param: $param);
+        if ($this->has(param: $index)) {
             throw new DefinitionException(
-                sprintf(self::LOG_ALREADY_EXIST, $this->type, $index),
-                $this->code_already_exist
+                message: sprintf(self::LOG_ALREADY_EXIST, $this->type, $index),
+                code: $this->code_already_exist
             );
         }
         $this->aggregates[$index] = $param;
@@ -91,9 +91,9 @@ class ContainersAggregate implements AggregateInterface
     public function merge(AggregateInterface $aggregate): AggregateInterface
     {
         foreach ($aggregate->aggregates as $aggregate) {
-            $index = $this->getIndex($aggregate);
-            if (!$this->has($index)) {
-                $this->add($aggregate);
+            $index = $this->getIndex(param: $aggregate);
+            if (!$this->has(param: $index)) {
+                $this->add(param: $aggregate);
             }
         }
 

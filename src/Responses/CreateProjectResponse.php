@@ -19,16 +19,19 @@ class CreateProjectResponse extends CreateProjectResponseAbstract
 
     private StructureModel $model;
 
+    #[\Override]
     public function setStructureModel(StructureModel $model): void
     {
         $this->model = $model;
     }
 
+    #[\Override]
     public function setError(ErrorModel $erreur): void
     {
         $this->erreur = $erreur;
     }
 
+    #[\Override]
     public function getError(): ErrorModel
     {
         $this->erreur = $this->erreur ?? new ErrorModel();

@@ -18,9 +18,9 @@ class DefinitionParameterAggregate implements AggregateInterface
 {
     const LOG_NOT_FOUND = "%s with %s name not found";
     const LOG_ALREADY_EXIST = "%s with %s already exist";
-    protected string $type = "DefinitionParameter";
-    protected int $code_not_found = 100;
-    protected int $code_already_exist = 101;
+    const TYPE = "DefinitionParameter";
+    const CODE_NOT_FOUND = 100;
+    const CODE_ALREADY_EXIST = 101;
 
     /**
      * @var DefinitionParameter[]
@@ -38,15 +38,15 @@ class DefinitionParameterAggregate implements AggregateInterface
     }
 
     /**
-     * @param string      $class
+     * @param string      $param
      * @param string|null $parameter
      *
      * @return bool
      */
-    public function has(string $class, string $parameter = null): bool
+    public function has(string $param, string $parameter = null): bool
     {
         foreach ($this->aggregates as $value) {
-            if ($value->definition_id === $class &&
+            if ($value->definition_id === $param &&
                 $value->parameter_id === $parameter
             ) {
                 return true;
@@ -75,11 +75,16 @@ class DefinitionParameterAggregate implements AggregateInterface
      */
     public function add(mixed $param, string $index = null): void
     {
-        $index = is_null($index) ? $this->getIndex($param): $index;
-        if ($this->has($index)) {
+        $index = is_null(value: $index) ?
+            $this->getIndex(definitionParam: $param): $index;
+        if ($this->has(param: $index)) {
             throw new DefinitionException(
-                sprintf(self::LOG_ALREADY_EXIST, $this->type, $index),
-                $this->code_already_exist
+                message: sprintf(
+                    self::LOG_ALREADY_EXIST,
+                    self::TYPE,
+                    $index
+                ),
+                code: self::CODE_ALREADY_EXIST
             );
         }
         $this->aggregates[$index] = $param;
@@ -103,12 +108,12 @@ class DefinitionParameterAggregate implements AggregateInterface
         }
 
         throw new DefinitionException(
-            sprintf(
+            message: sprintf(
                 self::LOG_NOT_FOUND,
-                $this->type,
+                self::TYPE,
                 $class.' or '.$parameter
             ),
-            $this->code_not_found
+            code: self::CODE_NOT_FOUND
         );
     }
 
@@ -138,8 +143,8 @@ class DefinitionParameterAggregate implements AggregateInterface
     public function merge(AggregateInterface $aggregate): AggregateInterface
     {
         foreach ($aggregate->aggregates as $index => $aggregate) {
-            if (!$this->hasByIndex($index.'')) {
-                $this->add($aggregate, $index.'');
+            if (!$this->hasByIndex(index: $index.'')) {
+                $this->add(param: $aggregate, index: $index.'');
             }
         }
 

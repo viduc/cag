@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace Cag\Services;
 
 use Cag\Exceptions\FileException;
-use Cag\Exceptions\FolderException;
+use Cag\Exceptions\NameException;
 use Cag\Exceptions\NotFoundException;
 use Cag\Validator\FileValidator;
 
@@ -25,20 +25,20 @@ class ComposerService extends ComposerServiceAbstract
     private string $composerFile;
 
     /**
-     * @var array
+     * @var array|null
      */
-    private array $composer;
+    private array|null $composer;
 
     /**
      * @param string|null $composerFile
      *
      * @throws FileException
-     * @throws FolderException|NotFoundException
+     * @throws NotFoundException|NameException
      */
-    public function __construct(?string $composerFile = null)
+    public function __construct(string|null $composerFile = null)
     {
-        $composerFile = $composerFile ?? $this->findComposerFile(__DIR__);
-        FileValidator::checkFile($composerFile, false);
+        $composerFile = $composerFile ?? $this->findComposerFile(path: __DIR__);
+        FileValidator::checkFile(name: $composerFile, exist: false);
         $this->composerFile = $composerFile;
         $this->loadComposer();
     }
@@ -53,25 +53,29 @@ class ComposerService extends ComposerServiceAbstract
     {
         $search = self::DS.'vendor'.self::DS.'viduc'.self::DS.'cag'.self::DS;
         $search .= 'src'.self::DS.'Services';
-        $path = str_replace($search, '', $path);
-        $path = str_ends_with($path, self::DS) ?
-            substr($path, 0, -1) : $path;
+        $path = str_replace(search: $search, replace: '', subject: $path);
+        $path = str_ends_with(haystack: $path, needle: self::DS) ?
+            substr(string: $path, offset: 0, length: -1) : $path;
 
-        foreach (scandir($path) as $file) {
-            if (is_file($path.self::DS.$file) &&
-                'composer.json' === $file
+        foreach (scandir(directory: $path) as $file) {
+            if (is_file(filename: $path.self::DS.$file) &&
+                $file === 'composer.json'
             ) {
                 return $path.self::DS.$file;
             }
         }
         if ($path === self::DS) {
             throw new NotFoundException(
-                'composer.json file not found',
-                100
+                message: 'composer.json file not found',
+                code: 100
             );
         }
         return $this->findComposerFile(
-            substr($path, 0, strripos($path, self::DS))
+            path: substr(
+                string: $path,
+                offset: 0,
+                length: strripos(haystack: $path, needle: self::DS)
+            )
         );
     }
 
@@ -81,6 +85,7 @@ class ComposerService extends ComposerServiceAbstract
      *
      * @return void
      */
+    #[\Override]
     public function addAutoload(string $key, array $value): void
     {
         if (!isset($this->composer['autoload']['psr-4'][$key])) {
@@ -95,8 +100,8 @@ class ComposerService extends ComposerServiceAbstract
     private function loadComposer(): void
     {
         $this->composer = json_decode(
-            file_get_contents($this->composerFile),
-            true
+            json: file_get_contents(filename: $this->composerFile),
+            associative: true
         );
     }
 
@@ -106,10 +111,10 @@ class ComposerService extends ComposerServiceAbstract
     private function saveComposer(): void
     {
         file_put_contents(
-            $this->composerFile,
-            json_encode(
-                $this->composer,
-                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
+            filename: $this->composerFile,
+            data: json_encode(
+                value: $this->composer,
+                flags: JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
             )
         );
     }

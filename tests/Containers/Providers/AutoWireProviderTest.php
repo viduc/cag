@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Cag\Tests\Containers\Providers;
 
+use Cag\Containers\Exceptions\ComposerException;
 use Cag\Containers\Exceptions\DefinitionException;
 use Cag\Containers\Models\Definition;
 use Cag\Containers\Providers\AutoWireProvider;
@@ -37,11 +38,11 @@ class AutoWireProviderTest extends TestCase
 
     /**
      * @throws ReflectionException
-     * @throws DefinitionException
+     * @throws DefinitionException|ComposerException
      */
+    #[\Override]
     public function setUp(): void
     {
-        parent::setUp();
         ComposerAbstract::autoload();
         $this->provider = new AutoWireProvider();
         $this->provider->register();
@@ -54,7 +55,7 @@ class AutoWireProviderTest extends TestCase
     {
         /* should have a class with no param*/
         self::assertTrue(
-            $this->provider->getAggregate()->has(Simple::class)
+            condition: $this->provider->getAggregate()->has(param: Simple::class)
         );
     }
 
@@ -62,7 +63,9 @@ class AutoWireProviderTest extends TestCase
     {
         /* should have a class with no param*/
         self::assertTrue(
-            $this->provider->getAggregate()->has(WithSimpleClassParam::class)
+            condition: $this->provider->getAggregate()->has(
+                param: WithSimpleClassParam::class
+            )
         );
     }
 
@@ -73,19 +76,23 @@ class AutoWireProviderTest extends TestCase
     {
         /* should not have an interface */
         self::assertFalse(
-            $this->provider->getAggregate()->has(
-                WithOneImpInterface::class
+            condition: $this->provider->getAggregate()->has(
+                param: WithOneImpInterface::class
             )
         );
 
         /* should not have an abstract class */
         self::assertFalse(
-            $this->provider->getAggregate()->has(AbstractClass::class)
+            condition: $this->provider->getAggregate()->has(
+                param: AbstractClass::class
+            )
         );
 
         /* should not have an trait class */
         self::assertFalse(
-            $this->provider->getAggregate()->has(TraitClass::class)
+            condition: $this->provider->getAggregate()->has(
+                param: TraitClass::class
+            )
         );
     }
 
@@ -97,21 +104,21 @@ class AutoWireProviderTest extends TestCase
     {
         /* should have a class with class param */
         self::assertTrue(
-            $this->provider->getAggregate()->has(
-                WithInterfaceParamOneImp::class
+            condition: $this->provider->getAggregate()->has(
+                param: WithInterfaceParamOneImp::class
             )
         );
         foreach ($this->provider->definitionParameterAggregate->getByDefinition(
             $this->provider->getAggregate()->get(
-                WithInterfaceParamOneImp::class
+                param: WithInterfaceParamOneImp::class
             )
         ) as $parameter) {
             self::assertTrue(
                 in_array(
-                    $this->provider->parameterAggregate->getById(
+                    needle: $this->provider->parameterAggregate->getById(
                         $parameter->parameter_id
                     )->value->class,
-                    [ImpWithOneImp::class]
+                    haystack: [ImpWithOneImp::class]
                 )
             );
         }
@@ -125,21 +132,21 @@ class AutoWireProviderTest extends TestCase
     {
         /* should have a class with class param */
         self::assertTrue(
-            $this->provider->getAggregate()->has(
-                WithAbstractParamOneImp::class
+            condition: $this->provider->getAggregate()->has(
+                param: WithAbstractParamOneImp::class
             )
         );
         foreach ($this->provider->definitionParameterAggregate->getByDefinition(
-            $this->provider->getAggregate()->get(
-                WithAbstractParamOneImp::class
+            definition: $this->provider->getAggregate()->get(
+                param: WithAbstractParamOneImp::class
             )
         ) as $parameter) {
             self::assertTrue(
                 in_array(
-                    $this->provider->parameterAggregate->getById(
-                        $parameter->parameter_id
+                    needle: $this->provider->parameterAggregate->getById(
+                        id: $parameter->parameter_id
                     )->value->class,
-                    [ImpWithOneAbstract::class]
+                    haystack: [ImpWithOneAbstract::class]
                 )
             );
         }
@@ -152,8 +159,8 @@ class AutoWireProviderTest extends TestCase
     {
         /* should have a class with class param */
         self::assertFalse(
-            $this->provider->getAggregate()->has(
-                WithInterfaceParamMultiImp::class
+            condition: $this->provider->getAggregate()->has(
+                param: WithInterfaceParamMultiImp::class
             )
         );
     }
@@ -161,16 +168,20 @@ class AutoWireProviderTest extends TestCase
     public function testShouldNotProvides(): void
     {
         self::assertFalse(
-            $this->provider->provides('test')
+            condition: $this->provider->provides(class: 'test')
         );
     }
 
+    /**
+     * @throws ReflectionException
+     * @throws DefinitionException
+     */
     public function testShouldReturnDefinitionNotContainInAggregate(): void
     {
         unset($this->provider->getAggregate()->aggregates[Simple::class]);
         self::assertInstanceOf(
-            Definition::class,
-            $this->provider->getDefinition(Simple::class)
+            expected: Definition::class,
+            actual: $this->provider->getDefinition(class: Simple::class)
         );
     }
 }

@@ -15,16 +15,11 @@ use PHPUnit\Framework\TestCase;
 
 class UsesCasesNameExtenderTest extends TestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function testFindUseCase(): void
     {
         $this->assertEquals(
-            "Cag\UseCases\TestUseCase",
-            UseCaseNameExtenderAbstract::extend('Test')
+            expected: "Cag\UseCases\TestUseCase",
+            actual: UseCaseNameExtenderAbstract::extend(useCase: 'Test')
         );
     }
 }

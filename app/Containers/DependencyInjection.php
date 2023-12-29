@@ -26,7 +26,9 @@ class DependencyInjection implements DependencyInjectionInterface
     public function __construct()
     {
         $this->container = new Container();
-        $this->container->addServiceProvider(new DependencyServiceProvider());
+        $this->container->addServiceProvider(
+            provider: new DependencyServiceProvider()
+        );
     }
 
     /**
@@ -35,11 +37,11 @@ class DependencyInjection implements DependencyInjectionInterface
      */
     public function get(string $id): mixed
     {
-        return $this->container->get($id);
+        return $this->container->get(id: $id);
     }
 
     public function has(string $id): bool
     {
-        return $this->container->has($id);
+        return $this->container->has(id: $id);
     }
 }

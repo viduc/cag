@@ -12,58 +12,70 @@ declare(strict_types=1);
 namespace Cag\Tests\Containers\Aggregates;
 
 use Cag\Containers\Aggregates\ContainersAggregate;
+use Cag\Containers\Exceptions\DefinitionException;
 use PHPUnit\Framework\TestCase;
 
 class ContainersAggregateTest extends TestCase
 {
     private ContainersAggregate $containersAggregate;
 
+    #[\Override]
     public function setUp(): void
     {
-        parent::setUp();
         $this->containersAggregate = new ContainersAggregate();
     }
 
+    /**
+     * @throws DefinitionException
+     */
     public function testGetExeption(): void
     {
         $this->expectExceptionMessage(
-            sprintf(
+            message: sprintf(
                 ContainersAggregate::LOG_NOT_FOUND,
                 '', 'test'
             )
         );
-        $this->expectExceptionCode(100);
-        $this->containersAggregate->get('test');
+        $this->expectExceptionCode(code: 100);
+        $this->containersAggregate->get(param: 'test');
     }
 
+    /**
+     * @throws DefinitionException
+     */
     public function testAddExeption(): void
     {
         $this->containersAggregate->aggregates['test'] = 'test';
         $this->expectExceptionMessage(
-            sprintf(
+            message: sprintf(
                 ContainersAggregate::LOG_ALREADY_EXIST,
                 '','test'
             )
         );
-        $this->expectExceptionCode(100);
-        $this->containersAggregate->add('test');
+        $this->expectExceptionCode(code: 100);
+        $this->containersAggregate->add(param: 'test');
     }
 
     public function testGetIndex(): void
     {
         $this->assertEquals(
-            'test',
-            $this->containersAggregate->getIndex('test')
+            expected: 'test',
+            actual: $this->containersAggregate->getIndex(param: 'test')
         );
     }
 
+    /**
+     * @throws DefinitionException
+     */
     public function testMerge(): void
     {
         $containersAggregate = new ContainersAggregate();
-        $containersAggregate->add('test');
+        $containersAggregate->add(param: 'test');
         $this->assertInstanceOf(
-            ContainersAggregate::class,
-            $this->containersAggregate->merge($containersAggregate)
+            expected: ContainersAggregate::class,
+            actual: $this->containersAggregate->merge(
+                aggregate: $containersAggregate
+            )
         );
     }
 }

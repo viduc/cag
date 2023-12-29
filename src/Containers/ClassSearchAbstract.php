@@ -21,24 +21,27 @@ abstract class ClassSearchAbstract
 {
     /**
      * @return ComposerClass[]
+     * @throws ComposerException
      */
     public static function getAllClass(): array
     {
-        $baseNameSpace = explode('\\', __NAMESPACE__)[0];
+        $baseNameSpace = explode(separator: '\\', string: __NAMESPACE__)[0];
         $map = array_keys(
-            require(
-                str_replace(['/vendor/viduc/cag', '/src/Containers'], '',__DIR__) .
-                "/vendor/composer/autoload_classmap.php")
+            array: require(
+                str_replace(
+                    search: ['/vendor/viduc/cag', '/src/Containers'],
+                    replace: '',
+                    subject: __DIR__
+                ) . "/vendor/composer/autoload_classmap.php")
         );
         $aggregate = new ComposerClassAggregate();
         array_walk(
-            $map,
-            function ($class, $key, $aggregate) use ($baseNameSpace) {
-                if (str_starts_with($class, $baseNameSpace)) {
-                    $aggregate->add(new ComposerClass($class));
+            array:$map,
+            callback: function ($class, $key) use ($baseNameSpace, &$aggregate) {
+                if (str_starts_with(haystack: $class, needle: $baseNameSpace)) {
+                    $aggregate->add(class: new ComposerClass($class));
                 }
-            },
-            $aggregate
+            }
         );
 
         return $aggregate->aggregates;
@@ -48,44 +51,31 @@ abstract class ClassSearchAbstract
      * @param string $interface
      *
      * @return array
-     * @throws ReflectionException
+     * @throws ReflectionException|ComposerException
      */
     public static function getInterfaceImplementations(
         string $interface
     ): array {
         $classImplements = [];
-        $reflection = new ReflectionClass($interface);
-        foreach (ClassSearchAbstract::getAllClass() as $class) {
-            if (in_array(
-                $reflection->getName(),
-                array_merge(
-                    class_implements($class->class),
-                    class_parents($class->class)
-                )
-            )) {
-                $classImplements[] = $class;
+        $reflection = new ReflectionClass(objectOrClass: $interface);
+        $name = $reflection->getName();
+        $allClass = self::getAllClass();
+        array_walk(
+            array: $allClass,
+            callback: static function ($class) use ($name, &$classImplements){
+                if (in_array(
+                    needle: $name,
+                    haystack: [
+                        ...class_implements(object_or_class: $class->class),
+                        ...class_parents(object_or_class: $class->class)
+                    ]
+                )) {
+                    $classImplements[] = $class;
+                }
             }
-        }
+        );
+
         return $classImplements;
-    }
-
-    /**
-     * @return array
-     * @throws Exceptions\ComposerException
-     * @throws ReflectionException
-     */
-    public static function getAllInterfaceWithoutImplementation(): array
-    {
-        $aggregate = new ComposerClassAggregate();
-        foreach (ClassSearchAbstract::getAllClass() as $class) {
-            if (0 === count(
-                ClassSearchAbstract::getInterfaceImplementations($class->class)
-            )) {
-                $aggregate->add($class);
-            }
-        }
-
-        return $aggregate->aggregates;
     }
 
     /**
@@ -94,9 +84,9 @@ abstract class ClassSearchAbstract
     public static function getAllDependencyInterface(): array
     {
         $aggregate = new ComposerClassAggregate();
-        foreach (ClassSearchAbstract::getAllClass() as $class) {
-            if (ExternalWireValidatorAbstract::validInterface($class->class)) {
-                $aggregate->add($class);
+        foreach (self::getAllClass() as $class) {
+            if (ExternalWireValidatorAbstract::validInterface(class: $class->class)) {
+                $aggregate->add(class: $class);
             }
         }
 

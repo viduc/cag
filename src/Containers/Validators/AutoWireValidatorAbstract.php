@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Cag\Containers\Validators;
 
-use Cag\Spec\Mock\ClassForProvider\WithSimpleClassParam;
+use Cag\Containers\Exceptions\ComposerException;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionParameter;
@@ -36,11 +36,11 @@ abstract class AutoWireValidatorAbstract implements ValidatorInterface
      */
     public static function validInstantiable(ReflectionClass $reflection): bool
     {
-        return AutoWireValidatorAbstract::validNameSpace($reflection) &&
+        return self::validNameSpace(reflexion: $reflection) &&
             !$reflection->isAbstract() &&
             !$reflection->isTrait() &&
             !$reflection->isInterface() &&
-            AutoWireValidatorAbstract::validParams($reflection);
+            self::validParams(reflection: $reflection);
     }
 
     /**
@@ -50,9 +50,11 @@ abstract class AutoWireValidatorAbstract implements ValidatorInterface
      */
     public static function validNameSpace(ReflectionClass $reflexion): bool
     {
-        $baseNameSpace = explode('\\', __NAMESPACE__)[0];
-        return explode('\\', $reflexion->getNamespaceName())[0] ===
-            $baseNameSpace;
+        $baseNameSpace = explode(separator: '\\', string: __NAMESPACE__)[0];
+        return explode(
+            separator: '\\',
+            string: $reflexion->getNamespaceName()
+            )[0] === $baseNameSpace;
     }
 
     /**
@@ -63,12 +65,12 @@ abstract class AutoWireValidatorAbstract implements ValidatorInterface
     public static function validParams(ReflectionClass $reflection): bool
     {
         $constructor = $reflection->getConstructor();
-        if (is_null($constructor)) {
+        if (is_null(value: $constructor)) {
             return true;
         }
         foreach ($constructor->getParameters() as $parameter) {
-            if (!AutoWireValidatorAbstract::validParamOptional($parameter) &&
-                !AutoWireValidatorAbstract::isParamInstantiable($parameter)) {
+            if (!self::validParamOptional(parameter: $parameter) &&
+                !self::isParamInstantiable(parameter: $parameter)) {
                 return false;
             }
         }
@@ -85,13 +87,17 @@ abstract class AutoWireValidatorAbstract implements ValidatorInterface
     ): bool {
         $name = $parameter->getType()->getName();
         try {
-            $refectionParam = new ReflectionClass($name);
+            $refectionParam = new ReflectionClass(objectOrClass: $name);
             return (
-                AutoWireValidatorAbstract::isInterfaceinstantiable($refectionParam)
-                || AutoWireValidatorAbstract::isClassInstantiable($refectionParam)
+                self::isInterfaceinstantiable(reflection: $refectionParam)
+                || self::isClassInstantiable(reflection: $refectionParam)
             );
         } catch (ReflectionException) {
-            return !in_array($name, self::PHP_DATA_TYPES, true);
+            return !in_array(
+                needle: $name,
+                haystack: self::PHP_DATA_TYPES,
+                strict: true
+            );
         }
     }
 
@@ -102,7 +108,7 @@ abstract class AutoWireValidatorAbstract implements ValidatorInterface
     public static function isClassInstantiable(ReflectionClass $reflection): bool
     {
         if($reflection->isInstantiable()) {
-            return AutoWireValidatorAbstract::validNameSpace($reflection);
+            return self::validNameSpace(reflexion: $reflection);
         }
 
         return false;
@@ -112,11 +118,12 @@ abstract class AutoWireValidatorAbstract implements ValidatorInterface
      * @param ReflectionClass $reflection
      * @return bool
      * @throws ReflectionException
+     * @throws ComposerException
      */
     public static function isInterfaceinstantiable(ReflectionClass $reflection): bool
     {
         if ($reflection->isInterface() || $reflection->isAbstract()) {
-            return AutoWireValidatorAbstract::validParamInterface($reflection);
+            return self::validParamInterface(reflection: $reflection);
         }
 
         return false;
@@ -126,14 +133,16 @@ abstract class AutoWireValidatorAbstract implements ValidatorInterface
      * @param ReflectionClass $reflection
      *
      * @return bool
-     * @throws ReflectionException
+     * @throws ReflectionException|ComposerException
      */
     public static function validParamInterface(ReflectionClass $reflection): bool
     {
-        return (AutoWireValidatorAbstract::validNameSpace($reflection) ||
-            ExternalWireValidatorAbstract::validNameSpace($reflection->name)) &&
-        count(
-            ClassSearchAbstract::getInterfaceImplementations($reflection->name)
+        return (self::validNameSpace(reflexion: $reflection) ||
+            ExternalWireValidatorAbstract::validNameSpace(class:$reflection->name)
+        ) && count(
+            value: ClassSearchAbstract::getInterfaceImplementations(
+                interface: $reflection->name
+            )
         ) <= 1;
     }
 

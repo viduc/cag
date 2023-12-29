@@ -51,7 +51,7 @@ class DependencyInjectionProvider implements ProviderInterface
     /**
      * @var ExternalWireProvider|null
      */
-    private ?ExternalWireProvider $external = null;
+    private ExternalWireProvider|null $external;
 
     /**
      * @param string|null                       $path
@@ -61,7 +61,7 @@ class DependencyInjectionProvider implements ProviderInterface
      * @throws NotFoundException
      * @throws ReflectionException
      */
-    public function __construct(?string $path = null)
+    public function __construct(string|null $path = null)
     {
         $this->config = new ConfigWireProvider($path);
         $this->autowire = new AutoWireProvider();
@@ -79,7 +79,7 @@ class DependencyInjectionProvider implements ProviderInterface
      */
     public function provides(string $id): bool
     {
-        return $this->aggregate->has($id);
+        return $this->aggregate->has(param: $id);
     }
 
     /**
@@ -96,19 +96,19 @@ class DependencyInjectionProvider implements ProviderInterface
         $this->config->register();
         $this->aggregate->merge(
             $this->autowire->getAggregate()->merge(
-                $this->config->getAggregate()->merge(
-                    $this->external->getAggregate()
+                aggregate: $this->config->getAggregate()->merge(
+                    aggregate: $this->external->getAggregate()
                 )
             )
         );
         $this->parameterAggregate->merge(
-            $this->autowire->parameterAggregate->merge(
-                $this->config->parameterAggregate
+            aggregate: $this->autowire->parameterAggregate->merge(
+                aggregate: $this->config->parameterAggregate
             )
         );
         $this->definitionParameterAggregate->merge(
-            $this->autowire->definitionParameterAggregate->merge(
-                $this->config->definitionParameterAggregate
+            aggregate: $this->autowire->definitionParameterAggregate->merge(
+                aggregate: $this->config->definitionParameterAggregate
             )
         );
         $this->completeParameters();
@@ -116,13 +116,14 @@ class DependencyInjectionProvider implements ProviderInterface
 
     /**
      * @return void
+     * @throws DefinitionException
      */
     private function completeParameters(): void
     {
         foreach ($this->parameterAggregate->aggregates as $parameter) {
             if ($parameter->isClass()) {
                 $this->parameterAggregate->aggregates[$parameter->id] =
-                    $this->completeDefinitionParameters($parameter);
+                    $this->completeDefinitionParameters(param: $parameter);
             }
         }
     }
@@ -134,9 +135,9 @@ class DependencyInjectionProvider implements ProviderInterface
      */
     private function completeDefinitionParameters(Parameter $param): Parameter
     {
-        $value = str_replace('%', '', $param->value);
-        if ($this->aggregate->has($value)) {
-            $param->value = $this->aggregate->get($value);
+        $value = str_replace(search: '%', replace: '', subject: $param->value);
+        if ($this->aggregate->has(param: $value)) {
+            $param->value = $this->aggregate->get(param: $value);
             $param->type = "definition";
             $param->isDefinition = true;
         }
@@ -160,7 +161,7 @@ class DependencyInjectionProvider implements ProviderInterface
      */
     public function getDefinition(string $id): Definition
     {
-        return $this->aggregate->get($id);
+        return $this->aggregate->get(param: $id);
     }
 
     /**
@@ -173,11 +174,15 @@ class DependencyInjectionProvider implements ProviderInterface
     public function getDefinitionParameters(string $id): array
     {
         $params = [];
-        foreach ($this->definitionParameterAggregate->getAllByDefinition(
-            $this->getDefinition($id)
-        ) as $param) {
-            $params[] = $this->parameterAggregate->getById($param->parameter_id);
-        }
+        $parameters = $this->definitionParameterAggregate->getAllByDefinition(
+            definition: $this->getDefinition(id: $id)
+        );
+        array_walk(
+            array: $parameters,
+            callback: function ($param) use (&$params) {
+                $params[] = $this->parameterAggregate->getById(id: $param->parameter_id);
+            }
+        );
 
         return $params;
     }

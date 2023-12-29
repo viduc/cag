@@ -17,9 +17,9 @@ class ParameterAggregate implements AggregateInterface
 {
     const LOG_NOT_FOUND = "%s with %s name not found";
     const LOG_ALREADY_EXIST = "%s with %s already exist";
-    protected int $code_not_found = 100;
-    protected int $code_already_exist = 100;
-    protected string $type = "Parameter";
+    private int $code_not_found = 100;
+    private int $code_already_exist = 100;
+    private string $type = "Parameter";
 
     /**
      * @var Parameter[]
@@ -69,12 +69,12 @@ class ParameterAggregate implements AggregateInterface
         }
 
         throw new DefinitionException(
-            sprintf(
+            message: sprintf(
                 self::LOG_NOT_FOUND,
                 $this->type,
                 $name
             ),
-            $this->code_not_found
+            code: $this->code_not_found
         );
     }
 
@@ -86,17 +86,17 @@ class ParameterAggregate implements AggregateInterface
      */
     public function getById(string $id): Parameter
     {
-        if ($this->hasById($id)) {
+        if ($this->hasById(id: $id)) {
             return $this->aggregates[$id];
         }
 
         throw new DefinitionException(
-            sprintf(
+            message: sprintf(
                 self::LOG_NOT_FOUND,
                 $this->type,
                 $id
             ),
-            $this->code_not_found
+            code: $this->code_not_found
         );
     }
 
@@ -108,11 +108,14 @@ class ParameterAggregate implements AggregateInterface
      */
     public function add(mixed $param): void
     {
-        $index = $this->getIndex($param);
-        if ($this->has($index)) {
+        $index = $this->getIndex(parameter: $param);
+        if ($this->has(name: $index)) {
             throw new DefinitionException(
-                sprintf(self::LOG_ALREADY_EXIST, $this->type, $index),
-                $this->code_already_exist
+                message: sprintf(
+                    self::LOG_ALREADY_EXIST,
+                    $this->type, $index
+                ),
+                code: $this->code_already_exist
             );
         }
         $this->aggregates[$index] = $param;
@@ -137,8 +140,8 @@ class ParameterAggregate implements AggregateInterface
     public function merge(AggregateInterface $aggregate): AggregateInterface
     {
         foreach ($aggregate->aggregates as $aggregate) {
-            if (!$this->has($this->getIndex($aggregate))) {
-                $this->add($aggregate);
+            if (!$this->has(name: $this->getIndex(parameter: $aggregate))) {
+                $this->add(param: $aggregate);
             }
         }
 

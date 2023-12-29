@@ -29,7 +29,7 @@ class ComposerClass
      *
      * @return bool
      */
-    public function __equals(ComposerClass $other): bool
+    public function __equals(self $other): bool
     {
         return $this->class === $other->class;
     }

@@ -12,17 +12,13 @@ namespace Cag\Models;
 
 class ErrorModel extends ModelAbstract
 {
-    private int $code;
-    private string $message;
-    private string $redirect;
-
     public function __construct(
-        int $code = null,
-        string $mesage = null,
-        string $redirect = null
+        private int|null    $code = null,
+        private string|null $message = null,
+        private string|null $redirect = null
     ) {
         $this->code = $code ?? 0;
-        $this->message = $mesage ?? 'erreur';
+        $this->message = $message ?? 'erreur';
         $this->redirect = $redirect ?? 'redirect';
     }
 

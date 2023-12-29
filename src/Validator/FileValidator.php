@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace Cag\Validator;
 
 use Cag\Exceptions\FileException;
-use Cag\Exceptions\FolderException;
 use Cag\Exceptions\NameException;
 
 class FileValidator extends ValidatorAbstract
@@ -25,12 +24,12 @@ class FileValidator extends ValidatorAbstract
      */
     public static function checkFile(string $name, bool $exist = true): void
     {
-        CheckValidator::checkFile($name, $exist);
+        CheckValidator::checkFile(name: $name);
 
         if ($exist && file_exists($name)) {
             throw new FileException(
-                "The file already exists",
-                102
+                message: "The file already exists",
+                code: 102
             );
         }
     }

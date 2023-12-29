@@ -50,8 +50,8 @@ class CreateRequest implements RequestInterface
             return $this->param[$param];
         }
         throw new NotFoundException(
-            'Param: '.$param.' not found',
-            101
+            message: 'Param: '.$param.' not found',
+            code: 101
         );
     }
 

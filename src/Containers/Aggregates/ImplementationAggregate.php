@@ -42,16 +42,16 @@ class ImplementationAggregate implements AggregateInterface
      */
     public function get(string $param): mixed
     {
-        if ($this->has($param)) {
+        if ($this->has(param: $param)) {
             return $this->implementations[$param];
         }
 
         throw new NotFoundException(
-            sprintf(
+            message: sprintf(
                 self::LOG_NOT_FOUND,
                 $param
             ),
-            self::LOG_NOT_FOUND_CODE
+            code: self::LOG_NOT_FOUND_CODE
         );
     }
 
@@ -63,7 +63,7 @@ class ImplementationAggregate implements AggregateInterface
      */
     public function add(mixed $param): void
     {
-        $reflection = new ReflectionClass($param);
+        $reflection = new ReflectionClass(objectOrClass: $param);
         $this->implementations[$reflection->getName()] = $param;
     }
 

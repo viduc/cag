@@ -36,16 +36,16 @@ class Cag implements UseCaseInterface
      * @throws NotFoundException
      */
     public function __construct(
-        ?DependencyInjectionInterface $externalDependencyInjection = null
+        DependencyInjectionInterface|null $externalDependencyInjection = null
     ) {
         $this->dependencyInjection = new DependencyInjection(
-            $externalDependencyInjection
+            container: $externalDependencyInjection
         );
     }
 
 
     /**
-     * @param RequestInterface $requeste
+     * @param RequestInterface $request
      * @param PresenterInterface $presenter
      * @return PresenterInterface
      * @throws DefinitionException
@@ -54,12 +54,15 @@ class Cag implements UseCaseInterface
      * @throws ReflectionException
      */
     public function execute(
-        RequestInterface $requeste,
+        RequestInterface   $request,
         PresenterInterface $presenter
     ): PresenterInterface {
         $useCase = $this->dependencyInjection->get(
-            UseCaseNameExtenderAbstract::extend($requeste->getUseCase())
+            id: UseCaseNameExtenderAbstract::extend(
+                useCase: $request->getUseCase()
+            )
         );
-        return $useCase->execute($requeste, $presenter);
+
+        return $useCase->execute(requete: $request, presenter: $presenter);
     }
 }

@@ -19,44 +19,53 @@ use Cag\UseCases\CreateProjectUseCase;
 use Cag\Spec\Implentation\Presenters\CreateProjectPresenter;
 use Cag\Spec\Implentation\Requests\CreateProjectRequest;
 
-describe('CreateProjectUseCase', function () {
-    beforeEach(
-        function () {
-            $this->folderService = new FolderService();
-            $this->structureService = new StructureService($this->folderService);
-            $this->composerService = new ComposerService();
-            $this->structureModelFactory = new StructureModelFactory();
-            $this->createProjectResponseFactory = new CreateProjectResponseFactory();
-            $this->createProject = new CreateProjectUseCase(
-            $this->structureService,
-            $this->composerService,
-            $this->structureModelFactory,
-            $this->createProjectResponseFactory
+describe(
+    message: 'CreateProjectUseCase',
+    closure: function () {
+        beforeEach(
+            closure: function () {
+                $this->folderService = new FolderService();
+                $this->structureService = new StructureService(
+                    folderService: $this->folderService
+                );
+                $this->composerService = new ComposerService();
+                $this->structureModelFactory = new StructureModelFactory();
+                $this->createProjectResponseFactory = new CreateProjectResponseFactory();
+                $this->createProject = new CreateProjectUseCase(
+                $this->structureService,
+                $this->composerService,
+                $this->structureModelFactory,
+                $this->createProjectResponseFactory
+                );
+        });
+        describe(
+            message: 'Execution of Use Case',
+            closure: function () {
+            it( message: 'should return a Presenter Interface',
+                /**
+                 * @throws Exception
+                 */
+                closure: function () {
+                    allow(actual: StructureModelFactory::class)->toReceive(
+                        'getStandard'
+                    )->andReturn(new StructureModel(srcName: 'test'));
+                    allow(actual: StructureService::class)->toReceive(
+                        'create'
+                    )->andReturn(null);
+                    allow(actual: ComposerService::class)->toReceive(
+                        'addAutoload'
+                    )->andReturn(null);
+                    expect(
+                        actual: $this->createProject->execute(
+                            request: new CreateProjectRequest(
+                                action: 'test',
+                                params: ['name' => 'test']
+                            ),
+                            presenter: new CreateProjectPresenter()
+                        )
+                    )->toBeAnInstanceOf(expected: PresenterInterface::class);
+                }
             );
-    });
-    describe('execute', function () {
-        it(
-            'should return a Presenter Interface',
-            function () {
-                allow(StructureModelFactory::class)->toReceive(
-                    'getStandard'
-                )->andReturn(new StructureModel('test'));
-                allow(StructureService::class)->toReceive(
-                    'create'
-                )->andReturn(null);
-                allow(ComposerService::class)->toReceive(
-                    'addAutoload'
-                )->andReturn(null);
-                expect(
-                    $this->createProject->execute(
-                        new CreateProjectRequest(
-                            'test',
-                            ['name' => 'test']
-                        ),
-                        new CreateProjectPresenter()
-                    )
-                )->toBeAnInstanceOf(PresenterInterface::class);
-            }
-        );
-    });
+        }
+    );
 });

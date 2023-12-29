@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Cag\Containers\Validators;
 
+use Cag\Containers\Exceptions\ComposerException;
 use ReflectionClass;
 use ReflectionException;
 use Cag\Containers\ClassSearchAbstract;
@@ -26,8 +27,8 @@ abstract class ExternalWireValidatorAbstract implements ValidatorInterface
     public static function validNameSpace(String $class): bool
     {
         return str_contains(
-            strtolower($class),
-            self::DEPENDENCY_NAMESPACE
+            haystack: strtolower(string: $class),
+            needle: self::DEPENDENCY_NAMESPACE
         );
     }
 
@@ -39,12 +40,14 @@ abstract class ExternalWireValidatorAbstract implements ValidatorInterface
     public static function validInterface(string $class): bool
     {
         try {
-            $reflexion = new ReflectionClass($class);
+            $reflexion = new ReflectionClass(objectOrClass: $class);
             return $reflexion->isInterface() &&
                 count(
-                    ClassSearchAbstract::getInterfaceImplementations($class)
+                    value: ClassSearchAbstract::getInterfaceImplementations(
+                        interface: $class
+                    )
                 ) === 0;
-        } catch (ReflectionException $e) {
+        } catch (ReflectionException|ComposerException) {
             return false;
         }
     }

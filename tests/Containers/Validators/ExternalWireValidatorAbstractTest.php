@@ -20,7 +20,7 @@ class ExternalWireValidatorAbstractTest extends TestCase
     public function testValidInterface(): void
     {
         $this->assertFalse(
-            ExternalWireValidatorAbstract::validInterface('test')
+            condition: ExternalWireValidatorAbstract::validInterface(class: 'test')
         );
     }
 }

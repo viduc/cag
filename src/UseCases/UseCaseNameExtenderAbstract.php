@@ -16,18 +16,21 @@ abstract class UseCaseNameExtenderAbstract
 {
     public static function extend(string $useCase): String
     {
-        return self::completeNameSpace(self::completeClassName($useCase));
+        return self::completeNameSpace(name: self::completeClassName(name: $useCase));
     }
 
     private static function completeClassName(string $name): string
     {
-        return str_ends_with($name, 'UseCase') ? $name : $name.'UseCase';
+        return str_ends_with(haystack: $name, needle: 'UseCase') ? $name : $name.'UseCase';
     }
 
     private static function completeNameSpace(string $name): string
     {
-        $reflexion = new ReflectionClass(self::class);
-        return str_starts_with($name, $reflexion->getNamespaceName()) ? $name :
-            $reflexion->getNamespaceName().'\\'.$name;
+        $reflexion = new ReflectionClass(objectOrClass: self::class);
+
+        return str_starts_with(
+            haystack: $name,
+            needle: $reflexion->getNamespaceName()
+        ) ? $name : $reflexion->getNamespaceName().'\\'.$name;
     }
 }

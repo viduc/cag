@@ -39,7 +39,7 @@ abstract class FolderServiceAbstract implements ServiceInterface
      */
     public function getProjectPath(): string
     {
-        $explode = explode('vendor', self::getFullPath());
+        $explode = explode(separator: 'vendor', string: self::getFullPath());
 
         return $explode[0];
     }

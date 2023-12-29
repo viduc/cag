@@ -21,6 +21,6 @@ abstract class StructureModelFactoryAbstract implements ModelFactoryInterface
      */
     public abstract function getStandard(
         string $name,
-        ?string $path = 'src'
+        string|null $path = 'src'
     ): StructureModel;
 }

@@ -26,26 +26,6 @@ use Cag\Services\StructureServiceAbstract;
 class CreateProjectUseCase implements UseCaseInterface
 {
     /**
-     * @var StructureService
-     */
-    private StructureServiceAbstract $structureService;
-
-    /**
-     * @var ComposerService
-     */
-    private ComposerServiceAbstract $composerService;
-
-    /**
-     * @var StructureModelFactoryAbstract
-     */
-    private StructureModelFactoryAbstract $structureModelFactory;
-
-    /**
-     * @var CreateProjectResponseFactoryAbstract
-     */
-    private CreateProjectResponseFactoryAbstract $createProjectResponseFactory;
-
-    /**
      * @var RequestInterface
      */
     private RequestInterface $request;
@@ -71,15 +51,11 @@ class CreateProjectUseCase implements UseCaseInterface
      * @param CreateProjectResponseFactoryAbstract $createProjectResponseFactory
      */
     public function __construct(
-        StructureServiceAbstract $structureService,
-        ComposerServiceAbstract $composerService,
-        StructureModelFactoryAbstract $structureModelFactory,
-        CreateProjectResponseFactoryAbstract $createProjectResponseFactory
+        private readonly StructureServiceAbstract      $structureService,
+        private readonly ComposerServiceAbstract       $composerService,
+        private readonly StructureModelFactoryAbstract $structureModelFactory,
+        private readonly CreateProjectResponseFactoryAbstract $createProjectResponseFactory
     ) {
-        $this->structureService = $structureService;
-        $this->composerService = $composerService;
-        $this->structureModelFactory = $structureModelFactory;
-        $this->createProjectResponseFactory = $createProjectResponseFactory;
         $this->response = $this->createProjectResponseFactory->createResponse();
     }
 
@@ -96,24 +72,24 @@ class CreateProjectUseCase implements UseCaseInterface
         $this->request = $request;
         try {
             $model = $this->structureModelFactory->getStandard(
-                $this->getParam('name'),
-                $this->getParam('path')
+                name: $this->getParam(param: 'name'),
+                path: $this->getParam(param: 'path')
             );
-            $this->structureService->create($model);
-            if ($this->getParam('composer') === 'true') {
+            $this->structureService->create(model: $model);
+            if ($this->getParam(param: 'composer') === 'true') {
                 $this->composerService->addAutoload(
-                    $this->getParam('name').'\\',
-                    [$this->getParam('path')]
+                    key: $this->getParam(param: 'name').'\\',
+                    value: [$this->getParam(param: 'path')]
                 );
             }
-            $this->response->setStructureModel($model);
+            $this->response->setStructureModel(model: $model);
         } catch (ExceptionAbstract $e) {
-            $this->response->setError(new ErrorModel(
-                $e->getCode(),
-                $e->getMessage()
+            $this->response->setError(erreur: new ErrorModel(
+                code: $e->getCode(),
+                message: $e->getMessage()
             ));
         }
-        $presenter->presente($this->response);
+        $presenter->presente(reponse: $this->response);
 
         return $presenter;
     }
@@ -126,11 +102,11 @@ class CreateProjectUseCase implements UseCaseInterface
     private function getParam(string $param): string
     {
         try {
-            $value = $this->request->getParam($param) ?? '';
-        } catch (ExceptionAbstract $e) {
+            $value = $this->request->getParam(param: $param) ?? '';
+        } catch (ExceptionAbstract) {
             $erreur = ErreurModelFactoryAbstract::get();
-            $erreur->setMessage("Param ".$param." not found in request");
-            $this->response->setError($erreur);
+            $erreur->setMessage(message: "Param ".$param." not found in request");
+            $this->response->setError(erreur: $erreur);
             $value = '';
         }
 

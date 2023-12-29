@@ -35,12 +35,12 @@ class Definition
      * @param bool|null   $external
      */
     public function __construct(
-        string $class,
-        ?string $name = null,
-        ?bool $external = false
+        string      $class,
+        string|null $name = null,
+        bool|null $external = false
     ) {
         $this->class = $class;
-        $this->name = !is_null($name) ? $name : $class;
+        $this->name = !is_null(value: $name) ? $name : $class;
         $this->external = $external;
     }
 
@@ -49,7 +49,7 @@ class Definition
      *
      * @return bool
      */
-    public function __equals(Definition $other): bool
+    public function __equals(self $other): bool
     {
         return $this->class === $other->class &&
             $this->name === $other->name &&

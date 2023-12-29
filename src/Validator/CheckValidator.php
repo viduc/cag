@@ -16,23 +16,22 @@ class CheckValidator extends ValidatorAbstract
 {
     /**
      * @param string $name
-     * @param bool $exist
      * @return void
      * @throws NameException
      */
-    public static function checkFile(string $name, bool $exist = true): void
+    public static function checkFile(string $name): void
     {
-        if ('' === $name) {
+        if ($name === '') {
             throw new NameException(
-                'Name must not be empty',
-                100
+                message: 'Name must not be empty',
+                code: 100
             );
         }
 
-        if (!FolderValidator::isFolderWritable($name)) {
+        if (!FolderValidator::isFolderWritable(name: $name)) {
             throw new NameException(
-                "The target is invalid",
-                101
+                message: "The target is invalid",
+                code: 101
             );
         }
     }

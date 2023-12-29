@@ -34,24 +34,24 @@ class ComposerClassAggregate implements AggregateInterface
      */
     public function get(string $class): ComposerClass
     {
-        if ($this->has($class)) {
+        if ($this->has(param: $class)) {
             return $this->aggregates[$class];
         }
 
         throw new NotFoundException(
-            sprintf(self::LOG_NOT_FOUND, $class),
-            self::CODE_NOT_FOUND
+            message: sprintf(self::LOG_NOT_FOUND, $class),
+            code: self::CODE_NOT_FOUND
         );
     }
 
     /**
-     * @param string $class
+     * @param string $param
      *
      * @return bool
      */
-    public function has(string $class): bool
+    public function has(string $param): bool
     {
-        return isset($this->aggregates[$class]);
+        return isset($this->aggregates[$param]);
     }
 
     /**
@@ -62,10 +62,10 @@ class ComposerClassAggregate implements AggregateInterface
      */
     public function add(mixed $class): void
     {
-        if ($this->has($class->class)) {
+        if ($this->has(param: $class->class)) {
             throw new ComposerException(
-                sprintf(self::LOG_ALREADY_EXIST, $class->class),
-                self::CODE_ALREADY_EXIST
+                message: sprintf(self::LOG_ALREADY_EXIST, $class->class),
+                code: self::CODE_ALREADY_EXIST
             );
         }
         $this->aggregates[$class->class] = $class;
@@ -80,8 +80,8 @@ class ComposerClassAggregate implements AggregateInterface
     public function merge(AggregateInterface $aggregate): AggregateInterface
     {
         foreach ($aggregate->aggregates as $aggregate) {
-            if (!$this->has($aggregate->class)) {
-                $this->add($aggregate);
+            if (!$this->has(param: $aggregate->class)) {
+                $this->add(class: $aggregate);
             }
         }
 

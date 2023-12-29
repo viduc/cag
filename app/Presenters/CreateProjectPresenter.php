@@ -16,9 +16,9 @@ use Cag\Responses\ResponseInterface;
 class CreateProjectPresenter implements PresenterInterface
 {
     /**
-     * @var ResponseInterface
+     * @var ResponseInterface|null
      */
-    private ResponseInterface $response;
+    private ResponseInterface|null $response;
 
     /**
      * @inheritDoc
