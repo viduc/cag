@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -17,17 +18,12 @@ abstract class ModelAbstract
      */
     protected mixed $id = null;
 
-    /**
-     * @return mixed
-     */
     public function getId(): mixed
     {
         return $this->id;
     }
 
     /**
-     * @param mixed $id
-     *
      * @return $this
      */
     public function setId(mixed $id)

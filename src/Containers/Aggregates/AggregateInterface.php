@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -12,30 +13,13 @@ namespace Cag\Containers\Aggregates;
 
 interface AggregateInterface
 {
-    /**
-     * @param string $param
-     *
-     * @return bool
-     */
     public function has(string $param): bool;
 
-    /**
-     * @param string $param
-     *
-     * @return mixed
-     */
     public function get(string $param): mixed;
 
-    /**
-     * @param mixed $param
-     *
-     * @return void
-     */
     public function add(mixed $param): void;
 
     /**
-     * @param AggregateInterface $aggregate
-     *
      * @return void
      */
     public function merge(AggregateInterface $aggregate): AggregateInterface;

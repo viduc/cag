@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -17,25 +18,17 @@ use Cag\Validator\FileValidator;
 
 class ComposerService extends ComposerServiceAbstract
 {
-    const DS = DIRECTORY_SEPARATOR;
+    public const DS = DIRECTORY_SEPARATOR;
 
-    /**
-     * @var string
-     */
     private string $composerFile;
 
-    /**
-     * @var array|null
-     */
     private array|null $composer;
 
     /**
-     * @param string|null $composerFile
-     *
      * @throws FileException
      * @throws NotFoundException|NameException
      */
-    public function __construct(string|null $composerFile = null)
+    public function __construct(string $composerFile = null)
     {
         $composerFile = $composerFile ?? $this->findComposerFile(path: __DIR__);
         FileValidator::checkFile(name: $composerFile, exist: false);
@@ -44,9 +37,6 @@ class ComposerService extends ComposerServiceAbstract
     }
 
     /**
-     * @param string $path
-     *
-     * @return string
      * @throws NotFoundException
      */
     private function findComposerFile(string $path): string
@@ -58,18 +48,16 @@ class ComposerService extends ComposerServiceAbstract
             substr(string: $path, offset: 0, length: -1) : $path;
 
         foreach (scandir(directory: $path) as $file) {
-            if (is_file(filename: $path.self::DS.$file) &&
-                $file === 'composer.json'
+            if (is_file(filename: $path.self::DS.$file)
+                && 'composer.json' === $file
             ) {
                 return $path.self::DS.$file;
             }
         }
-        if ($path === self::DS) {
-            throw new NotFoundException(
-                message: 'composer.json file not found',
-                code: 100
-            );
+        if (self::DS === $path) {
+            throw new NotFoundException(message: 'composer.json file not found', code: 100);
         }
+
         return $this->findComposerFile(
             path: substr(
                 string: $path,
@@ -79,12 +67,6 @@ class ComposerService extends ComposerServiceAbstract
         );
     }
 
-    /**
-     * @param string $key
-     * @param array  $value
-     *
-     * @return void
-     */
     #[\Override]
     public function addAutoload(string $key, array $value): void
     {
@@ -94,9 +76,6 @@ class ComposerService extends ComposerServiceAbstract
         $this->saveComposer();
     }
 
-    /**
-     * @return void
-     */
     private function loadComposer(): void
     {
         $this->composer = json_decode(
@@ -105,9 +84,6 @@ class ComposerService extends ComposerServiceAbstract
         );
     }
 
-    /**
-     * @return void
-     */
     private function saveComposer(): void
     {
         file_put_contents(

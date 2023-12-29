@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -14,5 +15,4 @@ use Cag\Containers\ContainerAbstract;
 
 abstract class ServiceAbstract extends ContainerAbstract implements ServiceInterface
 {
-
 }

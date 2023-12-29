@@ -19,5 +19,4 @@ namespace Cag\Exceptions;
  */
 class FileException extends ExceptionAbstract
 {
-
 }

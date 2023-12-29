@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -10,21 +11,14 @@ declare(strict_types=1);
 
 namespace Cag\Containers\Validators;
 
-use Cag\Containers\Exceptions\ComposerException;
-use ReflectionClass;
-use ReflectionException;
 use Cag\Containers\ClassSearchAbstract;
+use Cag\Containers\Exceptions\ComposerException;
 
 abstract class ExternalWireValidatorAbstract implements ValidatorInterface
 {
-    const DEPENDENCY_NAMESPACE = 'dependencies';
+    public const DEPENDENCY_NAMESPACE = 'dependencies';
 
-    /**
-     * @param String $class
-     *
-     * @return bool
-     */
-    public static function validNameSpace(String $class): bool
+    public static function validNameSpace(string $class): bool
     {
         return str_contains(
             haystack: strtolower(string: $class),
@@ -32,22 +26,18 @@ abstract class ExternalWireValidatorAbstract implements ValidatorInterface
         );
     }
 
-    /**
-     * @param string $class
-     *
-     * @return bool
-     */
     public static function validInterface(string $class): bool
     {
         try {
-            $reflexion = new ReflectionClass(objectOrClass: $class);
-            return $reflexion->isInterface() &&
-                count(
+            $reflexion = new \ReflectionClass(objectOrClass: $class);
+
+            return $reflexion->isInterface()
+                && 0 === count(
                     value: ClassSearchAbstract::getInterfaceImplementations(
                         interface: $class
                     )
-                ) === 0;
-        } catch (ReflectionException|ComposerException) {
+                );
+        } catch (\ReflectionException|ComposerException) {
             return false;
         }
     }

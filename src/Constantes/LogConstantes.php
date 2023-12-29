@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -12,9 +13,9 @@ namespace Cag\Constantes;
 
 class LogConstantes
 {
-    const INFO = 'info';
-    const ERROR = 'error';
-    const WARNING = 'warning';
-    const REJECT = 'reject';
-    const SUCCES = 'succes';
+    public const INFO = 'info';
+    public const ERROR = 'error';
+    public const WARNING = 'warning';
+    public const REJECT = 'reject';
+    public const SUCCES = 'succes';
 }

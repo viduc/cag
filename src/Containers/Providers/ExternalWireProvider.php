@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -20,24 +21,15 @@ use Cag\Containers\Validators\ExternalWireValidatorAbstract;
 
 class ExternalWireProvider implements ProviderInterface
 {
-    /**
-     * @var DefinitionsAggregate
-     */
     public DefinitionsAggregate $aggregate;
 
-    /**
-     * @param string $id
-     *
-     * @return bool
-     */
     public function provides(string $id): bool
     {
-        return ExternalWireValidatorAbstract::validNameSpace(class: $id) &&
-            ExternalWireValidatorAbstract::validInterface(class: $id);
+        return ExternalWireValidatorAbstract::validNameSpace(class: $id)
+            && ExternalWireValidatorAbstract::validInterface(class: $id);
     }
 
     /**
-     * @return void
      * @throws DefinitionException
      * @throws ComposerException
      */
@@ -63,9 +55,6 @@ class ExternalWireProvider implements ProviderInterface
     }
 
     /**
-     * @param string $id
-     *
-     * @return Definition
      * @throws DefinitionException
      */
     public function get(string $id): Definition
@@ -73,9 +62,6 @@ class ExternalWireProvider implements ProviderInterface
         return $this->aggregate->get(param: $id);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getAggregate(): AggregateInterface
     {
         return $this->aggregate;

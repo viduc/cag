@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -12,13 +13,13 @@ namespace Cag\Constantes;
 
 class StructureModelConstantes
 {
-    const FOLDERS = [
+    public const FOLDERS = [
         'Adapters',
         'Constantes',
         'Containers',
         'Exceptions',
         'Factory',
-        'Factory' . DIRECTORY_SEPARATOR . 'Model',
+        'Factory'.DIRECTORY_SEPARATOR.'Model',
         'Models',
         'Presenters',
         'Responses',
@@ -26,15 +27,15 @@ class StructureModelConstantes
         'Requests',
         'Services',
         'UseCase',
-        'Validators'
+        'Validators',
     ];
 
-    const FILES_IN_FOLDER = [
+    public const FILES_IN_FOLDER = [
         'AdapterInterface.php' => 'Adapters',
         'ContainerInterface.php' => 'Containers',
         'ExceptionAbstract.php' => 'Exceptions',
         'FactoryInterface.php' => 'Factory',
-        'ModelInterface.php' => 'Factory' . DIRECTORY_SEPARATOR . 'Model',
+        'ModelInterface.php' => 'Factory'.DIRECTORY_SEPARATOR.'Model',
         'ModelAbstract.php' => 'Models',
         'PresenterInterface.php' => 'Presenters',
         'ResponseInterface.php' => 'Responses',
@@ -42,9 +43,9 @@ class StructureModelConstantes
         'RequestInterface.php' => 'Requests',
         'ServiceInterface.php' => 'Services',
         'UseCaseInterface.php' => 'UseCase',
-        'ValidatorInterface.php' => 'Validators'
+        'ValidatorInterface.php' => 'Validators',
     ];
 
-    const FILES_CONTENT = '<?php'.PHP_EOL.PHP_EOL.'namespace %s'.PHP_EOL.
+    public const FILES_CONTENT = '<?php'.PHP_EOL.PHP_EOL.'namespace %s'.PHP_EOL.
         PHP_EOL.'%s %s'.PHP_EOL.'{'.PHP_EOL.'}'.PHP_EOL;
 }

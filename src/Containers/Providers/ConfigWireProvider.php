@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -10,8 +11,6 @@ declare(strict_types=1);
 
 namespace Cag\Containers\Providers;
 
-use ReflectionClass;
-use ReflectionException;
 use Cag\Containers\Aggregates\DefinitionParameterAggregate;
 use Cag\Containers\Aggregates\DefinitionsAggregate;
 use Cag\Containers\Aggregates\ParameterAggregate;
@@ -28,29 +27,17 @@ class ConfigWireProvider implements ProviderInterface
      */
     public array $list;
 
-    /**
-     * @var DefinitionsAggregate
-     */
     public DefinitionsAggregate $aggregate;
 
-    /**
-     * @var DefinitionParameterAggregate
-     */
     public DefinitionParameterAggregate $definitionParameterAggregate;
 
-    /**
-     * @var ParameterAggregate
-     */
     public ParameterAggregate $parameterAggregate;
 
-    /**
-     * @param string|null $path
-     */
-    public function __construct(?string $path = null)
+    public function __construct(string $path = null)
     {
         if (is_null(value: $path)) {
             $path = str_replace(
-                search: 'Containers' . DIRECTORY_SEPARATOR . 'Providers',
+                search: 'Containers'.DIRECTORY_SEPARATOR.'Providers',
                 replace: 'Config',
                 subject: __DIR__
             );
@@ -62,11 +49,6 @@ class ConfigWireProvider implements ProviderInterface
         $this->parameterAggregate = new ParameterAggregate();
     }
 
-    /**
-     * @param string $id
-     *
-     * @return bool
-     */
     public function provides(string $id): bool
     {
         foreach (array_keys(array: $this->list) as $name) {
@@ -79,35 +61,23 @@ class ConfigWireProvider implements ProviderInterface
     }
 
     /**
-     * @return void
      * @throws DefinitionException|NotFoundException
      */
     public function register(): void
     {
         foreach ($this->list as $name => $service) {
             try {
-                $reflection = new ReflectionClass(objectOrClass: $name);
+                $reflection = new \ReflectionClass(objectOrClass: $name);
                 if ($reflection->isInstantiable()) {
                     $this->addDefinition(name: $name, service: $service);
                 }
-            } catch (ReflectionException) {
-                throw new DefinitionException(
-                    message: sprintf(
-                        DefinitionException::LOG_NOT_FOUND,
-                        'class',
-                        $name
-                    ),
-                    code: DefinitionException::CODE_NOT_FOUND
-                );
+            } catch (\ReflectionException) {
+                throw new DefinitionException(message: sprintf(DefinitionException::LOG_NOT_FOUND, 'class', $name), code: DefinitionException::CODE_NOT_FOUND);
             }
         }
     }
 
     /**
-     * @param string $name
-     * @param array  $service
-     *
-     * @return void
      * @throws DefinitionException
      * @throws NotFoundException
      */
@@ -123,10 +93,6 @@ class ConfigWireProvider implements ProviderInterface
     }
 
     /**
-     * @param Definition $definition
-     * @param array      $service
-     *
-     * @return void
      * @throws DefinitionException
      * @throws NotFoundException
      */
@@ -154,9 +120,6 @@ class ConfigWireProvider implements ProviderInterface
     }
 
     /**
-     * @param string $name
-     * @param string $value
-     * @return Parameter
      * @throws DefinitionException
      * @throws NotFoundException
      */
@@ -164,7 +127,7 @@ class ConfigWireProvider implements ProviderInterface
     {
         $parameter = new Parameter(value: $value, name: $name);
         try {
-            $reflection = new ReflectionClass(objectOrClass: $value);
+            $reflection = new \ReflectionClass(objectOrClass: $value);
             if ($reflection->isInstantiable()) {
                 $parameter = new Parameter(value: '%'.$value.'%', name: $name);
                 if ($this->provides(id: $value)) {
@@ -175,27 +138,23 @@ class ConfigWireProvider implements ProviderInterface
                     );
                 }
             }
-        } catch (ReflectionException) {}
+        } catch (\ReflectionException) {
+        }
 
         return $parameter;
     }
 
     /**
-     * @param string $name
-     *
-     * @return Definition
      * @throws DefinitionException
      * @throws NotFoundException
      */
     public function getDefinition(string $name): Definition
     {
         $this->addDefinition(name: $name, service: $this->list[$name]);
+
         return $this->aggregate->get(param: $name);
     }
 
-    /**
-     * @return DefinitionsAggregate
-     */
     public function getAggregate(): DefinitionsAggregate
     {
         return $this->aggregate;

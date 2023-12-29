@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -13,14 +14,15 @@ namespace Cag\Containers\Aggregates;
 use Cag\Containers\Exceptions\DefinitionException;
 use Cag\Containers\Models\Definition;
 use Cag\Containers\Models\DefinitionParameter;
+use Random\RandomException;
 
 class DefinitionParameterAggregate implements AggregateInterface
 {
-    const LOG_NOT_FOUND = "%s with %s name not found";
-    const LOG_ALREADY_EXIST = "%s with %s already exist";
-    const TYPE = "DefinitionParameter";
-    const CODE_NOT_FOUND = 100;
-    const CODE_ALREADY_EXIST = 101;
+    public const LOG_NOT_FOUND = '%s with %s name not found';
+    public const LOG_ALREADY_EXIST = '%s with %s already exist';
+    public const TYPE = 'DefinitionParameter';
+    public const CODE_NOT_FOUND = 100;
+    public const CODE_ALREADY_EXIST = 101;
 
     /**
      * @var DefinitionParameter[]
@@ -30,24 +32,18 @@ class DefinitionParameterAggregate implements AggregateInterface
     /**
      * @param DefinitionParameter $definitionParam
      *
-     * @return string
+     * @throws RandomException
      */
     public function getIndex(mixed $definitionParam): string
     {
-        return mt_rand().'';
+        return random_int(min: 0, max: 99).'';
     }
 
-    /**
-     * @param string      $param
-     * @param string|null $parameter
-     *
-     * @return bool
-     */
     public function has(string $param, string $parameter = null): bool
     {
         foreach ($this->aggregates as $value) {
-            if ($value->definition_id === $param &&
-                $value->parameter_id === $parameter
+            if ($value->definition_id === $param
+                && $value->parameter_id === $parameter
             ) {
                 return true;
             }
@@ -56,70 +52,41 @@ class DefinitionParameterAggregate implements AggregateInterface
         return false;
     }
 
-    /**
-     * @param string $index
-     *
-     * @return bool
-     */
     public function hasByIndex(string $index): bool
     {
         return isset($this->aggregates[$index]);
     }
 
     /**
-     * @param mixed       $param
-     * @param string|null $index
-     *
-     * @return void
      * @throws DefinitionException
      */
     public function add(mixed $param, string $index = null): void
     {
         $index = is_null(value: $index) ?
-            $this->getIndex(definitionParam: $param): $index;
+            $this->getIndex(definitionParam: $param) : $index;
         if ($this->has(param: $index)) {
-            throw new DefinitionException(
-                message: sprintf(
-                    self::LOG_ALREADY_EXIST,
-                    self::TYPE,
-                    $index
-                ),
-                code: self::CODE_ALREADY_EXIST
-            );
+            throw new DefinitionException(message: sprintf(self::LOG_ALREADY_EXIST, self::TYPE, $index), code: self::CODE_ALREADY_EXIST);
         }
         $this->aggregates[$index] = $param;
     }
 
     /**
-     * @param string      $class
-     * @param string|null $parameter
-     *
-     * @return mixed
      * @throws DefinitionException
      */
     public function get(string $class, string $parameter = null): mixed
     {
         foreach ($this->aggregates as $value) {
-            if ($value->definition_id === $class &&
-                $value->parameter_id === $parameter
+            if ($value->definition_id === $class
+                && $value->parameter_id === $parameter
             ) {
                 return $value;
             }
         }
 
-        throw new DefinitionException(
-            message: sprintf(
-                self::LOG_NOT_FOUND,
-                self::TYPE,
-                $class.' or '.$parameter
-            ),
-            code: self::CODE_NOT_FOUND
-        );
+        throw new DefinitionException(message: sprintf(self::LOG_NOT_FOUND, self::TYPE, $class.' or '.$parameter), code: self::CODE_NOT_FOUND);
     }
 
     /**
-     * @param Definition $definition
-     *
      * @return DefinitionParameter[]
      */
     public function getByDefinition(Definition $definition): array
@@ -135,9 +102,6 @@ class DefinitionParameterAggregate implements AggregateInterface
     }
 
     /**
-     * @param AggregateInterface $aggregate
-     *
-     * @return AggregateInterface
      * @throws DefinitionException
      */
     public function merge(AggregateInterface $aggregate): AggregateInterface
@@ -151,11 +115,6 @@ class DefinitionParameterAggregate implements AggregateInterface
         return $this;
     }
 
-    /**
-     * @param Definition $definition
-     *
-     * @return array
-     */
     public function getAllByDefinition(Definition $definition): array
     {
         $definitionParameter = [];

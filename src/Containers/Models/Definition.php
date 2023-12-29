@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -14,29 +15,16 @@ class Definition
 {
     /**
      * name of class.
-     *
-     * @var string
      */
     public string $class;
 
-    /**
-     * @var string
-     */
     public string $name;
 
-    /**
-     * @var bool
-     */
     public bool $external;
 
-    /**
-     * @param string      $class
-     * @param string|null $name
-     * @param bool|null   $external
-     */
     public function __construct(
-        string      $class,
-        string|null $name = null,
+        string $class,
+        string $name = null,
         bool|null $external = false
     ) {
         $this->class = $class;
@@ -44,15 +32,10 @@ class Definition
         $this->external = $external;
     }
 
-    /**
-     * @param Definition $other
-     *
-     * @return bool
-     */
     public function __equals(self $other): bool
     {
-        return $this->class === $other->class &&
-            $this->name === $other->name &&
-            $this->external === $other->external;
+        return $this->class === $other->class
+            && $this->name === $other->name
+            && $this->external === $other->external;
     }
 }

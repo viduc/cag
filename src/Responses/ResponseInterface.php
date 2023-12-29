@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -14,14 +15,7 @@ use Cag\Models\ErrorModel;
 
 interface ResponseInterface
 {
-    /**
-     * @param ErrorModel $erreur
-     * @return void
-     */
     public function setError(ErrorModel $erreur): void;
 
-    /**
-     * @return ErrorModel
-     */
     public function getError(): ErrorModel;
 }

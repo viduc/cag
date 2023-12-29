@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -16,9 +17,6 @@ use Cag\Exceptions\NameException;
 class FolderValidator extends ValidatorAbstract
 {
     /**
-     * @param string $name
-     * @param bool $exist
-     * @return void
      * @throws FolderException
      * @throws NameException
      */
@@ -27,17 +25,10 @@ class FolderValidator extends ValidatorAbstract
         CheckValidator::checkFile(name: $name);
 
         if ($exist && is_dir($name)) {
-            throw new FolderException(
-                message: "The folder already exists",
-                code: 102
-            );
+            throw new FolderException(message: 'The folder already exists', code: 102);
         }
     }
 
-    /**
-     * @param string $name
-     * @return bool
-     */
     public static function isFolderWritable(string $name): bool
     {
         $folder = dirname(path: $name);

@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -10,9 +11,6 @@ declare(strict_types=1);
 
 namespace Cag\Exceptions;
 
-use Exception;
-
-abstract class ExceptionAbstract extends Exception
+abstract class ExceptionAbstract extends \Exception
 {
-
 }

@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -12,5 +13,4 @@ namespace Sources\Exceptions;
 
 interface ExceptionInterface
 {
-
 }

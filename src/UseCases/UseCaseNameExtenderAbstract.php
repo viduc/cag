@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -10,11 +11,9 @@ declare(strict_types=1);
 
 namespace Cag\UseCases;
 
-use ReflectionClass;
-
 abstract class UseCaseNameExtenderAbstract
 {
-    public static function extend(string $useCase): String
+    public static function extend(string $useCase): string
     {
         return self::completeNameSpace(name: self::completeClassName(name: $useCase));
     }
@@ -26,7 +25,7 @@ abstract class UseCaseNameExtenderAbstract
 
     private static function completeNameSpace(string $name): string
     {
-        $reflexion = new ReflectionClass(objectOrClass: self::class);
+        $reflexion = new \ReflectionClass(objectOrClass: self::class);
 
         return str_starts_with(
             haystack: $name,

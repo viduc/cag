@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -15,24 +16,16 @@ use Cag\Exceptions\NameException;
 class CheckValidator extends ValidatorAbstract
 {
     /**
-     * @param string $name
-     * @return void
      * @throws NameException
      */
     public static function checkFile(string $name): void
     {
-        if ($name === '') {
-            throw new NameException(
-                message: 'Name must not be empty',
-                code: 100
-            );
+        if ('' === $name) {
+            throw new NameException(message: 'Name must not be empty', code: 100);
         }
 
         if (!FolderValidator::isFolderWritable(name: $name)) {
-            throw new NameException(
-                message: "The target is invalid",
-                code: 101
-            );
+            throw new NameException(message: 'The target is invalid', code: 101);
         }
     }
 }

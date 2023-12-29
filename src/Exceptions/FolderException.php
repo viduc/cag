@@ -19,5 +19,4 @@ namespace Cag\Exceptions;
  */
 class FolderException extends ExceptionAbstract
 {
-
 }

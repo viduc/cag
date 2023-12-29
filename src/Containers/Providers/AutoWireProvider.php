@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -10,14 +11,11 @@ declare(strict_types=1);
 
 namespace Cag\Containers\Providers;
 
-use Cag\Containers\Exceptions\ComposerException;
-use ReflectionClass;
-use ReflectionException;
-use ReflectionParameter;
 use Cag\Containers\Aggregates\DefinitionParameterAggregate;
 use Cag\Containers\Aggregates\DefinitionsAggregate;
 use Cag\Containers\Aggregates\ParameterAggregate;
 use Cag\Containers\ClassSearchAbstract;
+use Cag\Containers\Exceptions\ComposerException;
 use Cag\Containers\Exceptions\DefinitionException;
 use Cag\Containers\Models\Definition;
 use Cag\Containers\Models\DefinitionParameter;
@@ -26,41 +24,27 @@ use Cag\Containers\Validators\AutoWireValidatorAbstract;
 
 class AutoWireProvider implements ProviderInterface
 {
-    /**
-     * @var DefinitionsAggregate
-     */
     public DefinitionsAggregate $aggregate;
 
-    /**
-     * @var DefinitionParameterAggregate
-     */
     public DefinitionParameterAggregate $definitionParameterAggregate;
 
-    /**
-     * @var ParameterAggregate
-     */
     public ParameterAggregate $parameterAggregate;
 
-    /**
-     * @param string $class
-     *
-     * @return bool
-     */
     public function provides(string $class): bool
     {
         try {
-            $reflection = new ReflectionClass(objectOrClass: $class);
+            $reflection = new \ReflectionClass(objectOrClass: $class);
+
             return AutoWireValidatorAbstract::validInstantiable(
                 reflection: $reflection
             );
-        } catch (ReflectionException) {
+        } catch (\ReflectionException) {
             return false;
         }
     }
 
     /**
-     * @return void
-     * @throws ReflectionException|ComposerException|DefinitionException
+     * @throws \ReflectionException|ComposerException|DefinitionException
      */
     public function register(): void
     {
@@ -75,9 +59,7 @@ class AutoWireProvider implements ProviderInterface
     }
 
     /**
-     * @param string $name
-     *
-     * @throws ReflectionException|ComposerException|DefinitionException
+     * @throws \ReflectionException|ComposerException|DefinitionException
      */
     private function addDefinition(string $name): void
     {
@@ -89,15 +71,13 @@ class AutoWireProvider implements ProviderInterface
     }
 
     /**
-     * @param Definition $definition
-     *
-     * @throws DefinitionException|ComposerException|ReflectionException
+     * @throws DefinitionException|ComposerException|\ReflectionException
      */
     private function addParam(Definition $definition): void
     {
-        $reflection = new ReflectionClass(objectOrClass: $definition->class);
-        if (!is_null(value: $reflection->getConstructor()) &&
-            AutoWireValidatorAbstract::validParams(reflection: $reflection)) {
+        $reflection = new \ReflectionClass(objectOrClass: $definition->class);
+        if (!is_null(value: $reflection->getConstructor())
+            && AutoWireValidatorAbstract::validParams(reflection: $reflection)) {
             foreach ($reflection->getConstructor()->getParameters() as $param) {
                 $this->saveParam(definition: $definition, param: $param);
             }
@@ -105,29 +85,24 @@ class AutoWireProvider implements ProviderInterface
     }
 
     /**
-     * @param Definition          $definition
-     * @param ReflectionParameter $param
-     *
-     * @return void
      * @throws DefinitionException
-     * @throws ReflectionException|ComposerException
+     * @throws \ReflectionException|ComposerException
      */
     private function saveParam(
         Definition $definition,
-        ReflectionParameter $param
+        \ReflectionParameter $param
     ): void {
-
         if (!is_null(value: $param->getType()) && !$param->isOptional()) {
             $class = $param->getType()->getName();
             $parameter = new Parameter(
-                value:'%'.$class.'%',
+                value: '%'.$class.'%',
                 name: $param->getName()
             );
             $implementations = ClassSearchAbstract::getInterfaceImplementations(
                 interface: $class
             );
-            $class = count(value: $implementations) === 1
-                ? $implementations[0]->class: $class;
+            $class = 1 === count(value: $implementations)
+                ? $implementations[0]->class : $class;
             if ($this->provides(class: $class)) {
                 $parameter = new Parameter(
                     value: $this->getDefinition(class: $class),
@@ -146,11 +121,8 @@ class AutoWireProvider implements ProviderInterface
     }
 
     /**
-     * @param string $class
-     *
-     * @return Definition
      * @throws DefinitionException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     public function getDefinition(string $class): Definition
     {
@@ -159,12 +131,10 @@ class AutoWireProvider implements ProviderInterface
             $this->aggregate->add(param: $definition);
             $this->addParam(definition: $definition);
         }
+
         return $this->aggregate->get(param: $class);
     }
 
-    /**
-     * @return DefinitionsAggregate
-     */
     public function getAggregate(): DefinitionsAggregate
     {
         return $this->aggregate;

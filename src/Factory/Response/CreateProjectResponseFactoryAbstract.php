@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -9,9 +10,6 @@ declare(strict_types=1);
  */
 
 namespace Cag\Factory\Response;
-
-use Cag\Models\StructureModel;
-use Cag\Responses\ResponseInterface;
 
 abstract class CreateProjectResponseFactoryAbstract implements ResponseFactoryInterface
 {

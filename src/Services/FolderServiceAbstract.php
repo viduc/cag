@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -16,27 +17,14 @@ abstract class FolderServiceAbstract implements ServiceInterface
     {
     }
 
-    /**
-     * @param string $name
-     * @return void
-     */
-    public abstract function create(string $name): void;
+    abstract public function create(string $name): void;
 
-    /**
-     * @param string $source
-     * @param string $target
-     * @param bool $recursive
-     * @return void
-     */
-    public abstract function copy(
+    abstract public function copy(
         string $source,
         string $target,
         bool $recursive = true
     ): void;
 
-    /**
-     * @return string
-     */
     public function getProjectPath(): string
     {
         $explode = explode(separator: 'vendor', string: self::getFullPath());
@@ -44,9 +32,6 @@ abstract class FolderServiceAbstract implements ServiceInterface
         return $explode[0];
     }
 
-    /**
-     * @return string
-     */
     public function getFullPath(): string
     {
         return __DIR__;

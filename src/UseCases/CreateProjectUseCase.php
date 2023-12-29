@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -18,55 +19,35 @@ use Cag\Models\ErrorModel;
 use Cag\Presenters\PresenterInterface;
 use Cag\Requests\RequestInterface;
 use Cag\Responses\ResponseInterface;
-use Cag\Services\ComposerService;
 use Cag\Services\ComposerServiceAbstract;
-use Cag\Services\StructureService;
 use Cag\Services\StructureServiceAbstract;
 
 class CreateProjectUseCase implements UseCaseInterface
 {
-    /**
-     * @var RequestInterface
-     */
     private RequestInterface $request;
 
-    /**
-     * @var ResponseInterface
-     */
     private ResponseInterface $response;
 
     /**
-     * array
+     * array.
      */
     private const DEFAULT_PARAMS = [
         'name' => 'project',
         'composer' => 'true',
-        'path' => ''
+        'path' => '',
     ];
 
-    /**
-     * @param StructureServiceAbstract $structureService
-     * @param ComposerServiceAbstract $composerService
-     * @param StructureModelFactoryAbstract $structureModelFactory
-     * @param CreateProjectResponseFactoryAbstract $createProjectResponseFactory
-     */
     public function __construct(
-        private readonly StructureServiceAbstract      $structureService,
-        private readonly ComposerServiceAbstract       $composerService,
+        private readonly StructureServiceAbstract $structureService,
+        private readonly ComposerServiceAbstract $composerService,
         private readonly StructureModelFactoryAbstract $structureModelFactory,
         private readonly CreateProjectResponseFactoryAbstract $createProjectResponseFactory
     ) {
         $this->response = $this->createProjectResponseFactory->createResponse();
     }
 
-    /**
-     * @param RequestInterface   $request
-     * @param PresenterInterface $presenter
-     *
-     * @return PresenterInterface
-     */
     public function execute(
-        RequestInterface   $request,
+        RequestInterface $request,
         PresenterInterface $presenter
     ): PresenterInterface {
         $this->request = $request;
@@ -76,7 +57,7 @@ class CreateProjectUseCase implements UseCaseInterface
                 path: $this->getParam(param: 'path')
             );
             $this->structureService->create(model: $model);
-            if ($this->getParam(param: 'composer') === 'true') {
+            if ('true' === $this->getParam(param: 'composer')) {
                 $this->composerService->addAutoload(
                     key: $this->getParam(param: 'name').'\\',
                     value: [$this->getParam(param: 'path')]
@@ -94,18 +75,13 @@ class CreateProjectUseCase implements UseCaseInterface
         return $presenter;
     }
 
-    /**
-     * @param string $param
-     *
-     * @return string
-     */
     private function getParam(string $param): string
     {
         try {
             $value = $this->request->getParam(param: $param) ?? '';
         } catch (ExceptionAbstract) {
             $erreur = ErreurModelFactoryAbstract::get();
-            $erreur->setMessage(message: "Param ".$param." not found in request");
+            $erreur->setMessage(message: 'Param '.$param.' not found in request');
             $this->response->setError(erreur: $erreur);
             $value = '';
         }

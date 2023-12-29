@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -12,9 +13,8 @@ namespace Cag\Containers\Exceptions;
 
 /**
  * 100 -> 'Service '.$param.' not found in caontainer yaml config'
- * 101 -> class with %s name not found"
+ * 101 -> class with %s name not found".
  */
 class NotFoundException extends ExceptionAbstract
 {
-
 }

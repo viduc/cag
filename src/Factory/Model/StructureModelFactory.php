@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -14,11 +15,6 @@ use Cag\Models\StructureModel;
 
 class StructureModelFactory extends StructureModelFactoryAbstract
 {
-    /**
-     * @param string $name
-     * @param string|null $path
-     * @return StructureModel
-     */
     #[\Override]
     public function getStandard(
         string $name,

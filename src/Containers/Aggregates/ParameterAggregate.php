@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -15,23 +16,17 @@ use Cag\Containers\Models\Parameter;
 
 class ParameterAggregate implements AggregateInterface
 {
-    const LOG_NOT_FOUND = "%s with %s name not found";
-    const LOG_ALREADY_EXIST = "%s with %s already exist";
+    public const LOG_NOT_FOUND = '%s with %s name not found';
+    public const LOG_ALREADY_EXIST = '%s with %s already exist';
     private int $code_not_found = 100;
     private int $code_already_exist = 100;
-    private string $type = "Parameter";
+    private string $type = 'Parameter';
 
     /**
      * @var Parameter[]
      */
     public array $aggregates = [];
 
-    /**
-     * @param string     $name
-     * @param mixed|null $value
-     *
-     * @return bool
-     */
     public function has(string $name, mixed $value = null): bool
     {
         foreach ($this->aggregates as $param) {
@@ -43,21 +38,12 @@ class ParameterAggregate implements AggregateInterface
         return false;
     }
 
-    /**
-     * @param string $id
-     *
-     * @return bool
-     */
     public function hasById(string $id): bool
     {
         return isset($this->aggregates[$id]);
     }
 
     /**
-     * @param string     $name
-     * @param mixed|null $value
-     *
-     * @return mixed
      * @throws DefinitionException
      */
     public function get(string $name, mixed $value = null): mixed
@@ -68,20 +54,10 @@ class ParameterAggregate implements AggregateInterface
             }
         }
 
-        throw new DefinitionException(
-            message: sprintf(
-                self::LOG_NOT_FOUND,
-                $this->type,
-                $name
-            ),
-            code: $this->code_not_found
-        );
+        throw new DefinitionException(message: sprintf(self::LOG_NOT_FOUND, $this->type, $name), code: $this->code_not_found);
     }
 
     /**
-     * @param string $id
-     *
-     * @return Parameter
      * @throws DefinitionException
      */
     public function getById(string $id): Parameter
@@ -90,41 +66,23 @@ class ParameterAggregate implements AggregateInterface
             return $this->aggregates[$id];
         }
 
-        throw new DefinitionException(
-            message: sprintf(
-                self::LOG_NOT_FOUND,
-                $this->type,
-                $id
-            ),
-            code: $this->code_not_found
-        );
+        throw new DefinitionException(message: sprintf(self::LOG_NOT_FOUND, $this->type, $id), code: $this->code_not_found);
     }
 
     /**
-     * @param mixed $param
-     *
-     * @return void
      * @throws DefinitionException
      */
     public function add(mixed $param): void
     {
         $index = $this->getIndex(parameter: $param);
         if ($this->has(name: $index)) {
-            throw new DefinitionException(
-                message: sprintf(
-                    self::LOG_ALREADY_EXIST,
-                    $this->type, $index
-                ),
-                code: $this->code_already_exist
-            );
+            throw new DefinitionException(message: sprintf(self::LOG_ALREADY_EXIST, $this->type, $index), code: $this->code_already_exist);
         }
         $this->aggregates[$index] = $param;
     }
 
     /**
      * @param Parameter $parameter
-     *
-     * @return string
      */
     public function getIndex(mixed $parameter): string
     {
@@ -132,9 +90,6 @@ class ParameterAggregate implements AggregateInterface
     }
 
     /**
-     * @param AggregateInterface $aggregate
-     *
-     * @return AggregateInterface
      * @throws DefinitionException
      */
     public function merge(AggregateInterface $aggregate): AggregateInterface

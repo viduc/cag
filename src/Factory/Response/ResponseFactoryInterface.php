@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -14,8 +15,5 @@ use Cag\Responses\ResponseInterface;
 
 interface ResponseFactoryInterface
 {
-    /**
-     * @return ResponseInterface
-     */
-    function createResponse(): ResponseInterface;
+    public function createResponse(): ResponseInterface;
 }

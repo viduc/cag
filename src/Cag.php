@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -20,41 +21,33 @@ use Cag\Presenters\PresenterInterface;
 use Cag\Requests\RequestInterface;
 use Cag\UseCases\UseCaseInterface;
 use Cag\UseCases\UseCaseNameExtenderAbstract;
-use ReflectionException;
 
 class Cag implements UseCaseInterface
 {
-    /**
-     * @var DependencyInjectionInterface
-     */
     private DependencyInjectionInterface $dependencyInjection;
 
     /**
      * @throws ComposerException
      * @throws DefinitionException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @throws NotFoundException
      */
     public function __construct(
-        DependencyInjectionInterface|null $externalDependencyInjection = null
+        DependencyInjectionInterface $externalDependencyInjection = null
     ) {
         $this->dependencyInjection = new DependencyInjection(
             container: $externalDependencyInjection
         );
     }
 
-
     /**
-     * @param RequestInterface $request
-     * @param PresenterInterface $presenter
-     * @return PresenterInterface
      * @throws DefinitionException
      * @throws DependencyInjectionException
      * @throws NotFoundException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     public function execute(
-        RequestInterface   $request,
+        RequestInterface $request,
         PresenterInterface $presenter
     ): PresenterInterface {
         $useCase = $this->dependencyInjection->get(

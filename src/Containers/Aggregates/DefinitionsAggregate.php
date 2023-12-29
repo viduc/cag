@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -14,7 +15,7 @@ use Cag\Containers\Models\Definition;
 
 class DefinitionsAggregate extends ContainersAggregate
 {
-    protected string $type = "Definition";
+    protected string $type = 'Definition';
     protected int $code_not_found = 103;
     protected int $code_already_exist = 104;
 
@@ -25,8 +26,6 @@ class DefinitionsAggregate extends ContainersAggregate
 
     /**
      * @param Definition $param
-     *
-     * @return string
      */
     #[\Override]
     public function getIndex(mixed $param): string

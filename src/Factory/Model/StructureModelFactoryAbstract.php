@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 /**
- * CAG - Clean Architecture Generator
+ * CAG - Clean Architecture Generator.
  *
  * Tristan Fleury <http://viduc.github.com/>
  *
@@ -14,12 +15,7 @@ use Cag\Models\StructureModel;
 
 abstract class StructureModelFactoryAbstract implements ModelFactoryInterface
 {
-    /**
-     * @param string $name
-     * @param string|null $path
-     * @return StructureModel
-     */
-    public abstract function getStandard(
+    abstract public function getStandard(
         string $name,
         string|null $path = 'src'
     ): StructureModel;
